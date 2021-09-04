@@ -1,0 +1,51 @@
+
+<table id="board">
+<tr>
+  <th></th>
+  <th *ngFor = "let column of xDimension">
+    {{column}}
+  </th>
+</tr>
+  <tr *ngFor = "let y of yDimension">
+    <th>      
+      {{y}}
+    </th>
+    <td *ngFor = "let x of xDimension">        
+        <button class="cell" 
+          [class.ship]="isShip(x, y)"
+          [class.hit]="isHit(x, y)"
+          (click)="click(x, y)">
+          <span [innerText]="value(x,y)"></span>
+      </button>
+    </td> 
+  </tr>
+
+</table>
+
+<!-- <table id="board">
+  <tr>
+    <th *ngFor = "let column of headers">
+      {{column}}
+    </th>
+  </tr>
+
+  <ng-container *ngFor="let column of headers">
+    <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+    <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+  </ng-container> 
+  
+  <tbody>
+  <tr *ngFor = "let row of rows">
+    <td *ngFor = "let column of headers">
+      <div *ngIf="row[column]; else cells">
+        {{row[column]}}
+        </div>
+          <ng-template #cells>
+            <button class="cell ship">
+              <p></p>
+            </button>
+          </ng-template>
+    </td>
+  </tr>
+</tbody>
+</table> -->

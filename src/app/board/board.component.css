@@ -1,0 +1,48 @@
+/* h1
+{
+    text-align: center;
+    color: blueviolet;
+} */
+
+.header-dimension {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.cell {
+  width: 100%;
+  padding: 10px;
+  background-color: rgb(215, 240, 221);
+  border: none;
+}
+
+.ship {
+  background-color: rgb(43, 226, 89);
+}
+
+.hit {
+  background-color: rgb(226, 43, 43);
+}
+
+#board {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    /* width: 100%; */
+  }
+  
+  #board td, #board th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  #board tr:nth-child(even){background-color: #f2f2f2;}
+  
+  #board td:hover {background-color: #ddd;}
+  
+  /* #board th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: blueviolet;
+    color: white;
+  } */
