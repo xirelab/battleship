@@ -15,6 +15,7 @@ export class BoardComponent implements OnInit {
   currentShip: number;
   numberOfcellSelected = 0;
   lastSelectedCell: Slot;
+  secondLastSelectedCell: Slot;
   private _incoming: Slot;
 
   @Input() type: string;
@@ -26,7 +27,7 @@ export class BoardComponent implements OnInit {
   set incoming(value: Slot) {
     this._incoming = value;
     this.markOnBaord();
-  } 
+  }
 
   ngOnInit() {
     console.log('testtt');
@@ -84,35 +85,30 @@ export class BoardComponent implements OnInit {
     return '';
   }
 
-  isDisabled(x: string, y: string): boolean {
+  isEnabled(x: string, y: string): boolean {
     if (this.type === 'opponent' || this.currentShip === 0) {
+      return false;
+    }
+    if (this.numberOfcellSelected === 0) {
       return true;
     }
-    if (this.numberOfcellSelected !== 0 && this.numberOfcellSelected <= this.currentShip + 1) { 
-      // ship filling in progress
-      // console.log(this.lastSelectedCell);
-      // if (this.lastSelectedCell) {
-      //   if (Number(x) > Number(this.lastSelectedCell.x) + 1 && 
-      //       Number(x) < Number(this.lastSelectedCell.x) - 1 &&
-      //       Number(y) > Number(this.lastSelectedCell.y) + 1 && 
-      //       Number(y) < Number(this.lastSelectedCell.y) - 1 ) { 
-      //         return true;
-      //       }
-      // }
-    } 
+    if (this.isNextPossibleCell(x, y)) {
+      return true;
+    }
     return false;
   }
 
   click(x: string, y: string) {
-    if (this.type === 'opponent' || this.isDisabled(x, y)) {
+    if (this.type === 'opponent' || !this.isEnabled(x, y)) {
       return;
     }
     const cell = this.cells.find(c => c.x === x && c.y === y);
     if (cell && cell.isShip) {
       return;
     }
-    if (cell) {      
+    if (cell) {
       cell.isShip = true;
+      this.secondLastSelectedCell = this.lastSelectedCell;
       this.lastSelectedCell = {x: x, y: y};
     }
     this.numberOfcellSelected += 1;
@@ -120,6 +116,24 @@ export class BoardComponent implements OnInit {
       this.currentShip -= 1;
       this.numberOfcellSelected = 0;
     }
+  }
+
+  isNextPossibleCell(x: string, y: string) {
+    if (this.numberOfcellSelected !== 0 && this.numberOfcellSelected <= this.currentShip + 1 && this.lastSelectedCell) {
+      if (this.lastSelectedCell) {
+        const yIndex = this.yDimension.findIndex(i => i === y);
+        const yBase = this.yDimension.findIndex(i => i === this.lastSelectedCell.y);
+
+        if ((Number(x) === Number(this.lastSelectedCell.x) &&
+              (yIndex - 1 === yBase || yIndex + 1 === yBase)) ||
+            ((yIndex === yBase && (
+              Number(x) + 1 === Number(this.lastSelectedCell.x) ||
+              Number(x) - 1 === Number(this.lastSelectedCell.x))))) {
+              return true;
+        }
+      }
+    }
+    return false;
   }
 
   markOnBaord() {

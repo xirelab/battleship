@@ -20,6 +20,11 @@
   background-color: rgb(43, 226, 89);
 }
 
+.possible-cell {
+  /* border-color:  orange; */
+  border: groove;
+}
+
 .hit {
   background-color: rgb(226, 43, 43);
 }

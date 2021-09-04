@@ -13,8 +13,8 @@
         <button class="cell" 
           [class.ship]="isShip(x, y)"
           [class.hit]="isHit(x, y)"
-          [disabled]="isDisabled(x, y)">
-          <span [innerText]="value(x,y)"></span>
+          [class.possible-cell]="isNextPossibleCell(x, y)">
+          <span [innerText]="value(x, y)"></span>
       </button>
     </td> 
   </tr>
