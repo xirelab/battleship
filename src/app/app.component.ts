@@ -1,4 +1,5 @@
 import { Component, VERSION } from '@angular/core';
+import { ModalService } from './services/modal.service';
 
 @Component({
   selector: 'my-app',
@@ -6,5 +7,6 @@ import { Component, VERSION } from '@angular/core';
   styleUrls: [ './app.component.css' ]
 })
 export class AppComponent  {
-  name = 'Sample Angular app with angular V' + VERSION.major;
+  
+  constructor(public modalService: ModalService) {}
 }

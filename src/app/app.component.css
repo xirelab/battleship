@@ -1,3 +1,8 @@
 p {
   font-family: Lato;
 }
+
+td, th {
+  border: 1px solid #ddd;
+  padding: 30px;
+}

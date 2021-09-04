@@ -1,6 +1,24 @@
-<p>
-  Start editing to see some happen :)
-</p>
+<h1>
+  BalleShip
+</h1>
 
-<app-board></app-board>
+<table>
+  <tr>
+    <td>
+      <h2> Opponent </h2>
+      <app-board [type]="'opponent'"></app-board>
+    </td>
+    <td>
+      <h2> My Team </h2>
+      <app-board [type]="'myteam'" [numberofShips]=4>></app-board>      
+    </td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+    <app-fire-missile></app-fire-missile>
+    </td>
+  </tr>
+</table>
+
 <app-battle-ship> test</app-battle-ship>

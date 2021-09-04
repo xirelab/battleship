@@ -1,27 +1,25 @@
-
 <table id="board">
 <tr>
   <th></th>
-  <th *ngFor = "let column of xDimension">
+  <td *ngFor = "let column of xDimension">
     {{column}}
-  </th>
+  </td>
 </tr>
   <tr *ngFor = "let y of yDimension">
     <th>      
       {{y}}
     </th>
-    <td *ngFor = "let x of xDimension">        
+    <td (click)="click(x, y)" *ngFor = "let x of xDimension">        
         <button class="cell" 
           [class.ship]="isShip(x, y)"
           [class.hit]="isHit(x, y)"
-          (click)="click(x, y)">
+          [disabled]="isDisabled(x, y)">
           <span [innerText]="value(x,y)"></span>
       </button>
     </td> 
   </tr>
-
 </table>
-
+<span [innerText]="shipDetails"> </span>
 <!-- <table id="board">
   <tr>
     <th *ngFor = "let column of headers">
