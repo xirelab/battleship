@@ -62,4 +62,14 @@ export class BoardService {
       return {x: x, y: y};
     }
   }
+
+  checkResult(board: Board): boolean {
+    if (board && board.cells) {
+      const cells = board.cells.find(i => i.isShip && !i.value);
+      if (!cells) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

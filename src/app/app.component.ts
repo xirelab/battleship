@@ -47,7 +47,7 @@ export class AppComponent implements OnInit {
   openDialog(message: string, isInputVisisble: boolean): void {
     const dialogRef = this.dialog.open(ModalPopupComponent, {
       width: '300px',
-      disableClose: true,
+      // disableClose: true,
       data: {
         isInputVisisble: isInputVisisble, 
         caption: message, 
@@ -71,22 +71,28 @@ export class AppComponent implements OnInit {
       }
       
       if (!fired && this.currentPlayer === 'Me') {
-        // TODO need to implement subscription and time delay and remove from here
-        setTimeout(() => 
-        {
-          this.currentPlayer = 'System'
-          this.systemFiring = this.boardService.triggerSystemFire(this.boardMyteam);
-          this.openDialog(`System fired the cordinates: ${this.systemFiring.x}${this.systemFiring.y}`, false);
-        },
-        1000);
+        if (this.boardService.checkResult(this.boardOpponent)) {
+          this.openDialog("You Win", false);
+        } else {
+          setTimeout(() => 
+          {
+            this.currentPlayer = 'System'
+            this.systemFiring = this.boardService.triggerSystemFire(this.boardMyteam);
+            this.openDialog(`System fired the cordinates: ${this.systemFiring.x}${this.systemFiring.y}`, false);
+          },
+          1000);
+        }        
       } else if(this.currentPlayer === 'System') {
-        // TODO need to implement subscription and time delay and remove from here  
-        setTimeout(() => 
-        {
-          this.currentPlayer = 'Me';
-          this.shipSelected(true);
-        },
-        1000);
+        if (this.boardService.checkResult(this.boardMyteam)) {
+          this.openDialog("System Win", false);
+        } else {
+          setTimeout(() => 
+          {
+            this.currentPlayer = 'Me';
+            this.shipSelected(true);
+          },
+          1000);
+        }        
       }      
     });
   }

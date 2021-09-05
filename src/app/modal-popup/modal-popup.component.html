@@ -1,7 +1,7 @@
 <br/>
 {{data.caption}}
 <br/>
-<input *ngIf="data.isInputVisisble" matInput [(ngModel)]="data.value" this.value = this.value.toUpperCase()>
+<input *ngIf="!data.isInputVisisble" matInput [(ngModel)]="data.value" alphaNumeric maxlength="2">
 <div mat-dialog-actions>
   <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
 </div>

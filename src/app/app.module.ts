@@ -9,6 +9,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TitleCasePipe } from '@angular/common';
+import { AutoFocusDirective } from './directives/auto-focus.directive';
+import { AlphaNumericDirective } from './directives/alpha-numeric.directive';
 
 @NgModule({
   imports: [
@@ -21,7 +23,13 @@ import { TitleCasePipe } from '@angular/common';
   declarations: [
     AppComponent,
     BoardComponent,
-    ModalPopupComponent
+    ModalPopupComponent,
+    AutoFocusDirective,
+    AlphaNumericDirective
+  ],
+  exports: [
+    // AutoFocusDirective,
+    AlphaNumericDirective
   ],
   providers: [TitleCasePipe],
   bootstrap: [AppComponent]
