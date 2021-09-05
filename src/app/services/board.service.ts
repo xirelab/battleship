@@ -34,6 +34,18 @@ export class BoardService {
       // TODO: wrte logic to dynamically set board
     }
 
+    if (!systemBoard) {
+      if (!this.board) {
+        this.board = new BehaviorSubject<IBoard>(
+          new Board(10)
+        )
+      } else {
+        this.board.next(new Board(10));
+      }
+      
+      return this.board.asObservable();
+    } 
+
     // manual logic - todo - remove
     // for (let i = 2; i < 6; i++) {
     //   const cell = systemBoard.cells.find(a => a.x == `${i}` && a.y == 'C');
@@ -41,9 +53,7 @@ export class BoardService {
     // }
 
     for (let i = 5; i < 8; i++) {
-      const cell = systemBoard.cells.find(
-        a => a.x == '5' && a.y == constant.yDimension[i]
-      );
+      const cell = systemBoard.cells.find(a => a.x == '5' && a.y == constant.yDimension[i]);
       cell.isShip = true;
     }
 
@@ -52,16 +62,16 @@ export class BoardService {
       cell.isShip = true;
     }
 
-    this.board.next(systemBoard);
+    if (!this.board) {
+      this.board = new BehaviorSubject<IBoard>(
+        systemBoard
+      )
+    } else {
+      this.board.next(systemBoard);
+    }
 
     return this.board.asObservable();
   }
-
-  // getRandomInt(min, max): number {
-  //   min = Math.ceil(min);
-  //   max = Math.floor(max);
-  //   return Math.floor(Math.random() * (max - min + 1)) + min;
-  // }
 
   triggerSystemFire(board: Board): string {
     if (board && board.cells) {

@@ -19,8 +19,8 @@ import * as selector from './store/board.selector';
 export class AppComponent implements OnInit {
   // numberOfCells = 10;
   // numberOfShips = 2;
-  myFiring: Slot;
-  systemFiring: Slot;
+  // myFiring: Slot;
+  // systemFiring: Slot;
 
   gameFinished = false;
 
@@ -102,7 +102,7 @@ export class AppComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result && result.value) {
         console.log('The dialog was closed. data : ' + result.value);
-        this.store.dispatch(actions.dropMissile(result.value));
+        this.store.dispatch(actions.dropMissile(result.value.toString()));
       }
       // let fired = false;
       // if (this.gameFinished) {return;}

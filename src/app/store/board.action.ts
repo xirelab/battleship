@@ -21,7 +21,7 @@ export const prepareSystemBoardCompleted = createAction(
 );
 export const dropMissile = createAction(
   BoardActionTypes.DropMissile,
-  props<{ data: any }>()
+  props<{ data: string }>()
 );
 
 // export const increment = createAction('[Counter Component] Increment');

@@ -41,17 +41,17 @@ export function updateCordinate(data: string): Slot {
 
 export function updateBoard(cell: Slot, board: Board, type: string): string {
   if (cell && board && board.cells) {
-    const cell = board.cells.find(c => c.x == cell.x && c.y === cell.y);    
+    const cells = board.cells.find(c => c.x == cell.x && c.y === cell.y);    
 
-    if (!cell) {
-      return type === 'Me' ? 'Me-Invalid' : 'System-Invalid';
-    } else if (cell && cell.value) {
-      return type === 'Me' ? 'Me-Exists' : 'System-Exists';
+    if (!cells) {
+      return type === '' || type === 'Me' ? 'Me-Invalid' : 'System-Invalid';
+    } else if (cells && cells.value) {
+      return type === '' || type === 'Me' ? 'Me-Exists' : 'System-Exists';
     }
 
-    if (cell) {
-      cell.value = cell.isShip ? 'hit' : 'miss';
-      return type === 'Me' ? 'System' : 'Me';
+    if (cells) {
+      cells.value = cells.isShip ? 'hit' : 'miss';
+      return type === '' || type === 'Me' ? 'System' : 'Me';
     }
   }  
 }
