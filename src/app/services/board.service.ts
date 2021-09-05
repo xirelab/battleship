@@ -27,7 +27,23 @@ export class BoardService {
     for (let i = 0; i < numberOfShips; i++) {
       const randomNumber = this.getRandomInt(1, 10);
       console.log('randomNumber = ' + randomNumber);
-      
+      // TODO: wrte logic to dynamically set board      
+    }
+
+    // manual logic - todo - remove
+    for (let i = 2; i < 6; i++) {
+      const cell = board.cells.find(a => a.x == `${i}` && a.y == 'C');
+      cell.isShip = true;
+    }
+
+    for (let i = 5; i < 8; i++) {
+      const cell = board.cells.find(a => a.x == '5' && a.y == constant.yDimension[i]);
+      cell.isShip = true;
+    }
+
+    for (let i = 7; i < 9; i++) {
+      const cell = board.cells.find(a => a.x == `${i}` && a.y == 'E');
+      cell.isShip = true;
     }
   }
 
