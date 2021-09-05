@@ -1,9 +1,9 @@
 <table id="board">
 <tr>
   <th></th>
-  <td *ngFor = "let column of xDimension">
+  <th *ngFor = "let column of xDimension">
     {{column}}
-  </td>
+  </th>
 </tr>
   <tr *ngFor = "let y of yDimension">
     <th>      
@@ -14,36 +14,9 @@
           [class.ship]="isShip(x, y)"
           [class.hit]="isHit(x, y)"
           [class.possible-cell]="isNextPossibleCell(x, y)">
-          <span [innerText]="value(x, y)"></span>
+          <span [innerText]="value(x, y) | titlecase"></span>
       </button>
     </td> 
   </tr>
 </table>
 <span [innerText]="shipDetails"> </span>
-<!-- <table id="board">
-  <tr>
-    <th *ngFor = "let column of headers">
-      {{column}}
-    </th>
-  </tr>
-
-  <ng-container *ngFor="let column of headers">
-    <th mat-header-cell *matHeaderCellDef> {{column}} </th>
-    <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
-  </ng-container> 
-  
-  <tbody>
-  <tr *ngFor = "let row of rows">
-    <td *ngFor = "let column of headers">
-      <div *ngIf="row[column]; else cells">
-        {{row[column]}}
-        </div>
-          <ng-template #cells>
-            <button class="cell ship">
-              <p></p>
-            </button>
-          </ng-template>
-    </td>
-  </tr>
-</tbody>
-</table> -->

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Board } from '../models/board.model';
 import * as constant from '../models/constants.model';
+import { Slot } from '../models/slot.model';
 
 @Injectable({
   providedIn: 'root'
@@ -51,5 +52,14 @@ export class BoardService {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  triggerSystemFire(board: Board): Slot {
+    const x = this.getRandomInt(1, 10).toString();
+    const y = constant.yDimension[this.getRandomInt(1, 10)];
+    const cell = board.cells.find(i => i.x === x && i.y === y);
+    if (cell && !cell.value) {
+      return {x: x, y: y};
+    }
   }
 }

@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { TitleCasePipe } from '@angular/common';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Board } from '../models/board.model';
 import { Slot } from '../models/slot.model';
 
@@ -27,6 +28,10 @@ export class BoardComponent implements OnInit {
     this._incoming = value;
     this.markOnBaord();
   }
+
+  @Output() shipSelected =  new EventEmitter<boolean>();
+
+  constructor(public titleCasePipe: TitleCasePipe) {}
 
   ngOnInit() {
     console.log('testtt');
@@ -112,6 +117,9 @@ export class BoardComponent implements OnInit {
       this.currentShip -= 1;
       this.numberOfcellSelected = 0;
     }
+    if (this.currentShip === 0) {
+      this.shipSelected.emit(true);
+    }
   }
 
   isNextPossibleCell(x: string, y: string) {
@@ -137,11 +145,15 @@ export class BoardComponent implements OnInit {
   }
 
   markOnBaord() {
-    const cell = this.board.cells.find(
-      c => c.x == this._incoming.x && c.y === this._incoming.x
-    );
-    if (cell) {
-      cell.value = cell.isShip ? 'hit' : 'miss';
-    }
+    if (this._incoming) {
+      console.log("markOnBaord");
+      console.log(this._incoming);
+      const cell = this.board.cells.find(
+        c => c.x == this._incoming.x && c.y === this._incoming.y
+      );
+      if (cell) {
+        cell.value = cell.isShip ? 'hit' : 'miss';
+      }
+    }    
   }
 }

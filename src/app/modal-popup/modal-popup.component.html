@@ -1,13 +1,13 @@
-<!-- <h1 mat-dialog-title>Hi </h1>
-<div mat-dialog-content>
-  <p>What's your favorite animal?</p>
-  <mat-form-field appearance="fill">
-    <mat-label>Favorite Animal</mat-label>
-    <input matInput [(ngModel)]="data.animal"> 
-  </mat-form-field>
-</div> -->
-<div >
-  <button  (click)="onNoClick()">No Thanks</button>
-  <!-- <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Ok</button> -->
+<br/>
+{{data.caption}}
+<br/>
+<input *ngIf="data.isInputVisisble" matInput [(ngModel)]="data.value" this.value = this.value.toUpperCase()>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+</div>
+<br/>
+<div *ngIf="data.isInputVisisble">
+  <p>Please enter in the format "XY". Example "2D"</p>
+  <p>x : 1-10 & y : A-Z</p>
 </div>
 

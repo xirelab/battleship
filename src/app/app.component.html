@@ -6,22 +6,22 @@
     <td>
       <h2> Opponent </h2>
       <app-board [type]="'opponent'" 
-        [xDimension]="xDimension" [yDimension]="yDimension" [board]="boardOpponent"> 
+        [xDimension]="xDimension" [yDimension]="yDimension" [board]="boardOpponent"
+        [incoming]="myFiring">  
       </app-board>
     </td>
     <td>
       <h2> My Team </h2>
       <app-board [type]="'myteam'" [numberofShips]= "numberOfShips"
-        [xDimension]="xDimension" [yDimension]="yDimension" [board]="boardMyteam">
+        [xDimension]="xDimension" [yDimension]="yDimension" [board]="boardMyteam"
+        [incoming]="systemFiring" (shipSelected)="shipSelected($event)">
       </app-board>      
-    </td>
-  </tr>
-  <tr>
-    <td></td>
-    <td>
-    <app-fire-missile></app-fire-missile>
     </td>
   </tr>
 </table>
 
-<app-battle-ship> test</app-battle-ship>
+
+
+<main id="logout-button-holder">
+<button mat-raised-button id="logout-button">Logout</button>
+</main>
