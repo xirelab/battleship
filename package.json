@@ -14,6 +14,7 @@
     "@angular/platform-browser": "^12.1.0",
     "@angular/platform-browser-dynamic": "^12.1.0",
     "@angular/router": "^12.1.0",
+    "@ngrx/effects": "^12.4.0",
     "@ngrx/store": "^12.4.0",
     "jasmine-core": "^3.9.0",
     "jasmine-spec-reporter": "^7.0.0",

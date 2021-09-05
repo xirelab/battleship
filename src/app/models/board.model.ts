@@ -1,6 +1,10 @@
 import { Cell } from './cell.model';
 import * as constant from '../models/constants.model';
 
+export interface IBoard {
+  cells: Array<Cell>;
+}
+
 export class Board {
   cells: Array<Cell>;
 

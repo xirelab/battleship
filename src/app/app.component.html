@@ -1,21 +1,29 @@
-<h1>
+<!-- <h1>
   BalleShip
-</h1>
-<table>
-  <tr>
-    <td>
-      <h2> Opponent </h2>
-      <app-board [type]="'opponent'" 
-        [xDimension]="xDimension" [yDimension]="yDimension" [board]="boardOpponent"
-        [incoming]="myFiring">  
-      </app-board>
-    </td>
-    <td>
-      <h2> My Team </h2>
-      <app-board [type]="'myteam'" [numberofShips]= "numberOfShips"
-        [xDimension]="xDimension" [yDimension]="yDimension" [board]="boardMyteam"
-        [incoming]="systemFiring" (shipSelected)="shipSelected($event)">
-      </app-board>      
-    </td>
-  </tr>
-</table>
+</h1> -->
+<ng-container *ngIf="{
+  numberOfShips: numberOfShips$ | async,
+  xDimension: xDimension$ | async,
+  yDimension: yDimension$ | async,
+  myBoard: myBoard$ | async,
+  systemBoard: systemBoard$ | async,
+} as data">
+  <table>
+    <tr>
+      <td>
+        <h2> Opponent </h2>
+        <app-board [type]="'opponent'" 
+          [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [board]="data?.systemBoard"
+          [incoming]="myFiring">  
+        </app-board>
+      </td>
+      <td>
+        <h2> My Team </h2>
+        <app-board [type]="'myteam'" [numberofShips]= "data?.numberOfShips"
+          [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [board]="data?.myBoard"
+          [incoming]="systemFiring" (shipSelected)="shipSelected($event)">
+        </app-board>      
+      </td>
+    </tr>
+  </table>
+</ng-container>
