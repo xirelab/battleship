@@ -1,9 +1,9 @@
 <br/>
 {{data.caption}}
 <br/>
-<input *ngIf="!data.isInputVisisble" matInput [(ngModel)]="data.value" alphaNumeric maxlength="2">
+<input *ngIf="data.isInputVisisble" autofocus alphaNumeric [(ngModel)]="data.value" maxlength="2">
 <div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+  <button mat-button [mat-dialog-close]="data" [disabled]="!isButtonEnabled()">Ok</button>
 </div>
 <br/>
 <div *ngIf="data.isInputVisisble">
