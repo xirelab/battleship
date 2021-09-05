@@ -63,13 +63,13 @@ export class BoardService {
   //   return Math.floor(Math.random() * (max - min + 1)) + min;
   // }
 
-  triggerSystemFire(board: Board): Slot {
+  triggerSystemFire(board: Board): string {
     if (board && board.cells) {
       const xValue = utils.getRandomInt(1, 10).toString();
       const yValue = constant.yDimension[utils.getRandomInt(1, 10)];
       const cell = board.cells.find(i => i.x === xValue && i.y === yValue);
       if (cell && !cell.value) {
-        return { x: xValue, y: yValue };
+        return `${xValue}${yValue}`;
       }
     }
     return null;

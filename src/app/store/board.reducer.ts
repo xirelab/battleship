@@ -11,8 +11,9 @@ const initialState: BoardState = {
   numberOfShips: 2,
   xDimension:[],
   yDimension:[],
-  myBoard: new Board(10),
-  systemBoard: null  
+  myBoard: null,
+  systemBoard: null,
+  currentPlayer: ''
 };
 
 const _counterReducer = createReducer(
@@ -32,7 +33,17 @@ const _counterReducer = createReducer(
     systemBoard: data,
     ...state
   })),
-
+  on(action.dropMissile, (state, { data }) => {
+    const cell = utils.updateCordinate(data.value);
+    if (data.type == 'Me') {
+      state.currentPlayer = utils.updateBoard(cell, state.myBoard, data.type);
+    } else {
+      state.currentPlayer = utils.updateBoard(cell, state.systemBoard, data.type);
+    }
+    return {
+      ...state
+    }
+  })
   // on(action.initializeBoard, (state, { board }) => ({
   //   ...state,
   //   state.systemBoard: board,

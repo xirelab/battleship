@@ -8,12 +8,15 @@ import { Dialogue } from '../models/dialog.model';
   templateUrl: './modal-popup.component.html',
   styleUrls: ['./modal-popup.component.css']
 })
-export class ModalPopupComponent {
-
+export class ModalPopupComponent {  
   constructor(
     public dialogRef: MatDialogRef<ModalPopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Dialogue,
     public titleCasePipe: TitleCasePipe) {}
+
+  get caption() {
+    return this.data.isInputVisisble ? this.data.caption : `${this.data.caption} ${this.data.value}`;
+  } 
 
   onNoClick(): void {
     this.dialogRef.close();

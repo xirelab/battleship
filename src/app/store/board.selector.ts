@@ -33,3 +33,7 @@ export const systemBoard = createSelector(
   state => state && state.systemBoard
 );
 
+export const currentPlayer = createSelector(
+  selector,
+  state => state && state.currentPlayer
+);

@@ -6,7 +6,8 @@ export interface BoardState {
   xDimension: string[],
   yDimension: string[],
   myBoard: Board,
-  systemBoard: Board  
+  systemBoard: Board,
+  currentPlayer: string
 }
 
 export class AppState {

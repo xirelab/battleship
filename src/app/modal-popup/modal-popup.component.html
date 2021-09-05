@@ -1,5 +1,5 @@
 <br/>
-{{data.caption}}
+{{caption}}
 <br/>
 <input *ngIf="data.isInputVisisble" autofocus alphaNumeric maxlength="3"
   [ngModel]="data.value" (ngModelChange)="data.value = $event.toUpperCase()"
