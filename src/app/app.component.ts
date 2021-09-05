@@ -61,24 +61,24 @@ export class AppComponent implements OnInit {
 
     this.myBoard$.subscribe((data: Board) => { this.myBoard = data; })
     this.systemBoard$.subscribe((data: Board) => { this.systemBoard = data; })
-
-    this.currentPlayer$
-      .subscribe((user: string) => {
-        if (this.currentPlayer !=== user) {
-          this.currentPlayer = user;
-          switch(user) {
-            case 'Me' : this.openDialog('Please enter your cordinates', true); break;
-            case 'Me-Invalid' : this.openDialog('Invalid entry! Please re-enter your cordinates', true); break;
-            case 'Me-Exists' : this.openDialog('Already hit! Please re-enter your cordinates', true); break;
-            case 'System' : 
-              const slot = this.boardService.triggerSystemFire(this.myBoard);  
-              this.openDialog('System fired the cordinates:', false, slot);
-              break;
-          }
-        }
-      })
+    this.currentPlayer$.subscribe((user: string) => { this.processCurrestUser(user) })
 
     this.openDialog('Lets start with arrange our ships..', false);
+  }
+
+  processCurrestUser(user: string) {
+    if (this.currentPlayer !== user) {
+      this.currentPlayer = user;
+      switch(user) {
+        case 'Me' : this.openDialog('Please enter your cordinates', true); break;
+        case 'Me-Invalid' : this.openDialog('Invalid entry! Please re-enter your cordinates', true); break;
+        case 'Me-Exists' : this.openDialog('Already hit! Please re-enter your cordinates', true); break;
+        case 'System' : 
+          const slot = this.boardService.triggerSystemFire(this.myBoard);  
+          this.openDialog('System fired the cordinates:', false, slot);
+          break;
+      }
+    }
   }
 
   allShipSelected($event: boolean) {
@@ -102,9 +102,7 @@ export class AppComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result && result.value) {
         console.log('The dialog was closed. data : ' + result.value);
-        this.store.dispatch(
-          actions.dropMissile({ value: result.value, type: this.currentPlayer })
-        );
+        this.store.dispatch(actions.dropMissile(result.value));
       }
       // let fired = false;
       // if (this.gameFinished) {return;}
