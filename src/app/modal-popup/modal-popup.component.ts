@@ -20,7 +20,21 @@ export class ModalPopupComponent {
   }
 
   isButtonEnabled() {
-    return (this.data && this.data.value && this.data.value.length === 2) || !this.data.isInputVisisble;
+    return (this.data && this.data.value && this.data.value.length >= 2) || !this.data.isInputVisisble;
+  }
+
+  keyPress(event) {    
+    var charCode = (event.which) ? event.which : event.keyCode;
+    // initially Only Numbers 0-9
+    if (this.data && !this.data.value) {
+      if ((charCode < 49 || charCode > 57)) {
+        event.preventDefault();
+        return false;
+      } else {
+        return true;
+      }
+    }
+    
   }
 
 }

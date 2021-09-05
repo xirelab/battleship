@@ -1,7 +1,9 @@
 <br/>
 {{data.caption}}
 <br/>
-<input *ngIf="data.isInputVisisble" autofocus alphaNumeric [(ngModel)]="data.value" maxlength="2">
+<input *ngIf="data.isInputVisisble" autofocus alphaNumeric maxlength="3"
+  [ngModel]="data.value" (ngModelChange)="data.value = $event.toUpperCase()"
+  (keypress)="keyPress($event)">
 <div mat-dialog-actions>
   <button mat-button [mat-dialog-close]="data" [disabled]="!isButtonEnabled()">Ok</button>
 </div>

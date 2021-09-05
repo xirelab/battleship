@@ -32,15 +32,15 @@ export class BoardService {
     }
 
     // manual logic - todo - remove
-    for (let i = 2; i < 6; i++) {
-      const cell = board.cells.find(a => a.x == `${i}` && a.y == 'C');
-      cell.isShip = true;
-    }
+    // for (let i = 2; i < 6; i++) {
+    //   const cell = board.cells.find(a => a.x == `${i}` && a.y == 'C');
+    //   cell.isShip = true;
+    // }
 
-    for (let i = 5; i < 8; i++) {
-      const cell = board.cells.find(a => a.x == '5' && a.y == constant.yDimension[i]);
-      cell.isShip = true;
-    }
+    // for (let i = 5; i < 8; i++) {
+    //   const cell = board.cells.find(a => a.x == '5' && a.y == constant.yDimension[i]);
+    //   cell.isShip = true;
+    // }
 
     for (let i = 7; i < 9; i++) {
       const cell = board.cells.find(a => a.x == `${i}` && a.y == 'E');
@@ -65,11 +65,11 @@ export class BoardService {
 
   checkResult(board: Board): boolean {
     if (board && board.cells) {
-      const cells = board.cells.find(i => i.isShip && !i.value);
-      if (!cells) {
-        return true;
+      const cells = board.cells.find(i => i.isShip && i.value === '');
+      if (cells) {
+        return false;
       }
     }
-    return false;
+    return true;
   }
 }

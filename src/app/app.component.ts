@@ -13,10 +13,11 @@ import { Slot } from './models/slot.model';
 })
 export class AppComponent implements OnInit {
   numberOfCells = 10;
-  numberOfShips = 2;
+  numberOfShips = 1;
   myFiring: Slot;
   systemFiring: Slot;
   currentPlayer: string = '';
+  gameFinished = false;
 
   xDimension: Array<string>;
   yDimension: Array<string>;
@@ -57,12 +58,23 @@ export class AppComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       let fired = false;
+      if (this.gameFinished) {return;}
       if (result && result.value) {
         console.log('The dialog was closed. data : ' + result.value);
-        const x = result.value.substr(0,1);
-        const y = result.value.substr(1,1);
+        let x = result.value.substr(0,1);
+        let y = '';
+        if (x === "1") {
+          x = result.value.substr(0,2);
+          y = result.value.substr(2,1);
+        } else {
+          y = result.value.substr(1,1);
+        }
+        
         const cell = this.boardOpponent.cells.find(i => i.x === x && i.y === y);
-        if (cell && !cell.value) {
+        if (!cell) {
+          fired = true;
+          this.openDialog("Invalid entry! Please re-enter your cordinates", true);
+        } else if (cell && !cell.value) {
           this.myFiring = { x: x, y: y}
         } else {
           fired = true;
@@ -72,6 +84,7 @@ export class AppComponent implements OnInit {
       
       if (!fired && this.currentPlayer === 'Me') {
         if (this.boardService.checkResult(this.boardOpponent)) {
+          this.gameFinished = true;
           this.openDialog("You Win", false);
         } else {
           setTimeout(() => 
@@ -84,6 +97,7 @@ export class AppComponent implements OnInit {
         }        
       } else if(this.currentPlayer === 'System') {
         if (this.boardService.checkResult(this.boardMyteam)) {
+          this.gameFinished = true;
           this.openDialog("System Win", false);
         } else {
           setTimeout(() => 

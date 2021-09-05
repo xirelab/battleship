@@ -148,9 +148,7 @@ export class BoardComponent implements OnInit {
     if (this._incoming) {
       console.log("markOnBaord");
       console.log(this._incoming);
-      const cell = this.board.cells.find(
-        c => c.x == this._incoming.x && c.y === this._incoming.y
-      );
+      const cell = this.board.cells.find(c => c.x == this._incoming.x && c.y === this._incoming.y);
       if (cell) {
         cell.value = cell.isShip ? 'hit' : 'miss';
       }
