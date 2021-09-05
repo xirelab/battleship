@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
   // numberOfShips = 2;
   myFiring: Slot;
   systemFiring: Slot;
-  
+
   gameFinished = false;
 
   myBoard: Board;
@@ -59,9 +59,9 @@ export class AppComponent implements OnInit {
     this.store.dispatch(actions.initializeBoard());
     this.store.dispatch(actions.prepareSystemBoard());
 
-    this.myBoard$.subscribe((data: Board) => { this.myBoard = data; })
-    this.systemBoard$.subscribe((data: Board) => { this.systemBoard = data; })
-    this.currentPlayer$.subscribe((user: string) => { this.processCurrestUser(user) })
+    this.myBoard$.subscribe((data: Board) => { this.myBoard = data; });
+    this.systemBoard$.subscribe((data: Board) => { this.systemBoard = data; });
+    this.currentPlayer$.subscribe((user: string) => { this.processCurrestUser(user); });
 
     this.openDialog('Lets start with arrange our ships..', false);
   }
@@ -69,12 +69,12 @@ export class AppComponent implements OnInit {
   processCurrestUser(user: string) {
     if (this.currentPlayer !== user) {
       this.currentPlayer = user;
-      switch(user) {
-        case 'Me' : this.openDialog('Please enter your cordinates', true); break;
-        case 'Me-Invalid' : this.openDialog('Invalid entry! Please re-enter your cordinates', true); break;
-        case 'Me-Exists' : this.openDialog('Already hit! Please re-enter your cordinates', true); break;
-        case 'System' : 
-          const slot = this.boardService.triggerSystemFire(this.myBoard);  
+      switch (user) {
+        case 'Me': this.openDialog('Please enter your cordinates', true);break;
+        case 'Me-Invalid': this.openDialog('Invalid entry! Please re-enter your cordinates', true); break;
+        case 'Me-Exists': this.openDialog('Already hit! Please re-enter your cordinates', true); break;
+        case 'System':
+          const slot = this.boardService.triggerSystemFire(this.myBoard);
           this.openDialog('System fired the cordinates:', false, slot);
           break;
       }
