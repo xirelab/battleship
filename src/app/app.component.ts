@@ -13,7 +13,7 @@ import { Slot } from './models/slot.model';
 })
 export class AppComponent implements OnInit {
   numberOfCells = 10;
-  numberOfShips = 1;
+  numberOfShips = 2;
   myFiring: Slot;
   systemFiring: Slot;
   currentPlayer: string = '';
@@ -61,21 +61,21 @@ export class AppComponent implements OnInit {
       if (this.gameFinished) {return;}
       if (result && result.value) {
         console.log('The dialog was closed. data : ' + result.value);
-        let x = result.value.substr(0,1);
-        let y = '';
-        if (x === "1") {
-          x = result.value.substr(0,2);
-          y = result.value.substr(2,1);
+        let xValue = result.value.substr(0,1);
+        let yValue = '';
+        if (xValue === "1") {
+          xValue = result.value.substr(0,2);
+          yValue = result.value.substr(2,1);
         } else {
-          y = result.value.substr(1,1);
+          yValue = result.value.substr(1,1);
         }
         
-        const cell = this.boardOpponent.cells.find(i => i.x === x && i.y === y);
+        const cell = this.boardOpponent.cells.find(i => i.x === xValue && i.y === yValue);
         if (!cell) {
           fired = true;
           this.openDialog("Invalid entry! Please re-enter your cordinates", true);
         } else if (cell && !cell.value) {
-          this.myFiring = { x: x, y: y}
+          this.myFiring = { x: xValue, y: yValue}
         } else {
           fired = true;
           this.openDialog("Already hit! Please re-enter your cordinates", true);
@@ -91,7 +91,9 @@ export class AppComponent implements OnInit {
           {
             this.currentPlayer = 'System'
             this.systemFiring = this.boardService.triggerSystemFire(this.boardMyteam);
-            this.openDialog(`System fired the cordinates: ${this.systemFiring.x}${this.systemFiring.y}`, false);
+            if (this.systemFiring) {
+              this.openDialog(`System fired the cordinates: ${this.systemFiring.x}${this.systemFiring.y}`, false);
+            }            
           },
           1000);
         }        

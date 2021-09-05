@@ -37,10 +37,10 @@ export class BoardService {
     //   cell.isShip = true;
     // }
 
-    // for (let i = 5; i < 8; i++) {
-    //   const cell = board.cells.find(a => a.x == '5' && a.y == constant.yDimension[i]);
-    //   cell.isShip = true;
-    // }
+    for (let i = 5; i < 8; i++) {
+      const cell = board.cells.find(a => a.x == '5' && a.y == constant.yDimension[i]);
+      cell.isShip = true;
+    }
 
     for (let i = 7; i < 9; i++) {
       const cell = board.cells.find(a => a.x == `${i}` && a.y == 'E');
@@ -55,17 +55,21 @@ export class BoardService {
   }
 
   triggerSystemFire(board: Board): Slot {
-    const x = this.getRandomInt(1, 10).toString();
-    const y = constant.yDimension[this.getRandomInt(1, 10)];
-    const cell = board.cells.find(i => i.x === x && i.y === y);
-    if (cell && !cell.value) {
-      return {x: x, y: y};
+    if (board && board.cells) {
+      const xValue = this.getRandomInt(1, 10).toString();
+      const yValue = constant.yDimension[this.getRandomInt(1, 10)];
+      const cell = board.cells.find(i => i.x === xValue && i.y === yValue);
+      if (cell && !cell.value) {
+        return {x: xValue, y: yValue};
+      }
     }
+    return null;
   }
 
   checkResult(board: Board): boolean {
     if (board && board.cells) {
-      const cells = board.cells.find(i => i.isShip && i.value === '');
+      const cells = board.cells.find(i => i.isShip && i.value === "");
+      console.log("cells :"); console.log(cells); console.log("cells ends");
       if (cells) {
         return false;
       }
