@@ -1,5 +1,6 @@
-export class cell {
-  id: string;
+export class Cell {
+  x: string;
+  y: string;
   isShip: boolean;
   value: string; // hit or miss
 }

@@ -1,9 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Board } from '../models/board.model';
-import * as constants from '../models/constants';
-import * as constant from '../models/constants.model';
 import { Slot } from '../models/slot.model';
-import { ModalService } from '../services/modal.service';
 
 @Component({
   selector: 'app-board',
@@ -11,13 +8,15 @@ import { ModalService } from '../services/modal.service';
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent implements OnInit {
-  board: Board;
   currentShip: number;
   numberOfcellSelected = 0;
   lastSelectedCell: Slot;
   secondLastSelectedCell: Slot;
   private _incoming: Slot;
 
+  @Input() xDimension: Array<string>;
+  @Input() yDimension: Array<string>;
+  @Input() board: Board;
   @Input() type: string;
   @Input() numberofShips: number = 2;
   @Input()
@@ -33,10 +32,6 @@ export class BoardComponent implements OnInit {
     console.log('testtt');
     this.currentShip = this.numberofShips;
   }
-
-  xDimension = constant.xDimension;
-  yDimension = constant.yDimension;
-  cells = constant.cells;
 
   get shipDetails(): string {
     if (this.type === 'opponent' || this.currentShip === 0) {
@@ -61,17 +56,18 @@ export class BoardComponent implements OnInit {
   }
 
   isShip(x: string, y: string): boolean {
-    const cell = this.cells.find(c => c.x === x && c.y === y);
-    return cell ? cell.isShip && this.type !== 'opponent': false;
+    const cell = this.board.cells.find(c => c.x === x && c.y === y);
+    // return cell ? cell.isShip && this.type !== 'opponent': false;
+    return cell ? cell.isShip : false;
   }
 
   isHit(x: string, y: string): boolean {
-    const cell = this.cells.find(c => c.x === x && c.y === y);
+    const cell = this.board.cells.find(c => c.x === x && c.y === y);
     return cell ? cell.isShip && cell.value === 'hit' : false;
   }
 
   value(x: string, y: string): string {
-    const cell = this.cells.find(c => c.x === x && c.y === y);
+    const cell = this.board.cells.find(c => c.x === x && c.y === y);
     if (cell) {
       switch (cell.value) {
         case 'hit':
@@ -102,7 +98,7 @@ export class BoardComponent implements OnInit {
     if (this.type === 'opponent' || !this.isEnabled(x, y)) {
       return;
     }
-    const cell = this.cells.find(c => c.x === x && c.y === y);
+    const cell = this.board.cells.find(c => c.x === x && c.y === y);
     if (cell && cell.isShip) {
       return;
     }
@@ -119,6 +115,10 @@ export class BoardComponent implements OnInit {
   }
 
   isNextPossibleCell(x: string, y: string) {
+    const cell = this.board.cells.find(c => c.x === x && c.y === y);
+    if (cell && cell.isShip) {
+      return false;
+    }
     if (this.numberOfcellSelected !== 0 && this.numberOfcellSelected <= this.currentShip + 1 && this.lastSelectedCell) {
       if (this.lastSelectedCell) {
         const yIndex = this.yDimension.findIndex(i => i === y);
@@ -137,7 +137,7 @@ export class BoardComponent implements OnInit {
   }
 
   markOnBaord() {
-    const cell = this.cells.find(
+    const cell = this.board.cells.find(
       c => c.x == this._incoming.x && c.y === this._incoming.x
     );
     if (cell) {
