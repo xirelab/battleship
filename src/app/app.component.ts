@@ -75,7 +75,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  openDialog(message: string, isInputVisisble: boolean, value: string = ''): void {
+  private openDialog(message: string, isInputVisisble: boolean, value: string = ''): void {
     const dialogRef = this.dialog.open(ModalPopupComponent, {
       width: '300px',
       autoFocus: true,
