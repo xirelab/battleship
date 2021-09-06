@@ -6,3 +6,8 @@ td, th {
   border: 1px solid #ddd;
   padding: 30px;
 }
+
+.right-align {
+  text-align:right;
+  background-color: #63f067;
+}

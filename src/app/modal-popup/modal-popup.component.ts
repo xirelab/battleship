@@ -1,5 +1,5 @@
 import { TitleCasePipe } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, Inject } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Dialogue } from '../models/dialog.model';
 
@@ -19,7 +19,8 @@ export class ModalPopupComponent {
   } 
 
   onNoClick(): void {
-    this.dialogRef.close();
+    this.data.value = 'break';
+    this.dialogRef.close(this.data);
   }
 
   isButtonEnabled() {
@@ -28,7 +29,7 @@ export class ModalPopupComponent {
 
   keyPress(event) {    
     var charCode = (event.which) ? event.which : event.keyCode;
-    // initially Only Numbers 0-9
+    // initially Only Numbers 0-9 
     if (this.data && !this.data.value) {
       if ((charCode < 49 || charCode > 57)) {
         event.preventDefault();
@@ -37,7 +38,9 @@ export class ModalPopupComponent {
         return true;
       }
     }
-    
-  }
 
+    if (charCode === 13 && this.data.value.length >= 2) {
+      this.dialogRef.close(this.data);
+    }    
+  }
 }

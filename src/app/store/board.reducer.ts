@@ -34,7 +34,7 @@ export const boardReducer = createReducer(
   on(action.dropMissile, (state, { data }) => {
     state.currentPlayer = utils.updateBoard(
       utils.updateCordinate(data),
-      state.currentPlayer == '' || state.currentPlayer == 'Me' ? state.systemBoard : state.myBoard, 
+      state.currentPlayer == 'System' ? state.myBoard : state.systemBoard,
       state.currentPlayer);
     return {
       ...state

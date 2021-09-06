@@ -37,15 +37,13 @@ export function updateBoard(cell: Slot, board: Board, type: string): string {
   if (cell && board && board.cells) {
     let cells = board.cells.find(c => c.x == cell.x && c.y === cell.y);    
 
-    if (!cells) {
-      return type === '' || type === 'Me' ? 'Me-Invalid' : 'System-Invalid';
-    } else if (cells && cells.value) {
-      return type === '' || type === 'Me' ? 'Me-Exists' : 'System-Exists';
-    }
+    // only manual entry can be wrong..
+    if (!cells) { return 'Me-Invalid';} 
+    else if (cells && cells.value) { return 'Me-Exists'; }
 
     if (cells) {
       cells.value = cells.isShip ? 'hit' : 'miss';
-      return type === '' || type === 'Me' ? 'System' : 'Me';
+      return type === 'System' ? 'Me' : 'System';
     }
   }
 }

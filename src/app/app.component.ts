@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
   isGameFinished = false;
   myBoard: Board;
   currentPlayer: string = '';
+  canContinue = false;
 
   numberOfShips$ = this.store.pipe(select(selector.numberOfShips));
   xDimension$ = this.store.pipe(select(selector.xDimension));
@@ -54,7 +55,7 @@ export class AppComponent implements OnInit {
       setTimeout(() =>
       {        
         switch (user) {
-          case 'Me': this.openDialog('Please enter your cordinates', true);break;
+          case 'Me': this.openDialog('Please enter your cordinates', true); break;
           case 'Me-Invalid': this.openDialog('Invalid entry! Please re-enter your cordinates', true); break;
           case 'Me-Exists': this.openDialog('Already hit! Please re-enter your cordinates', true); break;
           case 'System':
@@ -77,6 +78,7 @@ export class AppComponent implements OnInit {
   openDialog(message: string, isInputVisisble: boolean, value: string = ''): void {
     const dialogRef = this.dialog.open(ModalPopupComponent, {
       width: '300px',
+      autoFocus: true,
       disableClose: true,
       data: {
         isInputVisisble: isInputVisisble,
@@ -88,8 +90,17 @@ export class AppComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (!this.isGameFinished && result && result.value) {
         console.log('The dialog was closed. data : ' + result.value);
-        this.store.dispatch(actions.dropMissile({data: result.value.toString()}));
-      }
+        if (result && result.value === 'break') {
+          this.canContinue = true;
+        } else {
+          this.store.dispatch(actions.dropMissile({data: result.value.toString()}));
+        }
+      }      
     });
+  }
+
+  onClick() {
+    this.canContinue = false;
+    this.openDialog('Please enter your cordinates', true);
   }
 }
