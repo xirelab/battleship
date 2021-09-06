@@ -28,6 +28,7 @@ import { boardReducer } from './store/board.reducer';
     StoreModule.forRoot([]),
     EffectsModule.forFeature([BoardEffects]),
     StoreModule.forFeature('board', boardReducer),
+    // StoreModule.forRoot({board: boardReducer}),
     StoreModule.forRoot(boardReducer, {
       runtimeChecks: {
         // strictStateImmutability and strictActionImmutability are enabled by default
@@ -38,7 +39,7 @@ import { boardReducer } from './store/board.reducer';
         // if you want to change complexe objects and that we have. We need to disable these settings
         // change strictStateImmutability, strictActionImmutability
         strictStateImmutability: false, // set this to false
-        strictActionImmutability: true,
+        strictActionImmutability: false,
       }
     }),
   ],

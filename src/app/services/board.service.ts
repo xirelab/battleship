@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Board, IBoard } from '../models/board.model';
+import { Cell } from '../models/cell.model';
 import * as constant from '../models/constants.model';
 import { Slot } from '../models/slot.model';
 import * as utils from '../utils/common.util';
@@ -70,23 +71,33 @@ export class BoardService {
 
   triggerSystemFire(board: Board): string {
     if (board && board.cells) {
-      const xValue = utils.getRandomInt(1, 10).toString();
-      const yValue = constant.yDimension[utils.getRandomInt(1, 10)];
-      const cell = board.cells.find(i => i.x === xValue && i.y === yValue);
-      if (cell && !cell.value) {
-        return `${xValue}${yValue}`;
+      do {
+        const xValue = utils.getRandomInt(1, 10).toString();
+        const yValue = constant.yDimension[utils.getRandomInt(1, 10)];
+        const cell = board.cells.find(i => i.x === xValue && i.y === yValue);
+        if (cell && !cell.value) {
+          return `${xValue}${yValue}`;
+        }
       }
+      while (true);
+
+      // const xValue = utils.getRandomInt(1, 10).toString();
+      // const yValue = constant.yDimension[utils.getRandomInt(1, 10)];
+      // const cell = board.cells.find(i => i.x === xValue && i.y === yValue);
+      // if (cell && !cell.value) {
+      //   return `${xValue}${yValue}`;
+      // }
     }
     return null;
   }
 
-  checkResult(board: Board): boolean {
-    if (board && board.cells) {
-      const cells = board.cells.find(i => i.isShip && i.value === '');
-      if (cells) {
-        return false;
-      }
-    }
-    return true;
-  }
+  // checkResult(board: Board): boolean {
+  //   if (board && board.cells) {
+  //     const cells = board.cells.find(i => i.isShip && i.value === '');
+  //     if (cells) {
+  //       return false;
+  //     }
+  //   }
+  //   return true;
+  // }
 }

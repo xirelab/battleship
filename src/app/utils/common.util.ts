@@ -26,22 +26,16 @@ export function getYdimension(numberofCells: number) {
 
 export function updateCordinate(data: string): Slot {
   if (data) {
-    let xValue = data.substr(0,1);
-    let yValue = '';
-    if (xValue === "1") {
-      xValue = data.substr(0,2);
-      yValue = data.substr(2,1);
-    } else {
-      yValue = data.substr(1,1);
-    }   
-
-    return {x: xValue, y: yValue};
+    if (data.substr(0, 1) === "1" && data.length === 3) {
+      return {x: data.substr(0, 2), y: data.substr(2, 1)};
+    }
+    return {x: data.substr(0, 1), y: data.substr(1, 1)};
   }
 }
 
 export function updateBoard(cell: Slot, board: Board, type: string): string {
   if (cell && board && board.cells) {
-    const cells = board.cells.find(c => c.x == cell.x && c.y === cell.y);    
+    let cells = board.cells.find(c => c.x == cell.x && c.y === cell.y);    
 
     if (!cells) {
       return type === '' || type === 'Me' ? 'Me-Invalid' : 'System-Invalid';
@@ -57,5 +51,17 @@ export function updateBoard(cell: Slot, board: Board, type: string): string {
 }
 
 export function gameStatus(myBoard: Board, systemBoard: Board): string {
-    return '';
+  if (checkBoard(systemBoard)) return 'You';
+  if (checkBoard(myBoard)) return 'System';
+  return '';
+}
+
+export function checkBoard(board: Board): boolean {
+  if (board && board.cells && board.cells.find(i => i.isShip)) {
+    const cells = board.cells.find(i => i.isShip && i.value === '');
+    if (!cells) {
+      return true;
+    }
+  }
+  return false;
 }

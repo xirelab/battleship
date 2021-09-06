@@ -110,9 +110,10 @@ export class AppComponent implements OnInit {
   }
 
   openDialog(message: string, isInputVisisble: boolean, value: string = ''): void {
+    // if (this.isGameFinished) { return; }
     const dialogRef = this.dialog.open(ModalPopupComponent, {
       width: '300px',
-      // disableClose: true,
+      disableClose: true,
       data: {
         isInputVisisble: isInputVisisble,
         caption: message,

@@ -18,51 +18,48 @@ const initialState: BoardState = {
 
 export const boardReducer = createReducer(
   initialState,
-  on(action.initializeBoard, (state) => ({
-    // state.numberOfCells = 10,
-    // state.numberOfShips = 2,
-    // state.xDimension = utils.getXdimension(10),
-    // state.yDimension = utils.getYdimension(10),
-    // state.myBoard = new Board(10),
-    // state.systemBoard =  new Board(10)
-    // return {
-    //   ...state
-    // }
-    numberOfCells: 10,
-    numberOfShips: 5,
-    xDimension: utils.getXdimension(10),
-    yDimension: utils.getYdimension(10),
-    myBoard: new Board(10),
-    systemBoard:  new Board(10),
-    ...state
-  })),
+  on(action.initializeBoard, (state) => {
+    state.numberOfCells = 10,
+    state.numberOfShips = 2,
+    state.xDimension = utils.getXdimension(10),
+    state.yDimension = utils.getYdimension(10),
+    state.myBoard = new Board(10),
+    state.systemBoard =  new Board(10)
+    return {
+      ...state
+    }
+  }),
+  // on(action.initializeBoard, (state) => ({
+  //  numberOfCells: 10,
+  //   numberOfShips: 5,
+  //   xDimension: utils.getXdimension(10),
+  //   yDimension: utils.getYdimension(10),
+  //   myBoard: new Board(10),
+  //   systemBoard:  new Board(10),
+  //   ...state
+  // })),
   on(action.prepareSystemBoardCompleted, (state, { data }) => ({
     systemBoard: data,
     ...state
   })),
+  // on(action.dropMissile, (state, { data }) => ({
+  //   currentPlayer: utils.updateBoard(
+  //     utils.updateCordinate(data),
+  //     state.currentPlayer == '' || state.currentPlayer == 'Me' ? state.systemBoard : state.myBoard, 
+  //     state.currentPlayer),
+  //   ...state
+  // })),
   on(action.dropMissile, (state, { data }) => {
-    const cell = utils.updateCordinate(data);
-    if (state.currentPlayer == '' || state.currentPlayer == 'Me') {
-      state.currentPlayer = utils.updateBoard(cell, state.systemBoard, state.currentPlayer);
-    } else {
-      state.currentPlayer = utils.updateBoard(cell, state.myBoard, state.currentPlayer);
-    }
+    state.currentPlayer = utils.updateBoard(
+      utils.updateCordinate(data),
+      state.currentPlayer == '' || state.currentPlayer == 'Me' ? state.systemBoard : state.myBoard, 
+      state.currentPlayer);
     return {
       ...state
     }
   })
-  // on(action.initializeBoard, (state, { board }) => ({
-  //   ...state,
-  //   state.systemBoard: board,
-  // })),
-  // on(action.initializeBoard, (state, { board }) => ({
-  //   ...state,
-  //   state.systemBoard: board,
-  // })),
-  // on(action.initializeBoard, (state, { board }) => {
-  //   state.number
-
-  //   ...state,
-  //   state.systemBoard: board,
-  // })
 );
+
+// export function boardReducer(state: any, action: any) {
+//   return _boardReducer(state, action);
+// }
