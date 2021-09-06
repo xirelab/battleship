@@ -20,6 +20,9 @@ export class BoardComponent implements OnInit {
   @Input() board: Board;
   @Input() type: string;
   @Input() numberofShips: number = 2;
+  @Input() showShips: boolean = true;
+  @Output() shipSelected =  new EventEmitter<boolean>();
+
   // @Input()
   // get incoming(): Slot {
   //   return this._incoming;
@@ -27,9 +30,7 @@ export class BoardComponent implements OnInit {
   // set incoming(value: Slot) {
   //   this._incoming = value;
   //   this.markOnBaord();
-  // }
-
-  @Output() shipSelected =  new EventEmitter<boolean>();
+  // }  
 
   constructor(public titleCasePipe: TitleCasePipe) {}
 
@@ -54,7 +55,7 @@ export class BoardComponent implements OnInit {
       case 3:
         return 'third';
       case 4:
-        return 'forth';
+        return 'fourth';
       case 5:
         return 'fifth';
     }
@@ -62,8 +63,7 @@ export class BoardComponent implements OnInit {
 
   isShip(x: string, y: string): boolean {
     const cell = this.board.cells.find(c => c.x === x && c.y === y);
-    // return cell ? cell.isShip && this.type !== 'opponent': false;
-    return cell ? cell.isShip : false;
+    return this.showShips && cell ? cell.isShip : false;
   }
 
   isHit(x: string, y: string): boolean {

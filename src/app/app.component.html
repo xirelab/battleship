@@ -10,7 +10,7 @@
     <tr>
       <td>
         <h3> Opponent </h3>
-        <app-board [type]="'opponent'" 
+        <app-board [type]="'opponent'" [showShips]=true
           [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [board]="data?.systemBoard">
         </app-board>
       </td>
@@ -19,7 +19,7 @@
         <button *ngIf="canContinue" class= right-align style="float: right;" mat-button 
           (click)="onClick()">Lets continue..
         </button> 
-        <app-board [type]="'myteam'" [numberofShips]= "data?.numberOfShips"
+        <app-board [type]="'myteam'" [numberofShips]= "data?.numberOfShips" [showShips]=true
           [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [board]="data?.myBoard"
           (shipSelected)="allShipSelected($event, data?.myBoard)">
         </app-board>

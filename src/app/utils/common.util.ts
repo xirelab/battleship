@@ -8,7 +8,7 @@ export function getRandomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export function getXdimension(numberofCells: number) {
+export function getXdimension(numberofCells: number): string[] {
   const dimensions = [];
   for (let i = 1; i <= numberofCells; i++) {
     dimensions.push(`${i}`);
@@ -16,7 +16,7 @@ export function getXdimension(numberofCells: number) {
   return dimensions;
 }
 
-export function getYdimension(numberofCells: number) {
+export function getYdimension(numberofCells: number): string[] {
   const dimensions = [];
   for (let i = 0; i < numberofCells; i++) {
     dimensions.push(`${constant.yDimension[i]}`);

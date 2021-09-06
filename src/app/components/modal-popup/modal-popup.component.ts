@@ -23,7 +23,7 @@ export class ModalPopupComponent {
     this.dialogRef.close(this.data);
   }
 
-  isButtonEnabled() {
+  isButtonEnabled(): boolean {
     return (this.data && this.data.value && this.data.value.length >= 2) || !this.data.isInputVisisble;
   }
 
