@@ -6,7 +6,6 @@ import { Actions, createEffect, Effect, ofType } from "@ngrx/effects";
 import { AppState } from "./board.state";
 import * as actions from "./board.action";
 import { map, mergeMap, withLatestFrom } from "rxjs";
-import { Board } from "../models/board.model";
 
 @Injectable()
 export class BoardEffects {
@@ -22,9 +21,6 @@ export class BoardEffects {
       withLatestFrom(this.store$),
       mergeMap(([, state]) => {
         if (state.board) {
-          if (!state.board.systemBoard) {
-            state.board.systemBoard = new Board(10);
-          }
           return this.boardService.initializeOpponent(state.board.systemBoard, state.board.numberOfShips)
           .pipe(
             map(data => actions.prepareSystemBoardCompleted({data: data}))

@@ -6,8 +6,7 @@
   xDimension: xDimension$ | async,
   yDimension: yDimension$ | async,
   myBoard: myBoard$ | async,
-  systemBoard: systemBoard$ | async,
-  currentPlayer: currentPlayer$ | async
+  systemBoard: systemBoard$ | async
 } as data">
   <table>
     <tr>
@@ -22,7 +21,7 @@
         <h2> My Team </h2>
         <app-board [type]="'myteam'" [numberofShips]= "data?.numberOfShips"
           [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [board]="data?.myBoard"
-          (shipSelected)="allShipSelected($event)">
+          (shipSelected)="allShipSelected($event, data?.myBoard)">
           <!-- [incoming]="systemFiring"  -->          
         </app-board>      
       </td>

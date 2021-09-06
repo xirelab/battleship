@@ -36,13 +36,10 @@ export class BoardService {
 
     if (!systemBoard) {
       if (!this.board) {
-        this.board = new BehaviorSubject<IBoard>(
-          new Board(10)
-        )
+        this.board = new BehaviorSubject<IBoard>(new Board(10))
       } else {
         this.board.next(new Board(10));
-      }
-      
+      }      
       return this.board.asObservable();
     } 
 
@@ -63,9 +60,7 @@ export class BoardService {
     }
 
     if (!this.board) {
-      this.board = new BehaviorSubject<IBoard>(
-        systemBoard
-      )
+      this.board = new BehaviorSubject<IBoard>(systemBoard)
     } else {
       this.board.next(systemBoard);
     }

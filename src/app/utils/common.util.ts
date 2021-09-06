@@ -53,5 +53,9 @@ export function updateBoard(cell: Slot, board: Board, type: string): string {
       cells.value = cells.isShip ? 'hit' : 'miss';
       return type === '' || type === 'Me' ? 'System' : 'Me';
     }
-  }  
+  }
+}
+
+export function gameStatus(myBoard: Board, systemBoard: Board): string {
+    return '';
 }

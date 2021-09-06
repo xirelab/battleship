@@ -1,5 +1,6 @@
 import { BoardState } from "./board.state";
 import { ActionCreator, createFeatureSelector, createSelector } from '@ngrx/store';
+import * as utils from '../utils/common.util';
 
 const selector = createFeatureSelector<BoardState>('board');
 
@@ -36,4 +37,9 @@ export const systemBoard = createSelector(
 export const currentPlayer = createSelector(
   selector,
   state => state && state.currentPlayer
+);
+
+export const gameStatus = createSelector(
+  selector,
+  state => state && utils.gameStatus(state.myBoard, state.systemBoard)
 );

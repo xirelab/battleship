@@ -22,10 +22,10 @@ export class AppComponent implements OnInit {
   // myFiring: Slot;
   // systemFiring: Slot;
 
-  gameFinished = false;
+  isGameFinished = false;
 
   myBoard: Board;
-  systemBoard: Board;
+  // systemBoard: Board;
   currentPlayer: string = '';
 
   // xDimension: Array<string>;
@@ -39,6 +39,7 @@ export class AppComponent implements OnInit {
   myBoard$ = this.store.pipe(select(selector.myBoard));
   systemBoard$ = this.store.pipe(select(selector.systemBoard));
   currentPlayer$ = this.store.pipe(select(selector.currentPlayer));
+  gameStatus$ = this.store.pipe(select(selector.gameStatus));
 
   constructor(
     private boardService: BoardService,
@@ -57,34 +58,54 @@ export class AppComponent implements OnInit {
     // );
 
     this.store.dispatch(actions.initializeBoard());
-    this.store.dispatch(actions.prepareSystemBoard());
 
-    this.myBoard$.subscribe((data: Board) => { this.myBoard = data; });
-    this.systemBoard$.subscribe((data: Board) => { this.systemBoard = data; });
-    this.currentPlayer$.subscribe((user: string) => { this.processCurrestUser(user); });
+    // this.myBoard$.subscribe((data: Board) => { this.myBoard = data; });
+    // this.systemBoard$.subscribe((data: Board) => { this.systemBoard = data; });
+    this.currentPlayer$.subscribe((user: string) => this.processCurrestUser(user));
+    this.gameStatus$.subscribe((player: string) => {
+      if(player) {
+        this.isGameFinished = true;
+        this.openDialog(`Congratulations ${player} won`, false);
+      } 
+    });
 
-    this.openDialog('Lets start with arrange our ships..', false);
+    this.openDialog('Lets start arranging our ships..', false);
   }
 
   processCurrestUser(user: string) {
     if (this.currentPlayer !== user) {
       this.currentPlayer = user;
-      switch (user) {
-        case 'Me': this.openDialog('Please enter your cordinates', true);break;
-        case 'Me-Invalid': this.openDialog('Invalid entry! Please re-enter your cordinates', true); break;
-        case 'Me-Exists': this.openDialog('Already hit! Please re-enter your cordinates', true); break;
-        case 'System':
-          const slot = this.boardService.triggerSystemFire(this.myBoard);
-          this.openDialog('System fired the cordinates:', false, slot);
-          break;
-      }
+      setTimeout(() =>
+      {        
+        switch (user) {
+          case 'Me': this.openDialog('Please enter your cordinates', true);break;
+          case 'Me-Invalid': this.openDialog('Invalid entry! Please re-enter your cordinates', true); break;
+          case 'Me-Exists': this.openDialog('Already hit! Please re-enter your cordinates', true); break;
+          case 'System':
+            const slot = this.boardService.triggerSystemFire(this.myBoard);
+            this.openDialog('System fired the cordinates:', false, slot);
+            break;
+        }
+      }, 500);
+
+      // this.currentPlayer = user;
+      // switch (user) {
+      //   case 'Me': this.openDialog('Please enter your cordinates', true);break;
+      //   case 'Me-Invalid': this.openDialog('Invalid entry! Please re-enter your cordinates', true); break;
+      //   case 'Me-Exists': this.openDialog('Already hit! Please re-enter your cordinates', true); break;
+      //   case 'System':
+      //     const slot = this.boardService.triggerSystemFire(this.myBoard);
+      //     this.openDialog('System fired the cordinates:', false, slot);
+      //     break;
+      // }
     }
   }
 
-  allShipSelected($event: boolean) {
+  allShipSelected($event: boolean, myBoard: Board) {
     if ($event) {
-      this.currentPlayer = 'Me';
-      this.openDialog('Please enter your cordinates', true);
+      this.myBoard = myBoard;
+      this.store.dispatch(actions.prepareSystemBoard());
+      this.processCurrestUser('Me');
     }
   }
 
@@ -100,9 +121,9 @@ export class AppComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result && result.value) {
+      if (!this.isGameFinished && result && result.value) {
         console.log('The dialog was closed. data : ' + result.value);
-        this.store.dispatch(actions.dropMissile(result.value.toString()));
+        this.store.dispatch(actions.dropMissile({data: result.value.toString()}));
       }
       // let fired = false;
       // if (this.gameFinished) {return;}
