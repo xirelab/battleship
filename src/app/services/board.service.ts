@@ -30,18 +30,18 @@ export class BoardService {
     if (numberOfShips >= 3) {
       for (let i = 2; i < 6; i++) {
         const cell = systemBoard.cells.find(a => a.x == `${i}` && a.y == 'C');
-        cell.isShip = true;
+        if (cell) { cell.isShip = true; }
       }
     }
 
     for (let i = 5; i < 8; i++) {
       const cell = systemBoard.cells.find(a => a.x == '5' && a.y == constant.yDimension[i]);
-      cell.isShip = true;
+      if (cell) { cell.isShip = true; }
     }
 
     for (let i = 7; i < 9; i++) {
       const cell = systemBoard.cells.find(a => a.x == `${i}` && a.y == 'E');
-      cell.isShip = true;
+      if (cell) { cell.isShip = true; }
     }
 
     if (!this.board) {
