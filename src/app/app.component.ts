@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Board } from './models/board.model';
 import { BoardService } from './services/board.service';
-import { ModalPopupComponent } from './modal-popup/modal-popup.component';
+import { ModalPopupComponent } from './components/modal-popup/modal-popup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { Actions } from '@ngrx/effects';

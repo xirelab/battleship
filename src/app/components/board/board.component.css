@@ -1,9 +1,3 @@
-/* h1
-{
-    text-align: center;
-    color: blueviolet;
-} */
-
 .header-dimension {
   border: 1px solid #ddd;
   padding: 8px;
@@ -43,11 +37,3 @@
   #board tr:nth-child(even){background-color: #f2f2f2;}
   
   #board td:hover {background-color: #ddd;}
-  
-  /* #board th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: blueviolet;
-    color: white;
-  } */
