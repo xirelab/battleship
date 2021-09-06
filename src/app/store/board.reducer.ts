@@ -14,15 +14,19 @@ const initialState: BoardState = {
   currentPlayer: ''
 };
 
+// Initial setup. 10 cells and 2 ships..
+const numberofCells = 10;
+const numberofShips = 2;
+
 export const boardReducer = createReducer(
   initialState,
   on(action.initializeBoard, (state) => {
-    state.numberOfCells = 10,
-    state.numberOfShips = 2,
-    state.xDimension = utils.getXdimension(10),
-    state.yDimension = utils.getYdimension(10),
-    state.myBoard = new Board(10),
-    state.systemBoard =  new Board(10)
+    state.numberOfCells = numberofCells,
+    state.numberOfShips = numberofShips,
+    state.xDimension = utils.getXdimension(numberofCells),
+    state.yDimension = utils.getYdimension(numberofCells),
+    state.myBoard = new Board(numberofCells),
+    state.systemBoard =  new Board(numberofCells)
     return {
       ...state
     }
@@ -41,7 +45,3 @@ export const boardReducer = createReducer(
     }
   })
 );
-
-// export function boardReducer(state: any, action: any) {
-//   return _boardReducer(state, action);
-// }

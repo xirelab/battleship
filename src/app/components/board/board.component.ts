@@ -1,7 +1,7 @@
 import { TitleCasePipe } from '@angular/common';
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { Board } from '../models/board.model';
-import { Slot } from '../models/slot.model';
+import { Board } from '../../models/board.model';
+import { Slot } from '../../models/slot.model';
 
 @Component({
   selector: 'app-board',
