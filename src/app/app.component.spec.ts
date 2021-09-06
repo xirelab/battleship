@@ -4,7 +4,7 @@ import { DebugElement } from '@angular/core';
 import { AppComponent } from './app.component';
 import { BoardState } from './store/board.state';
 import { Store, StoreModule } from '@ngrx/store';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Board } from './models/board.model';
 import { EffectsModule } from '@ngrx/effects';
 import { boardReducer } from './store/board.reducer';
@@ -31,11 +31,14 @@ describe('AppComponent', () => {
         EffectsModule.forRoot([]),
         StoreModule.forRoot([]),
         StoreModule.forFeature('board', boardReducer),
+        MatDialogModule
       ],
       providers: [
         TitleCasePipe, 
         AsyncPipe,
-        MatDialog
+        MatDialog,
+        { provide: MatDialogRef, useValue: {} },
+        { provide: MAT_DIALOG_DATA, useValue: {} } 
       ]
     });
     await TestBed.compileComponents();

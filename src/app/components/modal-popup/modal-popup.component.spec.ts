@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { ModalPopupComponent } from './modal-popup.component';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TitleCasePipe } from '@angular/common';
 
 describe('ModalPopupComponent', () => {
@@ -12,10 +12,12 @@ describe('ModalPopupComponent', () => {
   beforeAll((done) => (async () => {
     TestBed.configureTestingModule({
       declarations: [ ModalPopupComponent ],
-      imports: [ ],
+      imports: [ MatDialogModule ],
       providers: [
-        MatDialogRef,
-        TitleCasePipe
+        MatDialog,
+        TitleCasePipe,
+        { provide: MatDialogRef, useValue: {} },
+        { provide: MAT_DIALOG_DATA, useValue: {} }
       ]
     });
     await TestBed.compileComponents();
