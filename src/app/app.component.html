@@ -1,6 +1,6 @@
-<!-- <h1>
+<h1>
   BalleShip
-</h1> -->
+</h1>
 <ng-container *ngIf="{
   numberOfShips: numberOfShips$ | async,
   xDimension: xDimension$ | async,
@@ -14,7 +14,6 @@
         <h2> Opponent </h2>
         <app-board [type]="'opponent'" 
           [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [board]="data?.systemBoard">
-          <!-- [incoming]="myFiring">   -->
         </app-board>
       </td>
       <td>
@@ -22,7 +21,6 @@
         <app-board [type]="'myteam'" [numberofShips]= "data?.numberOfShips"
           [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [board]="data?.myBoard"
           (shipSelected)="allShipSelected($event, data?.myBoard)">
-          <!-- [incoming]="systemFiring"  -->          
         </app-board>      
       </td>
     </tr>

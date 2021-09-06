@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
-import { Action, Store } from "@ngrx/store";
+import { Store } from "@ngrx/store";
 import { BoardService } from "../services/board.service";
 import { BoardActionTypes } from "./board.action";
-import { Actions, createEffect, Effect, ofType } from "@ngrx/effects";
+import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { AppState } from "./board.state";
 import * as actions from "./board.action";
 import { map, mergeMap, withLatestFrom } from "rxjs";

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-
 import { AppComponent } from './app.component';
 import { BoardComponent } from './board/board.component';
 import { ModalPopupComponent } from './modal-popup/modal-popup.component';
@@ -12,7 +11,6 @@ import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import { AutoFocusDirective } from './directives/auto-focus.directive';
 import { AlphaNumericDirective } from './directives/alpha-numeric.directive';
 import { BoardEffects } from './store/board.effects';
-// import { BoardReducer } from './store/board.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { boardReducer } from './store/board.reducer';
@@ -28,17 +26,9 @@ import { boardReducer } from './store/board.reducer';
     StoreModule.forRoot([]),
     EffectsModule.forFeature([BoardEffects]),
     StoreModule.forFeature('board', boardReducer),
-    // StoreModule.forRoot({board: boardReducer}),
     StoreModule.forRoot(boardReducer, {
       runtimeChecks: {
-        // strictStateImmutability and strictActionImmutability are enabled by default
-        // strictStateSerializability: true,
-        // strictActionSerializability: true,
-        // strictActionWithinNgZone: true,
-        // strictActionTypeUniqueness: true,
-        // if you want to change complexe objects and that we have. We need to disable these settings
-        // change strictStateImmutability, strictActionImmutability
-        strictStateImmutability: false, // set this to false
+        strictStateImmutability: false,
         strictActionImmutability: false,
       }
     }),
@@ -48,8 +38,7 @@ import { boardReducer } from './store/board.reducer';
     BoardComponent,
     ModalPopupComponent,
     AutoFocusDirective,
-    AlphaNumericDirective,
-    // AsyncPipe
+    AlphaNumericDirective
   ],
   exports: [
     // AutoFocusDirective,

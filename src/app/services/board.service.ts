@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Board, IBoard } from '../models/board.model';
-import { Cell } from '../models/cell.model';
 import * as constant from '../models/constants.model';
-import { Slot } from '../models/slot.model';
 import * as utils from '../utils/common.util';
 
 @Injectable({
@@ -11,22 +9,6 @@ import * as utils from '../utils/common.util';
 })
 export class BoardService {
   private board: BehaviorSubject<IBoard>;
-
-  // getXdimension(numberofCells: number) {
-  //   const dimensions = [];
-  //   for (let i = 1; i <= numberofCells; i++) {
-  //     dimensions.push(`${i}`);
-  //   }
-  //   return dimensions;
-  // }
-
-  // getYdimension(numberofCells: number) {
-  //   const dimensions = [];
-  //   for (let i = 0; i < numberofCells; i++) {
-  //     dimensions.push(`${constant.yDimension[i]}`);
-  //   }
-  //   return dimensions;
-  // }
 
   initializeOpponent(systemBoard: Board, numberOfShips: number): Observable<IBoard> {
     for (let i = 0; i < numberOfShips; i++) {
@@ -80,24 +62,6 @@ export class BoardService {
         }
       }
       while (true);
-
-      // const xValue = utils.getRandomInt(1, 10).toString();
-      // const yValue = constant.yDimension[utils.getRandomInt(1, 10)];
-      // const cell = board.cells.find(i => i.x === xValue && i.y === yValue);
-      // if (cell && !cell.value) {
-      //   return `${xValue}${yValue}`;
-      // }
     }
-    return null;
   }
-
-  // checkResult(board: Board): boolean {
-  //   if (board && board.cells) {
-  //     const cells = board.cells.find(i => i.isShip && i.value === '');
-  //     if (cells) {
-  //       return false;
-  //     }
-  //   }
-  //   return true;
-  // }
 }
