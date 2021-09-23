@@ -1,4 +1,6 @@
-# angular-ivy-xufy1z
+# Battle Ship
+
+Angular Project
 
 [Edit on StackBlitz ⚡️](https://stackblitz.com/edit/angular-ivy-xufy1z)
 
