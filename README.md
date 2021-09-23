@@ -1,7 +1,11 @@
 # Battle Ship
 
-Angular Project
+## An Angular Project
 
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/angular-ivy-xufy1z)
+[View & Edit on StackBlitz ⚡️](https://stackblitz.com/edit/angular-ivy-xufy1z)
 
-Build: https://dev.azure.com/xire/xirelab/_build?definitionId=1
+CI/CD Build: https://dev.azure.com/xire/xirelab/_build?definitionId=1
+
+## Features:
+*
+*
