@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
   myBoard: Board;
   currentPlayer: string = '';
   canContinue = false;
+  canShowShips = false;  
 
   numberOfShips$ = this.store.pipe(select(selector.numberOfShips));
   xDimension$ = this.store.pipe(select(selector.xDimension));
@@ -102,5 +103,13 @@ export class AppComponent implements OnInit {
   onClick() {
     this.canContinue = false;
     this.openDialog('Please enter your cordinates', true);
+  }
+
+  onHintClick() {
+    this.canShowShips = true;
+    setTimeout(() =>
+      {        
+        this.canShowShips = false;
+      }, 2000);
   }
 }

@@ -8,6 +8,11 @@ td, th {
 }
 
 .right-align {
-  text-align:right;
-  background-color: #63f067;
+  text-align:right;  
+  background-color: #bdf7bf;
+}
+
+.hint {
+  text-align:right;  
+  background-color: #63f067;  
 }
