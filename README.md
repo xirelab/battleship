@@ -7,5 +7,5 @@
 CI/CD Build: https://dev.azure.com/xire/xirelab/_build?definitionId=1
 
 ## Features:
-*
+* Angular 12
 *
