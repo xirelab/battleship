@@ -31,7 +31,7 @@ describe('BoardComponent', () => {
   describe('shipDetails', () => {
     it('should return shipDetails empty', () => {
       // Arrange
-      component.type = 'opponent';
+      component.isSystem = false;
       component.currentShip = 0;
 
       // Act
@@ -43,7 +43,7 @@ describe('BoardComponent', () => {
 
     it('should return shipDetails proper', () => {
       // Arrange
-      component.type = 'self';
+      component.isSystem = false;
       component.numberofShips = 5;
       component.currentShip = 2;
 
@@ -58,7 +58,7 @@ describe('BoardComponent', () => {
   describe('isShip', () => {
     it('should return true', () => {
       // Arrange
-      component.type = 'opponent';
+      component.isSystem = false;
       component.currentShip = 0;
       component.showShips = true;
       component.board = mockBoard;
@@ -73,7 +73,7 @@ describe('BoardComponent', () => {
 
     it('should return false', () => {
       // Arrange
-      component.type = 'opponent';
+      component.isSystem = false;
       component.currentShip = 0;
       component.showShips = true;
       component.board = mockBoard;
@@ -90,7 +90,7 @@ describe('BoardComponent', () => {
   describe('isHit', () => {
     it('should return true', () => {
       // Arrange
-      component.type = 'opponent';
+      component.isSystem = false;
       component.currentShip = 0;
       component.showShips = true;
       component.board = mockBoard;
@@ -105,7 +105,7 @@ describe('BoardComponent', () => {
 
     it('should return false', () => {
       // Arrange
-      component.type = 'opponent';
+      component.isSystem = false;
       component.currentShip = 0;
       component.showShips = true;
       component.board = mockBoard;
@@ -122,7 +122,7 @@ describe('BoardComponent', () => {
   describe('value', () => {
     it('should return X', () => {
       // Arrange
-      component.type = 'opponent';
+      component.isSystem = false;
       component.currentShip = 0;
       component.showShips = true;
       component.board = mockBoard;
@@ -137,7 +137,7 @@ describe('BoardComponent', () => {
 
     it('should return O', () => {
       // Arrange
-      component.type = 'opponent';
+      component.isSystem = false;
       component.currentShip = 0;
       component.showShips = true;
       component.board = mockBoard;
@@ -154,7 +154,7 @@ describe('BoardComponent', () => {
   describe('isEnabled', () => {
     it('should return false', () => {
       // Arrange
-      component.type = 'opponent';
+      component.isSystem = false;
       component.currentShip = 0;
       component.showShips = true;
       component.board = mockBoard;
@@ -169,7 +169,7 @@ describe('BoardComponent', () => {
 
     it('should return true', () => {
       // Arrange
-      component.type = 'me';
+      component.isSystem = false;
       component.numberOfcellSelected = 0;
       component.showShips = true;
       component.board = mockBoard;
@@ -186,7 +186,7 @@ describe('BoardComponent', () => {
   describe('isNextPossibleCell', () => {
     it('should return false', () => {
       // Arrange
-      component.type = 'opponent';
+      component.isSystem = false;
       component.currentShip = 0;
       component.showShips = true;
       component.board = mockBoard;
@@ -201,7 +201,7 @@ describe('BoardComponent', () => {
 
     it('should return true', () => {
       // Arrange
-      component.type = 'me';
+      component.isSystem = false;
       component.numberOfcellSelected = 0;
       component.showShips = true;
       component.board = mockBoard;
@@ -219,7 +219,7 @@ describe('BoardComponent', () => {
   describe('click', () => {
     it('should increment numberOfcellSelected', () => {
       // Arrange
-      component.type = 'opponent';
+      component.isSystem = false;
       component.currentShip = 3;
       component.numberOfcellSelected = 1;
       component.showShips = true;
@@ -238,7 +238,7 @@ describe('BoardComponent', () => {
 
     it('should reset numberOfcellSelected', () => {
       // Arrange
-      component.type = 'opponent';
+      component.isSystem = false;
       component.currentShip = 3;
       component.numberOfcellSelected = 3;
       component.showShips = true;
@@ -257,7 +257,7 @@ describe('BoardComponent', () => {
 
     it('should emit all ships selected', () => {
       // Arrange
-      component.type = 'opponent';
+      component.isSystem = false;
       component.currentShip = 1;
       component.numberOfcellSelected = 1;
       component.showShips = true;

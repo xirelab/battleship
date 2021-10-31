@@ -38,19 +38,19 @@ export function updateBoard(cell: Slot, board: Board, type: string): string {
     let cells = board.cells.find(c => c.x == cell.x && c.y === cell.y);    
 
     // only manual entry can be wrong..
-    if (!cells) { return 'Me-Invalid';} 
-    else if (cells && cells.value) { return 'Me-Exists'; }
+    if (!cells) { return 'Invalid';} 
+    else if (cells && cells.value) { return 'Exists'; }
 
     if (cells) {
       cells.value = cells.isShip ? 'hit' : 'miss';
-      return type === 'System' ? 'Me' : 'System';
+      return type === 'Opponent' ? 'Me' : 'Opponent';
     }
   }
 }
 
 export function gameStatus(myBoard: Board, systemBoard: Board): string {
   if (checkBoard(systemBoard)) return 'You';
-  if (checkBoard(myBoard)) return 'System';
+  if (checkBoard(myBoard)) return 'Opponent';
   return '';
 }
 

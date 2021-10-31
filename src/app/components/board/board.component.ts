@@ -18,9 +18,9 @@ export class BoardComponent implements OnInit {
   @Input() xDimension: Array<string>;
   @Input() yDimension: Array<string>;
   @Input() board: Board;
-  @Input() type: string;
   @Input() numberofShips: number = 2;
   @Input() showShips: boolean = true;
+  @Input() isSystem: boolean = true;
   @Output() shipSelected =  new EventEmitter<boolean>();
 
   // @Input()
@@ -40,7 +40,7 @@ export class BoardComponent implements OnInit {
   }
 
   get shipDetails(): string {
-    if (this.type === 'opponent' || this.currentShip === 0) {
+    if (this.isSystem || this.currentShip === 0) {
       return '';
     }
     return `Select ${this.count(this.numberofShips - this.currentShip + 1)} ship (${this.currentShip + 1} cells)..`;
@@ -87,7 +87,7 @@ export class BoardComponent implements OnInit {
   }
 
   isEnabled(x: string, y: string): boolean {
-    if (this.type === 'opponent' || this.currentShip === 0) {
+    if (this.isSystem || this.currentShip === 0) {
       return false;
     }
     if (this.numberOfcellSelected === 0) {
@@ -100,7 +100,7 @@ export class BoardComponent implements OnInit {
   }
 
   click(x: string, y: string) {
-    if (this.type === 'opponent' || !this.isEnabled(x, y)) {
+    if (this.isSystem || !this.isEnabled(x, y)) {
       return;
     }
     const cell = this.board.cells.find(c => c.x === x && c.y === y);

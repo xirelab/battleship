@@ -11,7 +11,7 @@ describe('Utils', () => {
       xDimension: [],
       yDimension: [],
       myBoard: null,
-      systemBoard: null,
+      opponentBoard: null,
       currentPlayer: ''
     }
   })
@@ -21,7 +21,7 @@ describe('Utils', () => {
       // Act
       const state = boardReducer(currentState, actions.initializeBoard);
       const myBoard = new Board(10);
-      const systemBoard = new Board(10);
+      const opponentBoard = new Board(10);
 
       // Assert
       expect(state.numberOfCells).toBe(10);
@@ -29,7 +29,7 @@ describe('Utils', () => {
       expect(state.xDimension).toBe(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']);
       expect(state.yDimension).toBe(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']);
       expect(state.myBoard).toBe(myBoard);
-      expect(state.systemBoard).toBe(systemBoard);
+      expect(state.opponentBoard).toBe(opponentBoard);
     });
   })
 

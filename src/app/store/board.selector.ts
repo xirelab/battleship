@@ -4,6 +4,16 @@ import * as utils from '../utils/common.util';
 
 const selector = createFeatureSelector<BoardState>('board');
 
+export const me = createSelector(
+  selector,
+  state => state && state.me
+);
+
+export const opponent = createSelector(
+  selector,
+  state => state && state.opponent
+);
+
 export const numberOfCells = createSelector(
   selector,
   state => state && state.numberOfCells
@@ -29,9 +39,9 @@ export const myBoard = createSelector(
   state => state && state.myBoard
 );
 
-export const systemBoard = createSelector(
+export const opponentBoard = createSelector(
   selector,
-  state => state && state.systemBoard
+  state => state && state.opponentBoard
 );
 
 export const currentPlayer = createSelector(
@@ -39,7 +49,12 @@ export const currentPlayer = createSelector(
   state => state && state.currentPlayer
 );
 
+export const isSetupCompleted = createSelector(
+  selector,
+  state => state && state.isSetupCompleted
+);
+
 export const gameStatus = createSelector(
   selector,
-  state => state && utils.gameStatus(state.myBoard, state.systemBoard)
+  state => state && utils.gameStatus(state.myBoard, state.opponentBoard)
 );

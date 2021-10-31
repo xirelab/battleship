@@ -39,7 +39,8 @@ describe('ModalPopupComponent', () => {
       component.data = {
         isInputVisisble: true,
         caption: 'caption',
-        value: 'value'
+        value: 'value',
+        type: 'data'
       };
 
       // Act
@@ -54,7 +55,8 @@ describe('ModalPopupComponent', () => {
       component.data = {
         isInputVisisble: false,
         caption: 'caption',
-        value: 'value'
+        value: 'value',
+        type: 'data'
       };
 
       // Act
@@ -84,7 +86,8 @@ describe('ModalPopupComponent', () => {
       component.data = {
         isInputVisisble: true,
         caption: 'caption',
-        value: '12'
+        value: '12',
+        type: 'data'
       };
 
       // Act
@@ -99,7 +102,8 @@ describe('ModalPopupComponent', () => {
       component.data = {
         isInputVisisble: true,
         caption: 'caption',
-        value: '1'
+        value: '1',
+        type: 'data'
       };
 
       // Act
@@ -117,7 +121,8 @@ describe('ModalPopupComponent', () => {
       component.data = {
         isInputVisisble: true,
         caption: 'caption',
-        value: '1D'
+        value: '1D',
+        type: 'data'
       };
       const event = {
         keyCode: 13
@@ -136,7 +141,8 @@ describe('ModalPopupComponent', () => {
       component.data = {
         isInputVisisble: true,
         caption: 'caption',
-        value: ''
+        value: '',
+        type: 'data'
       };
       const event = {
         keyCode: 50
@@ -156,7 +162,8 @@ describe('ModalPopupComponent', () => {
       component.data = {
         isInputVisisble: true,
         caption: 'caption',
-        value: ''
+        value: '',
+        type: 'data'
       };
       const event = {
         keyCode: 45

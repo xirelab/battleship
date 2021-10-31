@@ -14,6 +14,7 @@ import { BoardEffects } from './store/board.effects';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { boardReducer } from './store/board.reducer';
+import { ActivatedRoute } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { boardReducer } from './store/board.reducer';
     FormsModule,
     MatButtonModule,
     MatDialogModule,
+    // ActivatedRoute,
     EffectsModule.forRoot([]),
     StoreModule.forRoot([]),
     EffectsModule.forFeature([BoardEffects]),
@@ -42,7 +44,8 @@ import { boardReducer } from './store/board.reducer';
   ],
   exports: [
     // AutoFocusDirective,
-    AlphaNumericDirective
+    AlphaNumericDirective,
+    // ActivatedRoute
   ],
   providers: [TitleCasePipe, AsyncPipe],
   bootstrap: [AppComponent]

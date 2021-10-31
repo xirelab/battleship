@@ -21,7 +21,8 @@ export class BoardEffects {
       withLatestFrom(this.store$),
       mergeMap(([, state]) => {
         if (state.board) {
-          return this.boardService.initializeOpponent(state.board.systemBoard, state.board.numberOfShips)
+          // TODO: need to make api call
+          return this.boardService.initializeOpponent(state.board.opponentBoard, state.board.numberOfShips)
           .pipe(
             map(data => actions.prepareSystemBoardCompleted({data: data}))
           );  
