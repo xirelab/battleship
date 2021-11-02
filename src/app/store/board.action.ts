@@ -8,7 +8,9 @@ export enum BoardActionTypes {
   SetOpponentName = '[Board] Set Opponent Name',
   PrepareSystemBoard = '[Board] Prepare System Board',
   PrepareSystemBoardCompleted = '[Board] Prepare System Board Completed',
-  DropMissile = '[Board] Drop Missile'
+  DropMissile = '[Board] Drop Missile',
+  ReduceOneLife = '[Board] Reduce One Life',
+  SetNumberofShips = '[Board] Set Number of Ships'
 }
 
 export const initializeBoard = createAction(BoardActionTypes.InitializeBoard);
@@ -37,4 +39,11 @@ export const prepareSystemBoardCompleted = createAction(
 export const dropMissile = createAction(
   BoardActionTypes.DropMissile,
   props<{ data: string }>()
+);
+
+export const ReduceOneLife = createAction(BoardActionTypes.ReduceOneLife);
+
+export const SetNumberofShips = createAction(
+  BoardActionTypes.SetNumberofShips,
+  props<{ count: number }>()
 );

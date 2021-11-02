@@ -3,24 +3,24 @@ import * as action from './board.action';
 import { Board } from "../models/board.model";
 import * as utils from '../utils/common.util';
 import { createReducer, on } from '@ngrx/store';
+import { Player } from "../models/player.model";
 
 const initialState: BoardState = {
-  me: '',
-  opponent: '',
+  me: null,
+  opponent: null,
   numberOfCells: 0,
   numberOfShips: 0,
   xDimension: [],
   yDimension: [],
-  myBoard: null,
-  opponentBoard: null,
   currentPlayer: '',
-  isSetupCompleted: true,
-  isSinglePlayer: true
+  isSinglePlayer: true,
+  isSetupCompleted: true
 };
 
 // Initial setup. 10 cells and 3 ships..
 const numberofCells = 10;
 const numberofShips = 2;
+const numberofLifes = 3;
 
 export const boardReducer = createReducer(
   initialState,
@@ -29,8 +29,8 @@ export const boardReducer = createReducer(
     state.numberOfShips = numberofShips,
     state.xDimension = utils.getXdimension(numberofCells),
     state.yDimension = utils.getYdimension(numberofCells),
-    state.myBoard = new Board(numberofCells),
-    state.opponentBoard =  new Board(numberofCells)
+    state.me = new Player(numberofCells, numberofLifes),
+    state.opponent =  new Player(numberofCells, numberofLifes)
     return {
       ...state
     }
@@ -38,20 +38,20 @@ export const boardReducer = createReducer(
   on(action.SetPlayerType, (state, { isSingleUser }) => {
     state.isSinglePlayer = isSingleUser;
     if (isSingleUser) {
-      state.opponent = 'System';
+      state.opponent.name = 'System';
     }
     return {
       ...state
     }
   }),
   on(action.SetMyName, (state, { name }) => {
-    state.me = name;
+    state.me.name = name;
     return {
       ...state
     }
   }),
   on(action.SetOpponentName, (state, { name }) => {
-    state.opponent = name;
+    state.opponent.name = name;
     return {
       ...state
     }
@@ -64,7 +64,7 @@ export const boardReducer = createReducer(
   }),
   on(action.prepareSystemBoardCompleted, (state, { data }) => {
     state.isSetupCompleted = false;
-    state.opponentBoard = data;
+    state.opponent.board = data;
     return {
       ...state
     }
@@ -72,8 +72,20 @@ export const boardReducer = createReducer(
   on(action.dropMissile, (state, { data }) => {
     state.currentPlayer = utils.updateBoard(
       utils.updateCordinate(data),
-      state.currentPlayer == 'Opponent' ? state.myBoard : state.opponentBoard,
+      state.currentPlayer == 'Opponent' ? state.me.board : state.opponent.board,
       state.currentPlayer);
+    return {
+      ...state
+    }
+  }),
+  on(action.ReduceOneLife, (state) => {
+    state.me.lifes -= 1;
+    return {
+      ...state
+    }
+  }),
+  on(action.SetNumberofShips, (state, { count }) => {
+    state.numberOfShips = count;
     return {
       ...state
     }

@@ -1,4 +1,10 @@
-<h2> Battleship </h2>
+<h2> Battleship 
+  <!-- <button class= right-align style="float: right;" mat-button 
+    (click)="onHintClick()">&#9876;&#65039;
+  </button> -->
+  <div class=gear style="float: right;" (click)="gearClicked()" >&#9881;&#65039;</div>
+</h2>
+
 <ng-container *ngIf="{
   me: me$ | async,
   opponent: opponent$ | async,
@@ -9,26 +15,26 @@
   opponentBoard: opponentBoard$ | async,
   isSetupCompleted: isSetupCompleted$ | async
 } as data">
-  <table>
+  <table style="margin-left:auto;margin-right:auto;">
     <tr>
       <td>
-        <h3> {{data?.opponent}} </h3>
+        <app-header [player]="data?.opponent"></app-header>
         <app-board [isSystem]="true" [numberofShips]= "data?.numberOfShips" [showShips]=canShowShips
-          [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [board]="data?.opponentBoard">
+          [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [board]="data?.opponent?.board">
         </app-board>
       </td>
       <td>
-        <h3> {{data?.me}} </h3>
-        <button *ngIf="canContinue" class= hint style="float: right;" mat-button 
-          (click)="onClick()">Lets continue..
-        </button>
-        <button *ngIf="canContinue" class= right-align style="float: right;" mat-button 
-          (click)="onHintClick()">Hint*
-        </button>  
+        <app-header [player]="data?.me"></app-header>
         <app-board [isSystem]="false" [numberofShips]= "data?.numberOfShips" [showShips]=true
-          [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [board]="data?.myBoard"
-          (shipSelected)="allShipSelected($event, data?.myBoard)">
+          [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [board]="data?.me?.board"
+          (shipSelected)="allShipSelected($event, data?.me?.board)">
         </app-board>
+        <button *ngIf="canContinue" class= hint style="float: right;" mat-button 
+          (click)="onClickContinue()">Lets continue...
+        </button> &nbsp;&nbsp;
+        <button *ngIf="canContinue && data?.me?.lifes > 0" class= right-align style="float: right;" mat-button 
+          (click)="onHintClick()">Hint*
+        </button>
       </td>
     </tr>
   </table>

@@ -34,15 +34,15 @@ export const yDimension = createSelector(
   state => state && state.yDimension
 );
 
-export const myBoard = createSelector(
-  selector,
-  state => state && state.myBoard
-);
+// export const myBoard = createSelector(
+//   selector,
+//   state => state && state.myBoard
+// );
 
-export const opponentBoard = createSelector(
-  selector,
-  state => state && state.opponentBoard
-);
+// export const opponentBoard = createSelector(
+//   selector,
+//   state => state && state.opponentBoard
+// );
 
 export const currentPlayer = createSelector(
   selector,
@@ -56,5 +56,5 @@ export const isSetupCompleted = createSelector(
 
 export const gameStatus = createSelector(
   selector,
-  state => state && utils.gameStatus(state.myBoard, state.opponentBoard)
+  state => state && utils.gameStatus(state.me.board, state.opponent.board)
 );

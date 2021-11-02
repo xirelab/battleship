@@ -28,8 +28,8 @@ export class AppComponent implements OnInit {
   numberOfShips$ = this.store.pipe(select(selector.numberOfShips));
   xDimension$ = this.store.pipe(select(selector.xDimension));
   yDimension$ = this.store.pipe(select(selector.yDimension));
-  myBoard$ = this.store.pipe(select(selector.myBoard));
-  opponentBoard$ = this.store.pipe(select(selector.opponentBoard));
+  // myBoard$ = this.store.pipe(select(selector.myBoard));
+  // opponentBoard$ = this.store.pipe(select(selector.opponentBoard));
   currentPlayer$ = this.store.pipe(select(selector.currentPlayer));
   isSetupCompleted$ = this.store.pipe(select(selector.isSetupCompleted));
   gameStatus$ = this.store.pipe(select(selector.gameStatus));
@@ -120,6 +120,9 @@ export class AppComponent implements OnInit {
           this.openDialog('Lets start arranging our ships..', false, '', 'arrangeShip'); 
         } else if(type === 'opponentShip') {
           this.processCurrestUser('Me');
+        } else if(type === 'gear') {
+          // this.store.dispatch(actions.SetNumberofShips({count: result.value}));
+          // TODO : need to restart game
         } else {
           if (result && result.value === 'break') {
             this.canContinue = true;
@@ -131,16 +134,21 @@ export class AppComponent implements OnInit {
     });
   }
 
-  onClick() {
+  onClickContinue() {
     this.canContinue = false;
     this.openDialog('Please enter your cordinates', true);
   }
 
   onHintClick() {
     this.canShowShips = true;
+    this.store.dispatch(actions.ReduceOneLife());
     setTimeout(() =>
       {        
         this.canShowShips = false;
       }, 2000);
+  }
+
+  gearClicked() {
+    this.openDialog('Please enter desired number of Ships', true, '', 'gear');
   }
 }

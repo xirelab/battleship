@@ -15,6 +15,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { boardReducer } from './store/board.reducer';
 import { ActivatedRoute } from '@angular/router';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
   imports: [
@@ -40,7 +41,8 @@ import { ActivatedRoute } from '@angular/router';
     BoardComponent,
     ModalPopupComponent,
     AutoFocusDirective,
-    AlphaNumericDirective
+    AlphaNumericDirective,
+    HeaderComponent
   ],
   exports: [
     // AutoFocusDirective,

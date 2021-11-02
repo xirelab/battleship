@@ -1,0 +1,8 @@
+<div *ngIf="player?.name">
+    <span> {{player?.name}} </span>
+    <ng-container *ngFor="let atrConfig of [].constructor(player?.lifes)" >
+        <span style="float: right;">&#10084;&#65039;</span>
+    </ng-container>
+</div>
+
+<ng-template #other_content><span> {{player?.name}} </span></ng-template>

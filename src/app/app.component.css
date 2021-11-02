@@ -10,9 +10,14 @@ td, th {
 .right-align {
   text-align:right;  
   background-color: #bdf7bf;
+  margin-right: 10px;
 }
 
 .hint {
   text-align:right;  
   background-color: #63f067;  
+}
+
+.gear {
+  cursor: pointer; 
 }

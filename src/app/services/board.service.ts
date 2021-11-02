@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Board, IBoard } from '../models/board.model';
+import { Cell } from '../models/cell.model';
 import * as constant from '../models/constants.model';
 import { Slot } from '../models/slot.model';
 import * as utils from '../utils/common.util';
@@ -10,8 +11,8 @@ import * as utils from '../utils/common.util';
 })
 export class BoardService {
   private board: BehaviorSubject<IBoard>;
-  private prev: Slot;
-  private prevprev: Slot;
+  private prev: Cell;
+  private prevprev: Cell;
 
   initializeOpponent(systemBoard: Board, numberOfShips: number): Observable<IBoard> {
     if (!systemBoard) {
@@ -140,11 +141,23 @@ export class BoardService {
 
   triggerSystemFire(board: Board): string {
     if (board && board.cells) {
+      let xValue: any;
+      let yValue: any;
+      let icase: number = 1;
       do {
-        const xValue = utils.getRandomInt(1, 10).toString();
-        const yValue = constant.yDimension[utils.getRandomInt(1, 10)];
+        if (this.prev) {
+          xValue = icase == 1 || icase == 3 ? this.prev.x + 1 : this.prev.x;
+          yValue = icase == 2 || icase == 4 ? this.prev.y + 1 : this.prev.y;
+          icase ++;
+        } else {
+          xValue = utils.getRandomInt(1, 10).toString();
+          yValue = constant.yDimension[utils.getRandomInt(1, 10)];
+        }
+        
         const cell = board.cells.find(i => i.x === xValue && i.y === yValue);
         if (cell && !cell.value) {
+          // this.prevprev = this.prev;
+          // this.prev = cell; 
           return `${xValue}${yValue}`;
         }
       }

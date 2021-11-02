@@ -29,14 +29,15 @@ export class ModalPopupComponent {
   }
 
   isButtonEnabled(): boolean {
-    return (this.data && this.data.value && this.data.value.length >= 2) || !this.data.isInputVisisble;
+    return (this.data && this.data.value && this.data.value.length >= 2) || 
+           (!this.data.isInputVisisble && this.data.type !=='myName');
   }
 
   keyPress(event) {    
     var charCode = (event.which) ? event.which : event.keyCode;
 
     if (this.data.type==='myName') {
-      if (charCode === 13) {
+      if (charCode === 13 && this.isButtonEnabled()) {
         this.dialogRef.close(this.data);
       }
     } else {
@@ -50,8 +51,23 @@ export class ModalPopupComponent {
         }
       }
 
-      if (charCode === 13 && this.data.value.length >= 2) {
+      // if (this.data && this.data.value && this.data.value.length === 1) {
+      //   // allow only A to J and a to j
+      //   if ((charCode >= 97 && charCode <= 106) || ((charCode >= 65 && charCode <= 74))) { 
+      //     return true;
+      //   } else {
+      //     event.preventDefault();
+      //     return false;
+      //   }
+      // }
+
+      if (charCode === 13) {
         this.dialogRef.close(this.data);
+      }
+
+      if (this.data.value.length >= 3) {
+        event.preventDefault();
+        return false;
       }
     }
   }

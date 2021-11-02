@@ -22,7 +22,7 @@ export class BoardEffects {
       mergeMap(([, state]) => {
         if (state.board) {
           // TODO: need to make api call
-          return this.boardService.initializeOpponent(state.board.opponentBoard, state.board.numberOfShips)
+          return this.boardService.initializeOpponent(state.board.opponent.board, state.board.numberOfShips)
           .pipe(
             map(data => actions.prepareSystemBoardCompleted({data: data}))
           );  
