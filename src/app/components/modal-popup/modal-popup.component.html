@@ -1,12 +1,13 @@
 <br/>
 {{caption}}
 <br/>
-<input *ngIf="data.isInputVisisble || data.type==='myName'" autofocus alphaNumeric 
+<input *ngIf="data.isInputVisisble || data.type==='myName' || data.type==='gear'" autofocus alphaNumeric 
   [ngModel]="data.value" (ngModelChange)="data.value = $event.toUpperCase()"
   (keypress)="keyPress($event)">
 <div mat-dialog-actions>
   <button *ngIf="data.type!=='playerSelection'" mat-button [mat-dialog-close]="data" [disabled]="!isButtonEnabled()">Ok</button>
   <button *ngIf="data.isInputVisisble" mat-button (click)="onNoClick()">Lets take a break</button>
+  <button *ngIf="data.type==='gear'" mat-button (click)="onCancelClick()">Cancel</button>
 </div>
 <div mat-dialog-actions *ngIf="data.type==='playerSelection'">
   <button mat-button (click)="selectPlayer(1)">Single player</button>

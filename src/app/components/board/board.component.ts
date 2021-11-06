@@ -1,5 +1,5 @@
 import { TitleCasePipe } from '@angular/common';
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, SimpleChanges, OnChanges } from '@angular/core';
 import { Board } from '../../models/board.model';
 import { Slot } from '../../models/slot.model';
 
@@ -8,7 +8,7 @@ import { Slot } from '../../models/slot.model';
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.css']
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent implements OnInit, OnChanges {
   currentShip: number;
   numberOfcellSelected = 0;
   lastSelectedCell: Slot;
@@ -36,6 +36,10 @@ export class BoardComponent implements OnInit {
 
   ngOnInit() {
     console.log('testtt');
+    this.currentShip = this.numberofShips;
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
     this.currentShip = this.numberofShips;
   }
 

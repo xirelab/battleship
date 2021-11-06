@@ -1,8 +1,5 @@
 <h2> Battleship 
-  <!-- <button class= right-align style="float: right;" mat-button 
-    (click)="onHintClick()">&#9876;&#65039;
-  </button> -->
-  <div class=gear style="float: right;" (click)="gearClicked()" >&#9881;&#65039;</div>
+  <app-settings (onClick)="gearClicked()"></app-settings>
 </h2>
 
 <ng-container *ngIf="{
@@ -17,7 +14,7 @@
 } as data">
   <table style="margin-left:auto;margin-right:auto;">
     <tr>
-      <td>
+      <td *ngIf="isShipArranged">
         <app-header [player]="data?.opponent"></app-header>
         <app-board [isSystem]="true" [numberofShips]= "data?.numberOfShips" [showShips]=canShowShips
           [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [board]="data?.opponent?.board">

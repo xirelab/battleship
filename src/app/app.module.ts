@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { BoardComponent } from './components/board/board.component';
 import { ModalPopupComponent } from './components/modal-popup/modal-popup.component';
@@ -16,14 +16,24 @@ import { StoreModule } from '@ngrx/store';
 import { boardReducer } from './store/board.reducer';
 import { ActivatedRoute } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
+import { MatNativeDateModule, MatCommonModule } from '@angular/material/core';
+import { SettingsComponent } from './components/settings/settings.component';
+// import { MatIconModule } from '@angular/material';
+import {MatMenuModule} from '@angular/material/menu'
 
 @NgModule({
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
+    // MatIconModule,
+    MatMenuModule,
+    MatCommonModule,
     MatButtonModule,
     MatDialogModule,
+    MatNativeDateModule,
+    // MaterialExampleModule,
     // ActivatedRoute,
     EffectsModule.forRoot([]),
     StoreModule.forRoot([]),
@@ -42,7 +52,8 @@ import { HeaderComponent } from './components/header/header.component';
     ModalPopupComponent,
     AutoFocusDirective,
     AlphaNumericDirective,
-    HeaderComponent
+    HeaderComponent,
+    SettingsComponent
   ],
   exports: [
     // AutoFocusDirective,

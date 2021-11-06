@@ -28,6 +28,11 @@ export class ModalPopupComponent {
     this.dialogRef.close(this.data);
   }
 
+  onCancelClick() {
+    this.data.value = 'cancelled';
+    this.dialogRef.close(this.data);
+  }
+
   isButtonEnabled(): boolean {
     return (this.data && this.data.value && this.data.value.length >= 2) || 
            (!this.data.isInputVisisble && this.data.type !=='myName');

@@ -17,6 +17,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AppComponent implements OnInit {
   isGameFinished = false;
+  isShipArranged = false;
   myBoard: Board;
   currentPlayer: string = '';
   canContinue = false;
@@ -85,6 +86,8 @@ export class AppComponent implements OnInit {
   allShipSelected($event: boolean, myBoard: Board) {
     if ($event) {
       this.myBoard = myBoard;
+      this.isShipArranged = true;
+      // this.canContinue = false;
       this.store.dispatch(actions.prepareSystemBoard());
       this.openDialog('Wait for Opponent to arrang the ships..', false, '', 'opponentShip'); 
     }
@@ -121,8 +124,10 @@ export class AppComponent implements OnInit {
         } else if(type === 'opponentShip') {
           this.processCurrestUser('Me');
         } else if(type === 'gear') {
-          // this.store.dispatch(actions.SetNumberofShips({count: result.value}));
-          // TODO : need to restart game
+          if (result && result.value !== 'cancelled') {
+            this.store.dispatch(actions.SetNumberofShips({count: result.value}));
+            this.openDialog('Lets start arranging our ships..', false, '', 'arrangeShip');
+          }
         } else {
           if (result && result.value === 'break') {
             this.canContinue = true;
@@ -149,6 +154,6 @@ export class AppComponent implements OnInit {
   }
 
   gearClicked() {
-    this.openDialog('Please enter desired number of Ships', true, '', 'gear');
+    this.openDialog('Please enter desired number of Ships (this will restart your game)', false, '', 'gear');
   }
 }

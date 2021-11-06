@@ -85,7 +85,9 @@ export const boardReducer = createReducer(
     }
   }),
   on(action.SetNumberofShips, (state, { count }) => {
-    state.numberOfShips = count;
+    state.numberOfShips = +count;
+    state.me = new Player(numberofCells, numberofLifes),
+    state.opponent =  new Player(numberofCells, numberofLifes)
     return {
       ...state
     }
