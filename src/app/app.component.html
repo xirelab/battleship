@@ -1,7 +1,6 @@
 <h2> Battleship 
   <app-settings (onClick)="gearClicked()"></app-settings>
 </h2>
-
 <ng-container *ngIf="{
   me: me$ | async,
   opponent: opponent$ | async,
@@ -17,17 +16,21 @@
       <td *ngIf="isShipArranged">
         <app-header [player]="data?.opponent"></app-header>
         <app-board [isSystem]="true" [numberofShips]= "data?.numberOfShips" [showShips]=canShowShips
-          [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [board]="data?.opponent?.board">
+          [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [board]="data?.opponent?.board"
+          (selectedShip)="selectedShip($event)" [isBoardEnabled]="isTabletMode && isMyTurn">
         </app-board>
       </td>
       <td>
         <app-header [player]="data?.me"></app-header>
         <app-board [isSystem]="false" [numberofShips]= "data?.numberOfShips" [showShips]=true
           [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [board]="data?.me?.board"
-          (shipSelected)="allShipSelected($event, data?.me?.board)">
+          (allShipSelected)="allShipSelected($event, data?.me?.board)">
         </app-board>
-        <button *ngIf="canContinue" class= hint style="float: right;" mat-button 
+        <button *ngIf="canContinue && !isTabletMode" class= hint style="float: right;" mat-button 
           (click)="onClickContinue()">Lets continue...
+        </button> &nbsp;&nbsp;
+        <button *ngIf="canContinue" class= right-align style="float: right;" mat-button 
+          (click)="onModeClick()"><span> {{isTabletMode ? 'Change to classic mode!' : 'Change to tablet mode!'}} </span>
         </button> &nbsp;&nbsp;
         <button *ngIf="canContinue && data?.me?.lifes > 0" class= right-align style="float: right;" mat-button 
           (click)="onHintClick()">Hint*

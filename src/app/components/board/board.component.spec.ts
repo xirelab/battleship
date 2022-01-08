@@ -264,7 +264,7 @@ describe('BoardComponent', () => {
       component.board = mockBoard;
       component.board[1].value = 'hit';
       const slot = {x: '1', y: 'B'};
-      spyOn(component.shipSelected, 'emit');
+      spyOn(component.allShipSelected, 'emit');
 
       // Act
       component.click("1", "B");
@@ -273,7 +273,7 @@ describe('BoardComponent', () => {
       expect(component.lastSelectedCell).toBe(slot);
       expect(component.currentShip).toBe(0);
       expect(component.numberOfcellSelected).toBe(0);
-      expect(component.shipSelected.emit).toHaveBeenCalledWith(true);
+      expect(component.allShipSelected.emit).toHaveBeenCalledWith(true);
     });
   });
 });

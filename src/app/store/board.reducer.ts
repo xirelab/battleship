@@ -38,7 +38,7 @@ export const boardReducer = createReducer(
   on(action.SetPlayerType, (state, { isSingleUser }) => {
     state.isSinglePlayer = isSingleUser;
     if (isSingleUser) {
-      state.opponent.name = 'System';
+      state.opponent.name = 'SYSTEM';
     }
     return {
       ...state
@@ -84,9 +84,17 @@ export const boardReducer = createReducer(
       ...state
     }
   }),
+  on(action.ResetLifes, (state) => {
+    state.me.lifes = 3;
+    return {
+      ...state
+    }
+  }),
   on(action.SetNumberofShips, (state, { count }) => {
     state.numberOfShips = +count;
-    state.me = new Player(numberofCells, numberofLifes),
+    let myName = state.me.name;
+    state.me = new Player(numberofCells, numberofLifes);
+    state.me.name = myName;
     state.opponent =  new Player(numberofCells, numberofLifes)
     return {
       ...state

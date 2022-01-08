@@ -21,7 +21,9 @@ export class BoardComponent implements OnInit, OnChanges {
   @Input() numberofShips: number = 2;
   @Input() showShips: boolean = true;
   @Input() isSystem: boolean = true;
-  @Output() shipSelected =  new EventEmitter<boolean>();
+  @Input() isBoardEnabled: boolean = false;
+  @Output() selectedShip =  new EventEmitter<any>();
+  @Output() allShipSelected =  new EventEmitter<boolean>();
 
   // @Input()
   // get incoming(): Slot {
@@ -104,6 +106,10 @@ export class BoardComponent implements OnInit, OnChanges {
   }
 
   click(x: string, y: string) {
+    if (this.isSystem && this.isBoardEnabled) {
+      this.selectedShip.emit({x: x, y:y});
+      return;
+    }
     if (this.isSystem || !this.isEnabled(x, y)) {
       return;
     }
@@ -122,7 +128,7 @@ export class BoardComponent implements OnInit, OnChanges {
       this.numberOfcellSelected = 0;
     }
     if (this.currentShip === 0) {
-      this.shipSelected.emit(true);
+      this.allShipSelected.emit(true);
     }
   }
 

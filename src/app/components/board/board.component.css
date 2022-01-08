@@ -3,13 +3,22 @@
   padding: 8px;
 }
 
+.triangle-up {
+	width: 0;
+	height: 0;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-bottom: 20px solid rgb(104, 240, 86);
+}
+
 .right-align {
   text-align: right;
   color: #e42a49;
 }
 
 .cell {
-  width: 100%;
+  width: 30px;
+  height: 30px;
   padding: 10px;
   background-color: rgb(215, 240, 221);
   border: none;
@@ -42,3 +51,11 @@
   #board tr:nth-child(even){background-color: #f2f2f2;}
   
   #board td:hover {background-color: #ddd;}
+
+  .blink_me {
+    animation: blinker 1s linear infinite;
+  }
+  
+  @keyframes blinker {  
+    50% { opacity: 0; }
+  }

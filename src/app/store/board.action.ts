@@ -10,6 +10,7 @@ export enum BoardActionTypes {
   PrepareSystemBoardCompleted = '[Board] Prepare System Board Completed',
   DropMissile = '[Board] Drop Missile',
   ReduceOneLife = '[Board] Reduce One Life',
+  ResetLifes = '[Board] Reset number of Life',
   SetNumberofShips = '[Board] Set Number of Ships'
 }
 
@@ -42,6 +43,7 @@ export const dropMissile = createAction(
 );
 
 export const ReduceOneLife = createAction(BoardActionTypes.ReduceOneLife);
+export const ResetLifes = createAction(BoardActionTypes.ResetLifes);
 
 export const SetNumberofShips = createAction(
   BoardActionTypes.SetNumberofShips,

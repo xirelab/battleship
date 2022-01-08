@@ -22,7 +22,9 @@ export class AppComponent implements OnInit {
   currentPlayer: string = '';
   canContinue = false;
   canShowShips = false;
-  isSinglePlayer = false;  
+  isSinglePlayer = false;
+  isTabletMode = false;
+  isMyTurn = false; 
 
   me$ = this.store.pipe(select(selector.me));
   opponent$ = this.store.pipe(select(selector.opponent));
@@ -58,6 +60,7 @@ export class AppComponent implements OnInit {
     this.gameStatus$.subscribe((player: string) => {
       if(player) {
         this.isGameFinished = true;
+        this.canContinue = false;
         this.openDialog(`Congratulations ${player} won`, false);
       } 
     });
@@ -71,12 +74,22 @@ export class AppComponent implements OnInit {
       setTimeout(() =>
       {        
         switch (user) {
-          case 'Me': this.openDialog('Please enter your cordinates', true); break;
+          case 'Me': 
+            if (this.isTabletMode) {
+              this.isMyTurn = true;
+            } else {
+              this.openDialog('Please enter your cordinates', true); 
+            }
+            break;
           case 'Invalid': this.openDialog('Invalid entry! Please re-enter your cordinates', true); break;
           case 'Exists': this.openDialog('Already hit! Please re-enter your cordinates', true); break;
           case 'Opponent':
             const slot = this.boardService.triggerSystemFire(this.myBoard);
-            this.openDialog('Opponent fired the cordinates:', false, slot);
+            if (this.isTabletMode) {
+              this.store.dispatch(actions.dropMissile({data: slot}));
+            } else {
+              this.openDialog('Opponent fired the cordinates:', false, slot);
+            }
             break;
         }
       }, 500);
@@ -122,12 +135,21 @@ export class AppComponent implements OnInit {
           this.store.dispatch(actions.SetMyName({name: result.value.toString()}));
           this.openDialog('Lets start arranging our ships..', false, '', 'arrangeShip'); 
         } else if(type === 'opponentShip') {
+          this.openDialog('Lets start the game..', false, '', 'startHit');
+        } else if(type === 'startHit') {
           this.processCurrestUser('Me');
         } else if(type === 'gear') {
           if (result && result.value !== 'cancelled') {
+            this.store.dispatch(actions.ResetLifes());
             this.store.dispatch(actions.SetNumberofShips({count: result.value}));
             this.openDialog('Lets start arranging our ships..', false, '', 'arrangeShip');
           }
+        } else if(type === 'modeToTablet') {
+          // do nothing
+          this.isMyTurn = true;
+        } else if(type === 'modeToClassic') {
+          this.canContinue = false;
+          this.openDialog('Please enter your cordinates', true);
         } else {
           if (result && result.value === 'break') {
             this.canContinue = true;
@@ -155,5 +177,23 @@ export class AppComponent implements OnInit {
 
   gearClicked() {
     this.openDialog('Please enter desired number of Ships (this will restart your game)', false, '', 'gear');
+  }
+
+  onModeClick() {
+    this.isTabletMode = !this.isTabletMode;
+    if(this.isTabletMode) {
+      this.openDialog('Now you can select opponent ship by clicking on it..', false, '', 'modeToTablet');
+    } else {
+      this.isMyTurn = false;
+      this.openDialog('Now changed to classic mode. You can enter the cordinates..', false, '', 'modeToClassic');
+    }
+  }
+
+  selectedShip($event) {
+    if ($event) {
+      console.log(`${$event.x}${$event.y}`);
+      this.isMyTurn = false;
+      this.store.dispatch(actions.dropMissile({data: `${$event.x}${$event.y}`}));
+    }
   }
 }

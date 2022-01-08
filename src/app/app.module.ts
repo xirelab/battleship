@@ -20,6 +20,7 @@ import { MatNativeDateModule, MatCommonModule } from '@angular/material/core';
 import { SettingsComponent } from './components/settings/settings.component';
 // import { MatIconModule } from '@angular/material';
 import {MatMenuModule} from '@angular/material/menu'
+import { BoldPipe } from './utils/bold.pipe';
 
 @NgModule({
   imports: [
@@ -53,7 +54,8 @@ import {MatMenuModule} from '@angular/material/menu'
     AutoFocusDirective,
     AlphaNumericDirective,
     HeaderComponent,
-    SettingsComponent
+    SettingsComponent,
+    BoldPipe
   ],
   exports: [
     // AutoFocusDirective,

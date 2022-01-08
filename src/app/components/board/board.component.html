@@ -10,14 +10,25 @@
     <th>      
       {{y}}
     </th>
-    <td (click)="click(x, y)" *ngFor = "let x of xDimension">        
+    <td (click)="click(x, y)" *ngFor = "let x of xDimension">
+      <button class="cell" 
+          [class.ship]="isShip(x, y)"
+          [class.hit]="isHit(x, y)"
+          [class.possible-cell]="isNextPossibleCell(x, y)">
+          <span [innerText]="value(x, y) | titlecase | bold"></span>
+        </button>
+      <!-- <div *ngIf="!isShip(x, y) || isHit(x, y); else isButton">
         <button class="cell" 
           [class.ship]="isShip(x, y)"
           [class.hit]="isHit(x, y)"
           [class.possible-cell]="isNextPossibleCell(x, y)">
           <span [innerText]="value(x, y) | titlecase"></span>
-      </button>
+        </button>
+      </div> 
+      <ng-template #isButton>
+        <div class="triangle-up"></div>
+      </ng-template>  -->
     </td> 
   </tr>
 </table>
-<span class="right-align" style="float: right;" [innerText]="shipDetails"> </span>
+<b><span class="right-align blink_me" style="float: right;" [innerText]="shipDetails"> </span></b>
