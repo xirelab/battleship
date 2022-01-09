@@ -7,8 +7,28 @@
     <!-- <span>&#9881;&#65039;</span> -->
   </button>
   <mat-menu #menu="matMenu">
-    <button (click)="gearClicked()" mat-menu-item>
+    <button (click)="gearClicked(menus.ships)" mat-menu-item>
       <mat-icon>&#119663;</mat-icon>
       <span>Number of Ships</span>
+    </button>
+    <button (click)="gearClicked(menus.mode)" mat-menu-item>
+      <mat-icon>&#119663;</mat-icon>
+      <span>Default Mode</span>
+    </button>
+    <button (click)="gearClicked(menus.profile)" mat-menu-item>
+      <mat-icon>&#119663;</mat-icon>
+      <span>Profile</span>
+    </button>
+    <button (click)="gearClicked(menus.opponent)" mat-menu-item>
+      <mat-icon>&#119663;</mat-icon>
+      <span>Opponent</span>
+    </button>
+    <button (click)="gearClicked(menus.restart)" mat-menu-item>
+      <mat-icon>&#119663;</mat-icon>
+      <span>Restart game</span>
+    </button>
+    <button (click)="gearClicked(menus.help)" mat-menu-item>
+      <mat-icon>&#119663;</mat-icon>
+      <span>Help</span>
     </button>
   </mat-menu>    

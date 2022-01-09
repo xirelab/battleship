@@ -21,6 +21,7 @@ import { SettingsComponent } from './components/settings/settings.component';
 // import { MatIconModule } from '@angular/material';
 import {MatMenuModule} from '@angular/material/menu'
 import { BoldPipe } from './utils/bold.pipe';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   imports: [
@@ -62,7 +63,11 @@ import { BoldPipe } from './utils/bold.pipe';
     AlphaNumericDirective,
     // ActivatedRoute
   ],
-  providers: [TitleCasePipe, AsyncPipe],
+  providers: [
+    TitleCasePipe,
+    AsyncPipe,
+    CookieService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

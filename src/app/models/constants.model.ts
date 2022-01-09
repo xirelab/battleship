@@ -59,3 +59,10 @@ export const mockBoard = {
     }
   ]
 };
+
+export const Menus = {
+  ships: 'ships',
+  mode: 'mode',
+  restart: 'restart',
+  help: 'help'
+};

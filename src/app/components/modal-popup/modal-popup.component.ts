@@ -14,28 +14,38 @@ export class ModalPopupComponent {
     @Inject(MAT_DIALOG_DATA) public data: Dialogue,
     public titleCasePipe: TitleCasePipe) {}
 
-  get caption() {
-    return this.data.isInputVisisble ? this.data.caption : `${this.data.caption} ${this.data.value}`;
+  // get caption() {
+  //   return this.data.caption;
+  // }
+
+  onCancelClicked(): void {
+    this.data.isCancelClicked = true;
+    this.dialogRef.close(this.data);
+  }
+
+  button1Clicked = () => {
+    this.data.isButton1Clicked = true;
+    this.dialogRef.close(this.data);
+  } 
+  
+  button2Clicked = () => {
+    this.data.isButton2Clicked = true;
+    this.dialogRef.close(this.data);
   }
   
-  selectPlayer(player) {
-    this.data.value = player === 1 ? 'single' : 'double';
-    this.dialogRef.close(this.data);
-  }
+  // selectPlayer(player) {
+  //   this.data.value = player === 1 ? 'single' : 'double';
+  //   this.dialogRef.close(this.data);
+  // }
 
-  onNoClick(): void {
-    this.data.value = 'break';
-    this.dialogRef.close(this.data);
-  }
-
-  onCancelClick() {
-    this.data.value = 'cancelled';
-    this.dialogRef.close(this.data);
-  }
+  // onCancelClick() {
+  //   this.data.value = 'cancelled';
+  //   this.dialogRef.close(this.data);
+  // }
 
   isButtonEnabled(): boolean {
     return (this.data && this.data.value && this.data.value.length >= 2) || 
-           (!this.data.isInputVisisble && this.data.type !=='myName');
+           !this.data.isInputVisisble; // && this.data.type !== 'myName');
   }
 
   keyPress(event) {    

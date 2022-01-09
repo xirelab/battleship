@@ -1,6 +1,11 @@
 export class Dialogue {
-  isInputVisisble: boolean;
   caption: string;
-  value: string;
+  isInputVisisble: boolean;
   type: string;
+  value: string;
+  button1text: string;
+  button2text: string;
+  isCancelClicked: boolean;
+  isButton1Clicked: boolean;
+  isButton2Clicked: boolean;
 }

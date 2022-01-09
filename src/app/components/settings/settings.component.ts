@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Menus } from 'src/app/models/constants.model';
 
 @Component({
   selector: 'app-settings',
@@ -7,10 +8,11 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 })
 export class SettingsComponent {
 
-  @Output() onClick =  new EventEmitter<void>();
+  menus = Menus;
+  @Output() onClick = new EventEmitter<string>();
 
-  gearClicked() {
-    this.onClick.emit();
+  gearClicked(menu: string) {
+    this.onClick.emit(menu);
   }
 
 }

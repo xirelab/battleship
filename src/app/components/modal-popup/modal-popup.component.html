@@ -1,18 +1,26 @@
 <br/>
-{{caption}}
+{{data.caption}}
 <br/>
-<input *ngIf="data.isInputVisisble || data.type==='myName' || data.type==='gear'" autofocus alphaNumeric 
+<input *ngIf="data.isInputVisisble" autofocus alphaNumeric 
   [ngModel]="data.value" (ngModelChange)="data.value = $event.toUpperCase()"
   (keypress)="keyPress($event)">
-<div mat-dialog-actions>
-  <button *ngIf="data.type!=='playerSelection'" mat-button [mat-dialog-close]="data" [disabled]="!isButtonEnabled()">Ok</button>
-  <button *ngIf="data.isInputVisisble" mat-button (click)="onNoClick()">Lets take a break</button>
-  <button *ngIf="data.type==='gear'" mat-button (click)="onCancelClick()">Cancel</button>
+<div *ngIf="data.isInputVisisble; else NO_INPUT" >
+  <div mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="data" [disabled]="!isButtonEnabled()">{{data.button1text}}</button>
+    <button mat-button (click)="onCancelClicked()">{{data.button2text}}</button>
+    <!-- <button *ngIf="data.type==='gear'" mat-button (click)="onCancelClick()">data.button2text</button> -->
+  </div>
 </div>
-<div mat-dialog-actions *ngIf="data.type==='playerSelection'">
+<ng-template #NO_INPUT>
+  <div mat-dialog-actions>
+    <button mat-button (click)="button1Clicked()">{{data.button1text}}</button>
+    <button mat-button (click)="button2Clicked()">{{data.button2text}}</button>
+  </div>  
+</ng-template>
+<!-- <div mat-dialog-actions *ngIf="data.type==='playerSelection'">
   <button mat-button (click)="selectPlayer(1)">Single player</button>
-  <button mat-button (click)="selectPlayer(2)" [disabled]="true">Two player</button>
-</div>
+  <button mat-button (click)="selectPlayer(2)">Two player</button>
+</div> -->
 <br/>
 <div *ngIf="data.isInputVisisble">
   <p class="comment">Please enter in the format "XY". Example "2D"</p>
