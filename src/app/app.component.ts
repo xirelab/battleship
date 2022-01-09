@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
   isSinglePlayer = false;
   isTabletMode = true;
   isMyTurn = false; 
+  user_cookie: any;
 
   me$ = this.store.pipe(select(selector.me));
   opponent$ = this.store.pipe(select(selector.opponent));
@@ -56,7 +57,7 @@ export class AppComponent implements OnInit {
     // const invitedby: string = this.route.snapshot.queryParamMap.get('invitedby');
     // console.log(invitedby);
 
-    this.getDefaultNode();
+    this.getDefaultValues();
 
     this.store.dispatch(actions.initializeBoard());
 
@@ -76,16 +77,22 @@ export class AppComponent implements OnInit {
     this.openDialog('Please select the players', false, 'playerSelection', '', 'Single Player', 'Two Player');
   }
 
-  getDefaultNode() {
-    let mode = this.cookieService.get('default_mode');
-    if(!mode) {
-      mode = 'tablet';
-      this.setDefaultMode(mode);
+  getDefaultValues() {
+    const user = this.cookieService.get('user_cookie');
+    if(!user) {
+      this.user_cookie = {
+        name: '',
+        mode: 'tablet',
+        ships: 3
+      };
+      this.setDefaultMode(this.user_cookie);
+    } else {
+      this.user_cookie = JSON.parse(user);  
     }
-    this.isTabletMode = mode === 'tablet';
+    this.isTabletMode = this.user_cookie.mode === 'tablet';
   }
 
-  setDefaultMode = (mode: string) => this.cookieService.set('default_mode', mode);
+  setDefaultMode = (user: any) => this.cookieService.set('user_cookie', JSON.stringify(user));
 
   processCurrestUser(user: string) {
     if (this.currentPlayer !== user) {
@@ -159,10 +166,22 @@ export class AppComponent implements OnInit {
         case 'playerSelection' :
           this.isSinglePlayer = result.isButton1Clicked;
           this.store.dispatch(actions.SetPlayerType({isSingleUser: result.isButton1Clicked}));
-          this.openDialog('Please enter your name', true, 'myName', '', 'Ok', 'Cancel');
+          if (this.user_cookie && this.user_cookie.name) {
+            this.store.dispatch(actions.SetMyName({name: this.user_cookie.name}));
+            if (this.isSinglePlayer) {
+              this.openDialog('Lets start arranging our ships..', false, 'arrangeShip'); 
+            } else {
+              this.openDialog('Lets share this link with opponent (new link has to provide here..)', false, 'sharing');
+            }
+          } else {
+            this.openDialog('Please enter your name', true, 'myName', '', 'Ok', 'Cancel');
+          }
           break;
         case'myName' :
-          this.store.dispatch(actions.SetMyName({name: result.value ? result.value.toString() : 'Player1'}));
+          const myname = result.value ? result.value.toString() : 'Player1';
+          this.user_cookie.name = myname;
+          this.setDefaultMode(this.user_cookie);
+          this.store.dispatch(actions.SetMyName({name: myname}));
           if (this.isSinglePlayer) {
             this.openDialog('Lets start arranging our ships..', false, 'arrangeShip'); 
           } else {
@@ -212,6 +231,8 @@ export class AppComponent implements OnInit {
           break;
         case 'numberOfShips' :
             if (result && !result.isCancelClicked) {
+              this.user_cookie.ships = result.value;
+              this.setDefaultMode(this.user_cookie);
               this.store.dispatch(actions.ResetLifes());
               this.store.dispatch(actions.SetNumberofShips({count: result.value}));
               this.openDialog('Lets start arranging our ships..', false, 'arrangeShip');
@@ -219,7 +240,8 @@ export class AppComponent implements OnInit {
             break;
         case 'modeChanged':
           this.isTabletMode = Boolean(result.isButton1Clicked);
-          this.setDefaultMode(result.isButton1Clicked ? 'tablet' : 'classic');
+          this.user_cookie.mode = result.isButton1Clicked ? 'tablet' : 'classic';
+          this.setDefaultMode(this.user_cookie);
           break;
         default : break;
       }
@@ -243,11 +265,13 @@ export class AppComponent implements OnInit {
   onModeClick() {
     this.isTabletMode = !this.isTabletMode;
     if(this.isTabletMode) {
-      this.setDefaultMode('tablet');
+      this.user_cookie.mode = 'tablet';
+      this.setDefaultMode(this.user_cookie);
       this.openDialog('Cool.. Now you can select opponent ship by clicking on it..', false, 'modeToTablet');
     } else {
       this.isMyTurn = false;
-      this.setDefaultMode('classic');
+      this.user_cookie.mode = 'classic';
+      this.setDefaultMode(this.user_cookie);
       this.openDialog('Changed to classic mode. You can hit by entering the cordinates..', false, 'modeToClassic');
     }
   }
@@ -269,7 +293,7 @@ export class AppComponent implements OnInit {
   gearClicked($event) {
     switch($event) {
       case 'ships':
-        this.openDialog('Please enter desired number of Ships (this will restart your game)', true, 'numberOfShips', '', 'Cancel');
+        this.openDialog('Please enter desired number of Ships (this will restart your game)', true, 'numberOfShips', '', 'Ok', 'Cancel');
         break;
       case 'mode':
         this.openDialog('Please select the desired game mode (no restart required):', false, 'modeChanged', '', 'Tablet', 'Classic');
