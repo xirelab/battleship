@@ -51,7 +51,7 @@ export class ModalPopupComponent {
   keyPress(event) {    
     var charCode = (event.which) ? event.which : event.keyCode;
 
-    if (this.data.type==='myName') {
+    if (this.data.type==='myName' || this.data.type === 'profileUpdate') {
       if (charCode === 13 && this.isButtonEnabled()) {
         this.dialogRef.close(this.data);
       }

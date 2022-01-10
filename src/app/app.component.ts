@@ -10,6 +10,8 @@ import * as actions from './store/board.action';
 import * as selector from './store/board.selector';
 import { ActivatedRoute } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { ContentfulService } from './services/contentful.service';
+import { CookieManagementService } from './services/cookie.service';
 
 @Component({
   selector: 'my-app',
@@ -17,6 +19,7 @@ import { CookieService } from 'ngx-cookie-service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  contents: any;
   isGameFinished = false;
   isShipArranged = false;
   myBoard: Board;
@@ -25,7 +28,8 @@ export class AppComponent implements OnInit {
   canShowShips = false;
   isSinglePlayer = false;
   isTabletMode = true;
-  isMyTurn = false; 
+  isMyTurn = false;
+  level = 1; 
   user_cookie: any;
 
   me$ = this.store.pipe(select(selector.me));
@@ -44,7 +48,9 @@ export class AppComponent implements OnInit {
     private dialog: MatDialog,
     private store: Store<BoardState>,
     private actions$: Actions,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private contentful: ContentfulService,
+    private cookieManagementService: CookieManagementService
     // private route: ActivatedRoute
   ) {
     // this.route.queryParams.subscribe(params => {
@@ -57,20 +63,22 @@ export class AppComponent implements OnInit {
     // const invitedby: string = this.route.snapshot.queryParamMap.get('invitedby');
     // console.log(invitedby);
 
+    this.contentful.getContent_GraphQl().then(res => {
+      this.contents = res;
+    });
+
     this.getDefaultValues();
 
     this.store.dispatch(actions.initializeBoard());
 
     this.currentPlayer$.subscribe((user: string) => this.processCurrestUser(user));
+
     this.gameStatus$.subscribe((player: string) => {
       if(player) {
         this.isGameFinished = true;
         this.canContinue = false;
-        if (player === 'Opponent') {
-          this.openDialog(`${player} won`, false, 'GameFinish', '', 'Challenge again', 'Enough for now');  
-        } else {
-          this.openDialog(`Congratulations ${player} won`, false, 'GameFinish', '', 'Restart', 'Enough for now');
-        }
+        this.openDialog(player === 'Opponent' ? `${player} won` : `Congratulations you won`, false, 'GameFinish', '', 
+          player === 'Opponent' ? 'Challenge again' : (this.level === 1 ? 'Next Level' : 'Restart'), 'Not now');
       } 
     });
 
@@ -78,21 +86,14 @@ export class AppComponent implements OnInit {
   }
 
   getDefaultValues() {
-    const user = this.cookieService.get('user_cookie');
-    if(!user) {
-      this.user_cookie = {
-        name: '',
-        mode: 'tablet',
-        ships: 3
-      };
-      this.setDefaultMode(this.user_cookie);
-    } else {
-      this.user_cookie = JSON.parse(user);  
-    }
+    this.user_cookie = this.cookieManagementService.getDefaultValues();
     this.isTabletMode = this.user_cookie.mode === 'tablet';
   }
 
-  setDefaultMode = (user: any) => this.cookieService.set('user_cookie', JSON.stringify(user));
+  get headings() {
+    console.log(this.contents.data.battleshipCollection.items[0])
+    return this.contents.data.battleshipCollection.items[0];
+  }
 
   processCurrestUser(user: string) {
     if (this.currentPlayer !== user) {
@@ -114,7 +115,7 @@ export class AppComponent implements OnInit {
             this.openDialog('Already hit! Please re-enter your cordinates', true, 'fire'); 
             break;
           case 'Opponent':
-            const slot = this.boardService.triggerSystemFire(this.myBoard);
+            const slot = this.triggerSystemFire();
             if (this.isTabletMode) {
               this.store.dispatch(actions.dropMissile({data: slot}));
             } else {
@@ -124,6 +125,12 @@ export class AppComponent implements OnInit {
         }
       }, 500);
     }
+  }
+
+  triggerSystemFire() {
+    return this.level === 1 ?
+     this.boardService.triggerSystemFire_Level1(this.myBoard) :
+     this.boardService.triggerSystemFire_Level2(this.myBoard);
   }
 
   allShipSelected($event: boolean, myBoard: Board) {
@@ -142,7 +149,8 @@ export class AppComponent implements OnInit {
     type: string = '', 
     value: string = '', 
     button1text: string = 'OK', 
-    button2text: string = ''): void {
+    button2text: string = ''
+  ): void {
     const dialogRef = this.dialog.open(ModalPopupComponent, {
       width: '300px',
       autoFocus: true,
@@ -178,10 +186,7 @@ export class AppComponent implements OnInit {
           }
           break;
         case'myName' :
-          const myname = result.value ? result.value.toString() : 'Player1';
-          this.user_cookie.name = myname;
-          this.setDefaultMode(this.user_cookie);
-          this.store.dispatch(actions.SetMyName({name: myname}));
+          this.setplayerName(result);
           if (this.isSinglePlayer) {
             this.openDialog('Lets start arranging our ships..', false, 'arrangeShip'); 
           } else {
@@ -193,11 +198,7 @@ export class AppComponent implements OnInit {
           this.openDialog('Lets start arranging our ships..', false, 'arrangeShip'); 
           break;
         case 'opponentShip' :
-          if (this.isTabletMode) {
-            this.openDialog('Start tick the opponnent ships..', false, 'startHit');
-          } else {
-            this.openDialog('Lets start the game.', false, 'startHit');
-          }
+          this.openDialog(this.isTabletMode ? 'Start tick the opponnent ships..' : 'Lets start the game.', false, 'startHit');
           break;
         case 'startHit':
           this.processCurrestUser('Me');
@@ -207,8 +208,7 @@ export class AppComponent implements OnInit {
           this.isMyTurn = true;
           break
         case 'modeToClassic' :
-          this.canContinue = false;
-          this.openDialog('Please enter your cordinates', true, 'fire');
+          this.onClickContinue();
           break;
         case 'fire' :
           if (result && result.isCancelClicked) {
@@ -219,6 +219,7 @@ export class AppComponent implements OnInit {
           break;
         case 'GameFinish':
           if(result.isButton1Clicked) {
+            this.level += 1;
             this.restartGame();
           } else {
             // need to close the window..
@@ -232,7 +233,7 @@ export class AppComponent implements OnInit {
         case 'numberOfShips' :
             if (result && !result.isCancelClicked) {
               this.user_cookie.ships = result.value;
-              this.setDefaultMode(this.user_cookie);
+              this.cookieManagementService.setDefaultMode(this.user_cookie);
               this.store.dispatch(actions.ResetLifes());
               this.store.dispatch(actions.SetNumberofShips({count: result.value}));
               this.openDialog('Lets start arranging our ships..', false, 'arrangeShip');
@@ -241,7 +242,10 @@ export class AppComponent implements OnInit {
         case 'modeChanged':
           this.isTabletMode = Boolean(result.isButton1Clicked);
           this.user_cookie.mode = result.isButton1Clicked ? 'tablet' : 'classic';
-          this.setDefaultMode(this.user_cookie);
+          this.cookieManagementService.setDefaultMode(this.user_cookie);
+          break;
+        case 'profileUpdate':
+          this.setplayerName(result);
           break;
         default : break;
       }
@@ -266,12 +270,12 @@ export class AppComponent implements OnInit {
     this.isTabletMode = !this.isTabletMode;
     if(this.isTabletMode) {
       this.user_cookie.mode = 'tablet';
-      this.setDefaultMode(this.user_cookie);
+      this.cookieManagementService.setDefaultMode(this.user_cookie);
       this.openDialog('Cool.. Now you can select opponent ship by clicking on it..', false, 'modeToTablet');
     } else {
       this.isMyTurn = false;
       this.user_cookie.mode = 'classic';
-      this.setDefaultMode(this.user_cookie);
+      this.cookieManagementService.setDefaultMode(this.user_cookie);
       this.openDialog('Changed to classic mode. You can hit by entering the cordinates..', false, 'modeToClassic');
     }
   }
@@ -282,6 +286,13 @@ export class AppComponent implements OnInit {
       this.isMyTurn = false;
       this.store.dispatch(actions.dropMissile({data: `${$event.x}${$event.y}`}));
     }
+  }
+
+  setplayerName(result: any) {
+    const myname = result.value ? result.value.toString() : 'Player1';
+    this.user_cookie.name = myname;
+    this.cookieManagementService.setDefaultMode(this.user_cookie);
+    this.store.dispatch(actions.SetMyName({name: myname}));
   }
 
   restartGame() {
@@ -301,6 +312,9 @@ export class AppComponent implements OnInit {
       case 'restart':
         this.openDialog('It will clear all data. Please confirm', false, 'restart', '', 'OK', 'Cancel');
         break;
+      case 'profile':
+        this.openDialog('Please enter your name', true, 'profileUpdate', '', 'Ok', 'Cancel');
+          break;
       case 'help':
         this.openDialog('Help content goes here.. Tobe updated', false, 'help');
         break;

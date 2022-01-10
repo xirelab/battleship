@@ -14,7 +14,8 @@ const initialState: BoardState = {
   yDimension: [],
   currentPlayer: '',
   isSinglePlayer: true,
-  isSetupCompleted: true
+  isSetupCompleted: true,
+  level: 1
 };
 
 // Initial setup. 10 cells and 3 ships..

@@ -11,6 +11,7 @@ export interface BoardState {
   isSinglePlayer: boolean;
   me: Player;
   opponent: Player;
+  level: number;
 }
 
 export class AppState {

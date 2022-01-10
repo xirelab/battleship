@@ -64,5 +64,6 @@ export const Menus = {
   ships: 'ships',
   mode: 'mode',
   restart: 'restart',
-  help: 'help'
+  help: 'help',
+  profile: 'profile'
 };

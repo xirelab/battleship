@@ -139,12 +139,31 @@ export class BoardService {
     return this.board.asObservable();
   }
 
-  triggerSystemFire(board: Board): string {
+  triggerSystemFire_Level1(board: Board): string {
+    if (board && board.cells) {
+      let xValue: any;
+      let yValue: any;
+      do {
+        xValue = utils.getRandomInt(1, 10).toString();
+        yValue = constant.yDimension[utils.getRandomInt(1, 10)];
+        const cell = board.cells.find(i => i.x === xValue && i.y === yValue);
+        if (cell && !cell.value) {
+          return `${xValue}${yValue}`;
+        }
+      }
+      while (true);
+    }
+  }
+
+  triggerSystemFire_Level2(board: Board): string {
     if (board && board.cells) {
       let xValue: any;
       let yValue: any;
       let icase: number = 1;
       do {
+        if (this.prevprev) {
+          
+        }
         if (this.prev) {
           xValue = icase == 1 || icase == 3 ? this.prev.x + 1 : this.prev.x;
           yValue = icase == 2 || icase == 4 ? this.prev.y + 1 : this.prev.y;
@@ -156,8 +175,8 @@ export class BoardService {
         
         const cell = board.cells.find(i => i.x === xValue && i.y === yValue);
         if (cell && !cell.value) {
-          // this.prevprev = this.prev;
-          // this.prev = cell; 
+          this.prevprev = this.prev;
+          this.prev = cell; 
           return `${xValue}${yValue}`;
         }
       }

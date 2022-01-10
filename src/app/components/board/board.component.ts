@@ -143,7 +143,7 @@ export class BoardComponent implements OnInit, OnChanges {
         const yBase = this.yDimension.findIndex(i => i === this.lastSelectedCell.y);
 
         if ((Number(x) === Number(this.lastSelectedCell.x) &&
-              (yIndex - 1 === yBase || yIndex + 1 === yBase)) ||
+             (yIndex - 1 === yBase || yIndex + 1 === yBase)) ||
             ((yIndex === yBase && (
               Number(x) + 1 === Number(this.lastSelectedCell.x) ||
               Number(x) - 1 === Number(this.lastSelectedCell.x))))) {
