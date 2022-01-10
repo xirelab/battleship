@@ -11,9 +11,7 @@ import * as utils from '../utils/common.util';
 })
 export class BoardService {
   private board: BehaviorSubject<IBoard>;
-  private prev: Cell;
-  private prevprev: Cell;
-
+  
   initializeOpponent(systemBoard: Board, numberOfShips: number): Observable<IBoard> {
     if (!systemBoard) {
       if (!this.board) {
@@ -150,37 +148,69 @@ export class BoardService {
         if (cell && !cell.value) {
           return `${xValue}${yValue}`;
         }
-      }
-      while (true);
+      } while (true);
     }
   }
 
+  // isHit = false;
+  private icase = 1;
+  private iPrevCase = 1;
+  private prev: any;
+  private prevprev: any;
+  private first: any;
+  private isDescreasing = true;
+
   triggerSystemFire_Level2(board: Board): string {
     if (board && board.cells) {
-      let xValue: any;
-      let yValue: any;
-      let icase: number = 1;
+      let xValue: number;
+      let yValue: number;
       do {
         if (this.prevprev) {
-          
-        }
-        if (this.prev) {
-          xValue = icase == 1 || icase == 3 ? this.prev.x + 1 : this.prev.x;
-          yValue = icase == 2 || icase == 4 ? this.prev.y + 1 : this.prev.y;
-          icase ++;
+          xValue = this.prevprev.x == this.prev.x ? this.prev.x : 
+                  (this.iPrevCase == 2 ? this.first.x + 1 :
+                  (this.isDescreasing ? this.prev.x - 1 : this.prev.x + 1));
+          yValue = this.prevprev.y == this.prev.y ? this.prev.y : 
+                  (this.iPrevCase == 2 ? this.first.y + 1 : 
+                  (this.isDescreasing ? this.prev.y - 1 : this.prev.y + 1));
+          // this.iPrevCase += 1;
+        } else if (this.prev) {
+          xValue = this.icase == 1 || this.icase == 3 ? this.prev.x :      // 1: top   3: bottom
+                  (this.icase == 2 ? this.prev.x - 1 : this.prev.x + 1);   // 2: right 4: left
+          yValue = this.icase == 2 || this.icase == 4 ? this.prev.y : 
+                  (this.icase == 1 ? this.prev.y - 1 : this.prev.y + 1);
+          this.icase += 1;
         } else {
-          xValue = utils.getRandomInt(1, 10).toString();
-          yValue = constant.yDimension[utils.getRandomInt(1, 10)];
+          xValue = utils.getRandomInt(1, 10);
+          yValue = utils.getRandomInt(1, 10);
         }
         
-        const cell = board.cells.find(i => i.x === xValue && i.y === yValue);
-        if (cell && !cell.value) {
-          this.prevprev = this.prev;
-          this.prev = cell; 
-          return `${xValue}${yValue}`;
+        const cell = board.cells.find(i => i.x === xValue.toString() && i.y === constant.yDimension[yValue]);
+        if (cell && cell.value) {
+          this.prevprev = null;
+          this.prev = null;
+          this.isDescreasing = true;
         }
-      }
-      while (true);
+        if (cell && !cell.value) {
+          if (cell.isShip) {
+            this.first = this.prev ? this.first : {x: xValue, y: yValue}; 
+            this.prevprev = this.prev;
+            this.prev = {x: xValue, y: yValue};
+            this.isDescreasing = !this.isDescreasing || this.icase > 2 ? false : true;
+            this.icase = 1;
+            this.iPrevCase = 1;
+          } else {
+            if (this.iPrevCase == 1 && this.prev) {
+              this.iPrevCase += 1;
+              this.isDescreasing = false;
+            } else if (this.prevprev && this.iPrevCase == 2) {
+              this.prevprev = null;
+              this.prev = null;
+              this.isDescreasing = true;
+            }
+          }
+          return `${xValue.toString()}${constant.yDimension[yValue]}`;
+        }
+      } while (true);
     }
   }
 }

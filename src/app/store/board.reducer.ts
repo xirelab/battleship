@@ -20,7 +20,7 @@ const initialState: BoardState = {
 
 // Initial setup. 10 cells and 3 ships..
 const numberofCells = 10;
-const numberofShips = 2;
+const numberofShips = 5;
 const numberofLifes = 3;
 
 export const boardReducer = createReducer(
