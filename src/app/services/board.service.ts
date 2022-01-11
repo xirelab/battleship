@@ -172,7 +172,7 @@ export class BoardService {
           yValue = this.prevprev.y == this.prev.y ? this.prev.y : 
                   (this.iPrevCase == 2 ? this.first.y + 1 : 
                   (this.isDescreasing ? this.prev.y - 1 : this.prev.y + 1));
-          // this.iPrevCase += 1;
+          this.iPrevCase += 1;
         } else if (this.prev) {
           xValue = this.icase == 1 || this.icase == 3 ? this.prev.x :      // 1: top   3: bottom
                   (this.icase == 2 ? this.prev.x - 1 : this.prev.x + 1);   // 2: right 4: left
@@ -186,21 +186,23 @@ export class BoardService {
         
         const cell = board.cells.find(i => i.x === xValue.toString() && i.y === constant.yDimension[yValue]);
         if (cell && cell.value) {
-          this.prevprev = null;
-          this.prev = null;
-          this.isDescreasing = true;
+          if (this.icase > 4 || this.iPrevCase > 2) {
+            this.prevprev = null;
+            this.prev = null;
+            this.isDescreasing = true;
+          }
         }
         if (cell && !cell.value) {
           if (cell.isShip) {
             this.first = this.prev ? this.first : {x: xValue, y: yValue}; 
             this.prevprev = this.prev;
             this.prev = {x: xValue, y: yValue};
-            this.isDescreasing = !this.isDescreasing || this.icase > 2 ? false : true;
+            this.isDescreasing = !this.isDescreasing || this.icase > 3 ? false : true;
             this.icase = 1;
             this.iPrevCase = 1;
           } else {
-            if (this.iPrevCase == 1 && this.prev) {
-              this.iPrevCase += 1;
+            if (this.iPrevCase == 2 && this.prevprev) {
+              // this.iPrevCase += 1;
               this.isDescreasing = false;
             } else if (this.prevprev && this.iPrevCase == 2) {
               this.prevprev = null;

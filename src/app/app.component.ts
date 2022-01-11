@@ -98,6 +98,7 @@ export class AppComponent implements OnInit {
   processCurrestUser(user: string) {
     if (this.currentPlayer !== user) {
       this.currentPlayer = user;
+      let timebreak = this.isTabletMode ? 0 : 500;
       setTimeout(() =>
       {        
         switch (user) {
@@ -123,7 +124,7 @@ export class AppComponent implements OnInit {
             }
             break;
         }
-      }, 500);
+      }, timebreak);
     }
   }
 
