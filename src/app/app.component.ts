@@ -29,7 +29,8 @@ export class AppComponent implements OnInit {
   isSinglePlayer = false;
   isTabletMode = true;
   isMyTurn = false;
-  level = 1; 
+  level = 1;
+  iWon = false; 
   user_cookie: any;
 
   me$ = this.store.pipe(select(selector.me));
@@ -75,10 +76,11 @@ export class AppComponent implements OnInit {
 
     this.gameStatus$.subscribe((player: string) => {
       if(player) {
+        this.iWon = player === 'Me';
         this.isGameFinished = true;
         this.canContinue = false;
-        this.openDialog(player === 'Opponent' ? `${player} won` : `Congratulations you won`, false, 'GameFinish', '', 
-          player === 'Opponent' ? 'Challenge again' : (this.level === 1 ? 'Next Level' : 'Restart'), 'Not now');
+        this.openDialog(!this.iWon ? `${player} won` : `Congratulations you won`, false, 'GameFinish', '', 
+          (!this.iWon ? 'Challenge again' : (this.level == 3 ? 'Restart' : 'Next Level')), 'Not now');
       } 
     });
 
@@ -220,8 +222,9 @@ export class AppComponent implements OnInit {
           break;
         case 'GameFinish':
           if(result.isButton1Clicked) {
-            this.level += 1;
-            this.restartGame();
+            if (this.iWon) this.level += 1;
+            if (this.level >= 4) this.level = 1;
+            this.nextLevel();
           } else {
             // need to close the window..
           }
@@ -264,7 +267,7 @@ export class AppComponent implements OnInit {
     setTimeout(() =>
       {        
         this.canShowShips = false;
-      }, 2000);
+      }, 500);
   }
 
   onModeClick() {
@@ -300,6 +303,12 @@ export class AppComponent implements OnInit {
     this.isShipArranged = false;
     this.store.dispatch(actions.RestartGame());
     this.openDialog('Please select the players', false, 'playerSelection', '', 'Single Player', 'Two Player');        
+  }
+
+  nextLevel() {
+    this.isShipArranged = false;
+    this.store.dispatch(actions.RestartGame());
+    this.openDialog('Lets start arranging our ships..', false, 'arrangeShip');   
   }
 
   gearClicked($event) {

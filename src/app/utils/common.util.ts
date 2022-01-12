@@ -49,7 +49,7 @@ export function updateBoard(cell: Slot, board: Board, type: string): string {
 }
 
 export function gameStatus(myBoard: Board, systemBoard: Board): string {
-  if (checkBoard(systemBoard)) return 'You';
+  if (checkBoard(systemBoard)) return 'Me';
   if (checkBoard(myBoard)) return 'Opponent';
   return '';
 }

@@ -11,6 +11,7 @@ import { BoldPipe } from 'src/app/utils/bold.pipe';
 export class HeaderComponent {
 
   @Input() player: Player;
+  @Input() level: number = 1;
 
   constructor(public titleCasePipe: TitleCasePipe) {}
 }

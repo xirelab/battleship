@@ -17,7 +17,7 @@
     <table style="margin-left:auto;margin-right:auto;">
       <tr>
         <td *ngIf="isShipArranged">
-          <app-header [player]="data?.opponent"></app-header>
+          <app-header [player]="data?.opponent" [level]="level"></app-header>
           <app-board [isSystem]="true" [numberofShips]= "data?.numberOfShips" [showShips]=canShowShips
             [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [board]="data?.opponent?.board"
             (selectedShip)="selectedShip($event)" [isBoardEnabled]="isTabletMode && isMyTurn && isShipArranged">
