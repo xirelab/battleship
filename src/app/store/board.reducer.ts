@@ -109,5 +109,11 @@ export const boardReducer = createReducer(
     return {
       ...state
     }
+  }),
+  on(action.SetCurrentPlayer, (state, { player }) => {
+    state.currentPlayer = player;
+    return {
+      ...state
+    }
   })
 );

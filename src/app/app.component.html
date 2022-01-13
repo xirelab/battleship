@@ -15,20 +15,9 @@
     isSetupCompleted: isSetupCompleted$ | async
   } as data">
     <table style="margin-left:auto;margin-right:auto;">
-      <tr>
-        <td *ngIf="isShipArranged">
-          <app-header [player]="data?.opponent" [level]="level"></app-header>
-          <app-board [isSystem]="true" [numberofShips]= "data?.numberOfShips" [showShips]=canShowShips
-            [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [board]="data?.opponent?.board"
-            (selectedShip)="selectedShip($event)" [isBoardEnabled]="isTabletMode && isMyTurn && isShipArranged">
-          </app-board>
-        </td>
+      <tr [class]="buttons">
+        <td></td><td></td>
         <td>
-          <app-header [player]="data?.me"></app-header>
-          <app-board [isSystem]="false" [numberofShips]= "data?.numberOfShips" [showShips]=true
-            [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [board]="data?.me?.board"
-            (allShipSelected)="allShipSelected($event, data?.me?.board)">
-          </app-board>
           <button *ngIf="canContinue && !isTabletMode" class= hint style="float: right;" mat-button 
             (click)="onClickContinue()">Lets continue...
           </button> &nbsp;&nbsp;
@@ -40,6 +29,40 @@
           </button>
         </td>
       </tr>
+      <tr>
+        <td *ngIf="isShipArranged">
+          <app-header [player]="data?.opponent" [level]="level"></app-header>
+          <div class="transbox">
+            <app-board class="board" [isSystem]="true" [numberofShips]= "data?.numberOfShips" [showShips]=canShowShips
+              [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [board]="data?.opponent?.board"
+              (selectedShip)="selectedShip($event)" [isBoardEnabled]="isTabletMode && isMyTurn && isShipArranged">
+            </app-board>
+          </div>
+        </td>
+        <td *ngIf="isShipArranged">
+          <div class="vl"></div>
+        </td>
+        <td>
+          <app-header [player]="data?.me"></app-header>
+          <div class="transbox">
+            <app-board class="board" [isSystem]="false" [numberofShips]= "data?.numberOfShips" [showShips]=true
+              [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [board]="data?.me?.board"
+              (allShipSelected)="allShipSelected($event, data?.me?.board)">
+            </app-board>
+          </div>
+          <!-- <button *ngIf="canContinue && !isTabletMode" class= hint style="float: right;" mat-button 
+            (click)="onClickContinue()">Lets continue...
+          </button> &nbsp;&nbsp;
+          <button *ngIf="canContinue" class= right-align style="float: right;" mat-button 
+            (click)="onModeClick()"><span> {{isTabletMode ? 'Change to classic mode !' : 'Change to tablet mode !'}} </span>
+          </button> &nbsp;&nbsp;
+          <button *ngIf="canContinue && data?.me?.lifes > 0" class= right-align style="float: right;" mat-button 
+            (click)="onHintClick()">Hint*
+          </button> -->
+        </td>
+      </tr>
     </table>
   </ng-container>
+  <br/>
+  <span>@xire labs</span>
 </div>

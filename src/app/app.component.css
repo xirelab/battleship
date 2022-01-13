@@ -2,10 +2,10 @@ p {
   font-family: Lato;
 }
 
-td, th {
+/* td, th {
   border: 1px solid #ddd;
   padding: 30px;
-}
+} */
 
 .right-align {
   text-align:right;  
@@ -18,8 +18,29 @@ td, th {
   background-color: #63f067;  
 }
 
-/* .body  {
-  background-image: url("../../images/BnbIe.png");
+.buttons {
+  border: none;
+  padding: 0px;
+}
+
+.vl {
+  border-left: 6px solid green;
+  height: 540px;
+  margin: 3px;
+}
+
+.body  {
+  background-image: url("../../images/1578519415415.jpeg");
   background-color: #2d94e9;
   margin: -30px;
-} */
+}
+
+.board {
+  background-color: #ffffff;
+  opacity: 1;
+}
+
+div.transbox {
+  background-color: #ffffff;
+  opacity: 1
+}

@@ -64,6 +64,7 @@ export class AppComponent implements OnInit {
     // const invitedby: string = this.route.snapshot.queryParamMap.get('invitedby');
     // console.log(invitedby);
 
+    console.log('onNgInit hit');
     this.contentful.getContent_GraphQl().then(res => {
       this.contents = res;
     });
@@ -71,6 +72,8 @@ export class AppComponent implements OnInit {
     this.getDefaultValues();
 
     this.store.dispatch(actions.initializeBoard());
+
+    if (this.user_cookie) this.store.dispatch(actions.SetNumberofShips({count: +this.user_cookie.ships}));
 
     this.currentPlayer$.subscribe((user: string) => this.processCurrestUser(user));
 
@@ -97,6 +100,7 @@ export class AppComponent implements OnInit {
     return this.contents.data.battleshipCollection.items[0];
   }
 
+  isInvalid = false;
   processCurrestUser(user: string) {
     if (this.currentPlayer !== user) {
       this.currentPlayer = user;
@@ -105,17 +109,26 @@ export class AppComponent implements OnInit {
       {        
         switch (user) {
           case 'Me': 
-            if (this.isTabletMode) {
+            if (this.isTabletMode || this.isInvalid) {
               this.isMyTurn = true;
+              this.isInvalid = false;
             } else {
               this.openDialog('Please enter your cordinates', true, 'fire'); 
             }
             break;
-          case 'Invalid': 
-            this.openDialog('Invalid entry! Please re-enter your cordinates', true, 'fire'); 
+          case 'Invalid':
+            if (!this.isTabletMode) { 
+              this.openDialog('Invalid entry! Please re-enter your cordinates', true, 'fire'); 
+            }
+            this.isInvalid = true;
+            this.store.dispatch(actions.SetCurrentPlayer({player: 'Me'}));
             break;
           case 'Exists': 
-            this.openDialog('Already hit! Please re-enter your cordinates', true, 'fire'); 
+            if (!this.isTabletMode) {
+              this.openDialog('Already hit! Please re-enter your cordinates', true, 'fire'); 
+            }
+            this.isInvalid = true;
+            this.store.dispatch(actions.SetCurrentPlayer({player: 'Me'}));
             break;
           case 'Opponent':
             const slot = this.triggerSystemFire();

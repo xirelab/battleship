@@ -45,6 +45,10 @@ export class BoardComponent implements OnInit, OnChanges {
     this.currentShip = this.numberofShips;
   }
 
+  get isCellEnabled() {
+    return this.isSystem || this.currentShip !== 0;
+  }
+
   get shipDetails(): string {
     if (this.isSystem || this.currentShip === 0) {
       return '';

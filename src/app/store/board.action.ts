@@ -12,7 +12,8 @@ export enum BoardActionTypes {
   ReduceOneLife = '[Board] Reduce One Life',
   ResetLifes = '[Board] Reset number of Life',
   RestartGame = '[Board] Restart the game',
-  SetNumberofShips = '[Board] Set Number of Ships'
+  SetNumberofShips = '[Board] Set Number of Ships',
+  SetCurrentPlayer = '[Board] Set Current Player'
 }
 
 export const initializeBoard = createAction(BoardActionTypes.InitializeBoard);
@@ -50,4 +51,9 @@ export const RestartGame = createAction(BoardActionTypes.RestartGame);
 export const SetNumberofShips = createAction(
   BoardActionTypes.SetNumberofShips,
   props<{ count: number }>()
+);
+
+export const SetCurrentPlayer = createAction(
+  BoardActionTypes.SetCurrentPlayer,
+  props<{ player: string }>()
 );

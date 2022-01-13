@@ -13,7 +13,7 @@ export class CookieManagementService {
             const user_cookie = {
                 name: '',
                 mode: 'tablet',
-                ships: 3
+                ships: 5
             };
             this.setDefaultMode(user_cookie);
             return user_cookie;

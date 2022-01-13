@@ -10,7 +10,7 @@
     <th>      
       {{y}}
     </th>
-    <td (click)="click(x, y)" *ngFor = "let x of xDimension">
+    <td [class.cell-hover]="isCellEnabled" (click)="click(x, y)" *ngFor = "let x of xDimension">
       <button class="cell" 
           [class.ship]="isShip(x, y)"
           [class.hit]="isHit(x, y)"
