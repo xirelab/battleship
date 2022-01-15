@@ -30,7 +30,8 @@ export class AppComponent implements OnInit {
   isTabletMode = true;
   isMyTurn = false;
   level = 1;
-  iWon = false; 
+  iWon = false;
+  theme = 1;
   user_cookie: any;
 
   me$ = this.store.pipe(select(selector.me));
@@ -38,8 +39,6 @@ export class AppComponent implements OnInit {
   numberOfShips$ = this.store.pipe(select(selector.numberOfShips));
   xDimension$ = this.store.pipe(select(selector.xDimension));
   yDimension$ = this.store.pipe(select(selector.yDimension));
-  // myBoard$ = this.store.pipe(select(selector.myBoard));
-  // opponentBoard$ = this.store.pipe(select(selector.opponentBoard));
   currentPlayer$ = this.store.pipe(select(selector.currentPlayer));
   isSetupCompleted$ = this.store.pipe(select(selector.isSetupCompleted));
   gameStatus$ = this.store.pipe(select(selector.gameStatus));
@@ -64,12 +63,11 @@ export class AppComponent implements OnInit {
     // const invitedby: string = this.route.snapshot.queryParamMap.get('invitedby');
     // console.log(invitedby);
 
-    console.log('onNgInit hit');
+    this.getDefaultValues();
+
     this.contentful.getContent_GraphQl().then(res => {
       this.contents = res;
     });
-
-    this.getDefaultValues();
 
     this.store.dispatch(actions.initializeBoard());
 
@@ -93,15 +91,18 @@ export class AppComponent implements OnInit {
   getDefaultValues() {
     this.user_cookie = this.cookieManagementService.getDefaultValues();
     this.isTabletMode = this.user_cookie.mode === 'tablet';
+    this.theme = this.user_cookie.theme ? this.user_cookie.theme : 1;
   }
 
   get headings() {
-    console.log(this.contents.data.battleshipCollection.items[0])
-    return this.contents.data.battleshipCollection.items[0];
+    // console.log(this.contents.data.battleshipCollection.items[0])
+    if (this.contents) {
+      return this.contents.data.battleshipCollection.items[0];
+    }
   }
 
   get bkUrl() {
-    if (this.contents && this.theme === 1) {
+    if (this.contents && this.theme == 1) {
       const styles = {
         'background-image': 'url(' + this.headings.backgound.url + ')'
       };
@@ -116,7 +117,7 @@ export class AppComponent implements OnInit {
       this.currentPlayer = user;
       let timebreak = this.isTabletMode ? 0 : 500;
       setTimeout(() =>
-      {        
+      {
         switch (user) {
           case 'Me': 
             if (this.isTabletMode || this.isInvalid) {
@@ -258,14 +259,14 @@ export class AppComponent implements OnInit {
           }
           break;
         case 'numberOfShips' :
-            if (result && !result.isCancelClicked) {
-              this.user_cookie.ships = result.value;
-              this.cookieManagementService.setDefaultMode(this.user_cookie);
-              this.store.dispatch(actions.ResetLifes());
-              this.store.dispatch(actions.SetNumberofShips({count: result.value}));
-              this.openDialog('Lets start arranging our ships..', false, 'arrangeShip');
-            }
-            break;
+          if (result && !result.isCancelClicked) {
+            this.user_cookie.ships = result.value;
+            this.cookieManagementService.setDefaultMode(this.user_cookie);
+            this.store.dispatch(actions.ResetLifes());
+            this.store.dispatch(actions.SetNumberofShips({count: result.value}));
+            this.openDialog('Lets start arranging our ships..', false, 'arrangeShip');
+          }
+          break;
         case 'modeChanged':
           this.isTabletMode = Boolean(result.isButton1Clicked);
           this.user_cookie.mode = result.isButton1Clicked ? 'tablet' : 'classic';
@@ -281,6 +282,8 @@ export class AppComponent implements OnInit {
             this.theme = 1;
           else if((this.theme == 1 && result.isButton2Clicked) || (this.theme == 3 && result.isButton2Clicked))
             this.theme = 3;
+          this.user_cookie.theme = this.theme;
+          this.cookieManagementService.setDefaultMode(this.user_cookie);
           break;
         default : break;
       }
@@ -342,7 +345,6 @@ export class AppComponent implements OnInit {
     this.openDialog('Lets start arranging our ships..', false, 'arrangeShip');   
   }
 
-  theme = 1; // background - 1, dark mode - 2, light mode - 3
   gearClicked($event) {
     switch($event) {
       case 'ships':

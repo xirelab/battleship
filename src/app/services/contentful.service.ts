@@ -43,8 +43,8 @@ export class ContentfulService {
     )
     .then(res => res.json())
     .then(response => {
-      console.log('GraphQl load');
-      console.log(response);
+      // console.log('GraphQl load');
+      // console.log(response);
       return response;
     })
     .catch(error => {
