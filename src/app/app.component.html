@@ -1,4 +1,4 @@
-<div class="body">
+<div class="body" [ngStyle]="bkUrl">
   <h2> {{headings.heading}} 
     <app-settings (onClick)="gearClicked($event)"></app-settings>
   </h2>
@@ -63,6 +63,6 @@
       </tr>
     </table>
   </ng-container>
-  <br/>
+  <br/><br/><br/>
   <span>@xire labs</span>
 </div>

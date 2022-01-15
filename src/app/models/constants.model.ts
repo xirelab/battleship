@@ -65,5 +65,6 @@ export const Menus = {
   mode: 'mode',
   restart: 'restart',
   help: 'help',
-  profile: 'profile'
+  profile: 'profile',
+  theme: 'theme'
 };

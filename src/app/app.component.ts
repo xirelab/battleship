@@ -100,6 +100,16 @@ export class AppComponent implements OnInit {
     return this.contents.data.battleshipCollection.items[0];
   }
 
+  get bkUrl() {
+    if (this.contents && this.theme === 1) {
+      const styles = {
+        'background-image': 'url(' + this.headings.backgound.url + ')'
+      };
+      console.log(styles);
+      return styles;
+    }
+  }
+
   isInvalid = false;
   processCurrestUser(user: string) {
     if (this.currentPlayer !== user) {
@@ -264,6 +274,14 @@ export class AppComponent implements OnInit {
         case 'profileUpdate':
           this.setplayerName(result);
           break;
+        case 'theme':
+          if((this.theme == 1 && result.isButton1Clicked) || (this.theme == 2 && result.isButton2Clicked))
+            this.theme = 2;
+          else if((this.theme == 2 && result.isButton1Clicked) || (this.theme == 3 && result.isButton1Clicked))
+            this.theme = 1;
+          else if((this.theme == 1 && result.isButton2Clicked) || (this.theme == 3 && result.isButton2Clicked))
+            this.theme = 3;
+          break;
         default : break;
       }
     });
@@ -324,6 +342,7 @@ export class AppComponent implements OnInit {
     this.openDialog('Lets start arranging our ships..', false, 'arrangeShip');   
   }
 
+  theme = 1; // background - 1, dark mode - 2, light mode - 3
   gearClicked($event) {
     switch($event) {
       case 'ships':
@@ -337,9 +356,18 @@ export class AppComponent implements OnInit {
         break;
       case 'profile':
         this.openDialog('Please enter your name', true, 'profileUpdate', '', 'Ok', 'Cancel');
-          break;
+        break;
+      case 'theme':
+        if (this.theme == 1) { // background
+          this.openDialog('Select your option', false, 'theme', '', 'Light mode', 'Dark mode');
+        } else if (this.theme == 2) {  // dark mode
+          this.openDialog('Select your option', false, 'theme', '', 'Backgound', 'Light mode');
+        } else if (this.theme == 3) {  // light mode
+          this.openDialog('Select your option', false, 'theme', '', 'Backgound', 'Dark mode');
+        }
+        break;
       case 'help':
-        this.openDialog('Help content goes here.. Tobe updated', false, 'help');
+        this.openDialog('Help content goes here.. To be updated', false, 'help');
         break;
       default: break;
     }

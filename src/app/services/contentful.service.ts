@@ -58,7 +58,10 @@ export class ContentfulService {
       battleshipCollection (limit:1) {
         items{
           heading,
-          description
+          description,
+          backgound{
+            url
+          }
         }
       }
     }
