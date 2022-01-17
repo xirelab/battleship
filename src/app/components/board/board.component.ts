@@ -1,5 +1,6 @@
 import { TitleCasePipe } from '@angular/common';
 import { Component, OnInit, Input, EventEmitter, Output, SimpleChanges, OnChanges } from '@angular/core';
+import { Cell } from 'src/app/models/cell.model';
 import { Board } from '../../models/board.model';
 import { Slot } from '../../models/slot.model';
 
@@ -11,9 +12,9 @@ import { Slot } from '../../models/slot.model';
 export class BoardComponent implements OnInit, OnChanges {
   currentShip: number;
   numberOfcellSelected = 0;
-  lastSelectedCell: Slot;
-  secondLastSelectedCell: Slot;
-  private _incoming: Slot;
+  lastSelectedCell: Cell;
+  secondLastSelectedCell: Cell;
+  // private _incoming: Slot;
 
   @Input() xDimension: Array<string>;
   @Input() yDimension: Array<string>;
@@ -131,14 +132,32 @@ export class BoardComponent implements OnInit, OnChanges {
       cell.isShip = true;
       if (!this.secondLastSelectedCell && this.lastSelectedCell) {
         // first cell selection
+        this.lastSelectedCell.position = 
+          this.lastSelectedCell.x === cell.x  ? 
+            (this.lastSelectedCell.y > cell.y ? 'bottom' : 'top') :
+            (this.lastSelectedCell.x > cell.x ? 'right' : 'left');
+      }
+      if (this.lastSelectedCell) {
+        // last
+        if (this.numberOfcellSelected === this.currentShip) {
+          cell.position = this.lastSelectedCell.x === cell.x  ? 
+          (this.lastSelectedCell.y > cell.y ? 'top' : 'bottom') :
+          (this.lastSelectedCell.x > cell.x ? 'left' : 'right');
+        }
+        
+        //middle
+        if (this.numberOfcellSelected < this.currentShip) {
+          cell.position = this.lastSelectedCell.x === cell.x  ? 'vertical' : 'horizontal';
+        }
       }
       this.secondLastSelectedCell = this.lastSelectedCell;
-      this.lastSelectedCell = {x: x, y: y};
+      this.lastSelectedCell = cell; // {x: x, y: y};
     }
     this.numberOfcellSelected += 1;
     if (this.numberOfcellSelected === this.currentShip + 1) {
       this.currentShip -= 1;
       this.numberOfcellSelected = 0;
+      this.lastSelectedCell = null;
     }
     if (this.currentShip === 0) {
       this.allShipSelected.emit(true);

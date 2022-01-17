@@ -206,7 +206,7 @@ describe('BoardComponent', () => {
       component.showShips = true;
       component.board = mockBoard;
       component.board[1].value = 'hit';
-      component.lastSelectedCell = {x: "1", y: "A"};
+      // component.lastSelectedCell = {x: "1", y: "A"};
 
       // Act
       const response = component.isNextPossibleCell("1", "B");
@@ -231,7 +231,7 @@ describe('BoardComponent', () => {
       component.click("1", "B");
 
       // Assert
-      expect(component.lastSelectedCell).toBe(slot);
+      // expect(component.lastSelectedCell).toBe(slot);
       expect(component.currentShip).toBe(3);
       expect(component.numberOfcellSelected).toBe(2);
     });
@@ -250,7 +250,7 @@ describe('BoardComponent', () => {
       component.click("1", "B");
 
       // Assert
-      expect(component.lastSelectedCell).toBe(slot);
+      // expect(component.lastSelectedCell).toBe(slot);
       expect(component.currentShip).toBe(2);
       expect(component.numberOfcellSelected).toBe(0);
     });
@@ -270,7 +270,7 @@ describe('BoardComponent', () => {
       component.click("1", "B");
 
       // Assert
-      expect(component.lastSelectedCell).toBe(slot);
+      // expect(component.lastSelectedCell).toBe(slot);
       expect(component.currentShip).toBe(0);
       expect(component.numberOfcellSelected).toBe(0);
       expect(component.allShipSelected.emit).toHaveBeenCalledWith(true);

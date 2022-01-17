@@ -29,7 +29,7 @@
 }
 
 .top {
-  margin-bottom: -9px;
+  margin-bottom: -10px;
   height: 35px;
   padding-top: 28px;
 }
@@ -53,15 +53,15 @@
 }
 
 .vertical {
-  height: 46px;
-  margin-bottom: -15px;
+  height: 47px;
+  margin-bottom: -16px;
   margin-top: -15px;
 }
 
 .horizontal {
-  width: 46px;
-  margin-left: -8px;
-  margin-right: -8px;
+  width: 47px;
+  margin-left: -9px;
+  margin-right: -9px;
 }
 
 .td-ship {
