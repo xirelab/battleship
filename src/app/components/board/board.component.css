@@ -28,6 +28,50 @@
   background-color: rgb(43, 226, 89);
 }
 
+.top {
+  margin-bottom: -9px;
+  height: 35px;
+  padding-top: 28px;
+}
+
+.bottom {
+  margin-top: -9px;
+  height: 35px;
+  padding-bottom: 28px;
+}
+
+.right {
+  margin-left: -9px;
+  width: 35px;
+  padding-right: 28px;
+}
+
+.left {
+  margin-right: -9px;
+  width: 35px;
+  padding-left: 28px;
+}
+
+.vertical {
+  height: 46px;
+  margin-bottom: -15px;
+  margin-top: -15px;
+}
+
+.horizontal {
+  width: 46px;
+  margin-left: -8px;
+  margin-right: -8px;
+}
+
+.td-ship {
+  background-color: rgb(186, 247, 201);
+}
+
+.td-hit {
+  background-color: rgb(241, 149, 149);
+}
+
 .possible-cell {
   /* border-color:  orange; */
   border: groove;

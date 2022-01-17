@@ -10,9 +10,15 @@
     <th>      
       {{y}}
     </th>
-    <td [class.cell-hover]="isCellEnabled" (click)="click(x, y)" *ngFor = "let x of xDimension">
+    <td [class.td-ship]="isShip(x, y)" [class.td-hit]="isHit(x, y)" [class.cell-hover]="isCellEnabled" (click)="click(x, y)" *ngFor = "let x of xDimension">
       <button class="cell" 
           [class.ship]="isShip(x, y)"
+          [class.top]="shipPosition(x, y) == 'top'"
+          [class.bottom]="shipPosition(x, y) == 'bottom'"
+          [class.right]="shipPosition(x, y) == 'right'"
+          [class.left]="shipPosition(x, y) == 'left'"
+          [class.vertical]="shipPosition(x, y) == 'vertical'"
+          [class.horizontal]="shipPosition(x, y) == 'horizontal'"
           [class.hit]="isHit(x, y)"
           [class.possible-cell]="isNextPossibleCell(x, y)">
           <span [innerText]="value(x, y) | titlecase | bold"></span>

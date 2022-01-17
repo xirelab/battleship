@@ -7,55 +7,64 @@ export const mockBoard = {
       "x": "1",
       "y": "A",
       "isShip": false,
-      "value": ""
+      "value": "",
+      "position": ""
     },
     {
       "x": "1",
       "y": "B",
       "isShip": false,
-      "value": ""
+      "value": "",
+      "position": ""
     },
     {
       "x": "1",
       "y": "C",
       "isShip": false,
-      "value": ""
+      "value": "",
+      "position": ""
     },    
     {
       "x": "2",
       "y": "A",
       "isShip": false,
-      "value": ""
+      "value": "",
+      "position": ""
     },
     {
       "x": "2",
       "y": "B",
       "isShip": false,
-      "value": ""
+      "value": "",
+      "position": ""
     },
     {
       "x": "2",
       "y": "C",
       "isShip": false,
-      "value": ""
+      "value": "",
+      "position": ""
     },
     {
       "x": "3",
       "y": "A",
       "isShip": false,
-      "value": ""
+      "value": "",
+      "position": ""
     },
     {
       "x": "3",
       "y": "B",
       "isShip": false,
-      "value": ""
+      "value": "",
+      "position": ""
     },
     {
       "x": "3",
       "y": "C",
       "isShip": false,
-      "value": ""
+      "value": "",
+      "position": ""
     }
   ]
 };

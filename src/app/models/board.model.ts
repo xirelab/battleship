@@ -16,7 +16,8 @@ export class Board {
           x: `${i}`,
           y: `${constant.yDimension[j]}`,
           isShip: false,
-          value: ''
+          value: '',
+          position: ''
         })
       }
     }

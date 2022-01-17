@@ -37,7 +37,6 @@ export class BoardComponent implements OnInit, OnChanges {
   constructor(public titleCasePipe: TitleCasePipe) {}
 
   ngOnInit() {
-    console.log('testtt');
     this.currentShip = this.numberofShips;
   }
 
@@ -68,7 +67,14 @@ export class BoardComponent implements OnInit, OnChanges {
         return 'fourth';
       case 5:
         return 'fifth';
+      case 6:
+        return 'sixth';
     }
+  }
+
+  shipPosition(x: string, y: string): string {
+    const cell = this.board.cells.find(c => c.x === x && c.y === y);
+    return cell && this.showShips ? cell.position : '';
   }
 
   isShip(x: string, y: string): boolean {
@@ -123,6 +129,9 @@ export class BoardComponent implements OnInit, OnChanges {
     }
     if (cell) {
       cell.isShip = true;
+      if (!this.secondLastSelectedCell && this.lastSelectedCell) {
+        // first cell selection
+      }
       this.secondLastSelectedCell = this.lastSelectedCell;
       this.lastSelectedCell = {x: x, y: y};
     }

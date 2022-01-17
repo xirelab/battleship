@@ -3,4 +3,5 @@ export class Cell {
   y: string;
   isShip: boolean;
   value: string; // hit or miss
+  position: string;
 }

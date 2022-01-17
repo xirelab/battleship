@@ -93,8 +93,10 @@ export const boardReducer = createReducer(
   }),
   on(action.RestartGame, (state) => {
     let myName = state.me.name;
+    let oppName = state.opponent.name;
     state.me = new Player(numberofCells, numberofLifes);
     state.me.name = myName;
+    state.opponent.name = oppName;
     state.opponent =  new Player(numberofCells, numberofLifes)
     return {
       ...state
@@ -103,8 +105,10 @@ export const boardReducer = createReducer(
   on(action.SetNumberofShips, (state, { count }) => {
     state.numberOfShips = +count;
     let myName = state.me.name;
+    let oppName = state.opponent.name;
     state.me = new Player(numberofCells, numberofLifes);
     state.me.name = myName;
+    state.opponent.name = oppName;
     state.opponent =  new Player(numberofCells, numberofLifes)
     return {
       ...state
