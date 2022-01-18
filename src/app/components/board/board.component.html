@@ -37,4 +37,9 @@
     </td> 
   </tr>
 </table>
-<b><span class="right-align blink_me" style="float: right;" [innerText]="shipDetails"> </span></b>
+<div class="board-bottom" *ngIf="shipDetails">
+  <b><span class="right-align blink_me" [innerText]="shipDetails"> </span></b>
+  <button class="undo-button" style="float: right;" 
+    [class.blink_me]="shouldUndo" [ngClass] = "isUndoActive ? 'undo-active' : 'undo-inactive'"
+    (click)="onUndoClick()">Undo ship selection</button>
+</div>

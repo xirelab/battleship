@@ -6,15 +6,17 @@
   (keypress)="keyPress($event)">
 <div *ngIf="data.isInputVisisble; else NO_INPUT" >
   <div mat-dialog-actions>
-    <button mat-button [mat-dialog-close]="data" [disabled]="!isButtonEnabled()">{{data.button1text}}</button>
-    <button mat-button (click)="onCancelClicked()">{{data.button2text}}</button>
+    <button mat-button [mat-dialog-close]="data" [disabled]="!isButtonEnabled()">
+      <span>{{data.button1text}}</span>
+    </button>
+    <button mat-button (click)="onCancelClicked()"><span>{{data.button2text}}</span></button>
     <!-- <button *ngIf="data.type==='gear'" mat-button (click)="onCancelClick()">data.button2text</button> -->
   </div>
 </div>
 <ng-template #NO_INPUT>
   <div mat-dialog-actions>
-    <button mat-button (click)="button1Clicked()">{{data.button1text}}</button>
-    <button mat-button (click)="button2Clicked()">{{data.button2text}}</button>
+    <button mat-button (click)="button1Clicked()"><span>{{data.button1text}}</span></button>
+    <button mat-button (click)="button2Clicked()"><span>{{data.button2text}}</span></button>
   </div>  
 </ng-template>
 <!-- <div mat-dialog-actions *ngIf="data.type==='playerSelection'">

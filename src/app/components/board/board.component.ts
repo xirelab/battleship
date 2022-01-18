@@ -14,6 +14,9 @@ export class BoardComponent implements OnInit, OnChanges {
   numberOfcellSelected = 0;
   lastSelectedCell: Cell;
   secondLastSelectedCell: Cell;
+  firstCell: Cell;
+  shouldUndo = false;
+  isUndoActive = false;
   // private _incoming: Slot;
 
   @Input() xDimension: Array<string>;
@@ -129,26 +132,30 @@ export class BoardComponent implements OnInit, OnChanges {
       return;
     }
     if (cell) {
+      this.isUndoActive = true;
       cell.isShip = true;
       if (!this.secondLastSelectedCell && this.lastSelectedCell) {
         // first cell selection
         this.lastSelectedCell.position = 
           this.lastSelectedCell.x === cell.x  ? 
             (this.lastSelectedCell.y > cell.y ? 'bottom' : 'top') :
-            (this.lastSelectedCell.x > cell.x ? 'right' : 'left');
+            (this.lastSelectedCell.x > cell.x && +x < 10 ? 'right' : 'left');
       }
       if (this.lastSelectedCell) {
         // last
         if (this.numberOfcellSelected === this.currentShip) {
           cell.position = this.lastSelectedCell.x === cell.x  ? 
           (this.lastSelectedCell.y > cell.y ? 'top' : 'bottom') :
-          (this.lastSelectedCell.x > cell.x ? 'left' : 'right');
+          (this.lastSelectedCell.x > cell.x && +x < 10 ? 'left' : 'right');
         }
         
         //middle
         if (this.numberOfcellSelected < this.currentShip) {
           cell.position = this.lastSelectedCell.x === cell.x  ? 'vertical' : 'horizontal';
         }
+      }
+      if (!this.lastSelectedCell) {
+        this.firstCell = cell;
       }
       this.secondLastSelectedCell = this.lastSelectedCell;
       this.lastSelectedCell = cell; // {x: x, y: y};
@@ -158,22 +165,34 @@ export class BoardComponent implements OnInit, OnChanges {
       this.currentShip -= 1;
       this.numberOfcellSelected = 0;
       this.lastSelectedCell = null;
+      this.shouldUndo = false;
     }
     if (this.currentShip === 0) {
       this.allShipSelected.emit(true);
     }
   }
 
-  isNextPossibleCell(x: string, y: string) {
+  isNextPossibleCell(x: string, y: string): boolean {
     const cell = this.board.cells.find(c => c.x === x && c.y === y);
     if (cell && cell.isShip) {
       return false;
     }
+    
     if (this.numberOfcellSelected !== 0 && this.numberOfcellSelected <= this.currentShip + 1 && this.lastSelectedCell) {
-      if (this.lastSelectedCell) {
-        const yIndex = this.yDimension.findIndex(i => i === y);
-        const yBase = this.yDimension.findIndex(i => i === this.lastSelectedCell.y);
-
+      const yIndex = this.yDimension.findIndex(i => i === y);
+      const yBase = this.yDimension.findIndex(i => i === this.lastSelectedCell.y);
+      
+      if (this.secondLastSelectedCell && this.lastSelectedCell) {
+        if (this.secondLastSelectedCell.x == this.lastSelectedCell.x && this.lastSelectedCell.x == x) {
+          if (yIndex - 1 == yBase && yIndex >= 9) this.enableUndo();
+          return yIndex - 1 == yBase; //|| yIndex + 1 == +this.firstCell.y; 
+        }
+        if (this.secondLastSelectedCell.y == this.lastSelectedCell.y && this.lastSelectedCell.y == y) {
+          if (+x - 1 == +this.lastSelectedCell.x && +x >= 10) this.enableUndo();
+          return +x - 1 == +this.lastSelectedCell.x; // || +x + 1 == +this.firstCell.x;
+        }
+      }
+      else if (this.lastSelectedCell) {
         if ((Number(x) === Number(this.lastSelectedCell.x) &&
              (yIndex - 1 === yBase || yIndex + 1 === yBase)) ||
             ((yIndex === yBase && (
@@ -186,6 +205,21 @@ export class BoardComponent implements OnInit, OnChanges {
     return false;
   }
 
+  enableUndo() {
+    this.shouldUndo = true;
+    setTimeout(() =>
+    {        
+      this.shouldUndo = false;
+    }, 3000);
+  }
+
+  onUndoClick() {
+    this.shouldUndo = false;
+    this.isUndoActive = false;
+
+    // TODO: implement undo
+  }
+  
   // markOnBaord() {
   //   if (this._incoming) {
   //     console.log("markOnBaord");
