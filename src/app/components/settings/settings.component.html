@@ -2,7 +2,9 @@
     (click)="onHintClick()">&#9876;&#65039;
   </button> -->
   <!-- <div class=gear style="float: right;" (click)="gearClicked()" >&#9881;&#65039;</div> -->
-  <button mat-icon-button style="float: right;" [matMenuTriggerFor]="menu" aria-label="Settings">
+<div style="float: right;">
+  <span>Level:{{level}}</span> &nbsp;&nbsp;
+  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Settings">
     <h1><mat-icon>&#9881;&#65039;</mat-icon></h1>
     <!-- <span>&#9881;&#65039;</span> -->
   </button>
@@ -32,3 +34,5 @@
       <span>Help</span>
     </button>
   </mat-menu>    
+  &nbsp;&nbsp;
+</div>

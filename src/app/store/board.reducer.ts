@@ -96,8 +96,8 @@ export const boardReducer = createReducer(
     let oppName = state.opponent.name;
     state.me = new Player(numberofCells, numberofLifes);
     state.me.name = myName;
-    state.opponent.name = oppName;
     state.opponent =  new Player(numberofCells, numberofLifes)
+    state.opponent.name = oppName;
     return {
       ...state
     }

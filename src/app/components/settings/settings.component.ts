@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Menus } from 'src/app/models/constants.model';
 
 @Component({
@@ -9,6 +9,7 @@ import { Menus } from 'src/app/models/constants.model';
 export class SettingsComponent {
 
   menus = Menus;
+  @Input() level: number;
   @Output() onClick = new EventEmitter<string>();
 
   gearClicked(menu: string) {

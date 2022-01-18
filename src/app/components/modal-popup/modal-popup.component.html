@@ -9,7 +9,7 @@
     <button mat-button [mat-dialog-close]="data" [disabled]="!isButtonEnabled()">
       <span>{{data.button1text}}</span>
     </button>
-    <button *ngIf="data.button2text" mat-button (click)="onCancelClicked()">
+    <button mat-button *ngIf="data.button2text" (click)="onCancelClicked()">
       <span>{{data.button2text}}</span>
     </button>
   </div>
@@ -17,7 +17,9 @@
 <ng-template #NO_INPUT>
   <div mat-dialog-actions>
     <button mat-button (click)="button1Clicked()"><span>{{data.button1text}}</span></button>
-    <button mat-button (click)="button2Clicked()"><span>{{data.button2text}}</span></button>
+    <button mat-button (click)="button2Clicked()" *ngIf="data.button2text">
+      <span>{{data.button2text}}</span>
+    </button>
   </div>  
 </ng-template>
 <!-- <div mat-dialog-actions *ngIf="data.type==='playerSelection'">

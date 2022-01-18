@@ -1,6 +1,6 @@
 <div class="body" [ngStyle]="bkUrl">
   <h2> {{headings?.heading}} 
-    <app-settings (onClick)="gearClicked($event)"></app-settings>
+    <app-settings [level]="level" (onClick)="gearClicked($event)"></app-settings>
   </h2>
   <!-- <h3>{{headings?.description}}</h3>
   <h4>Level: {{level}}</h4> -->
@@ -63,6 +63,10 @@
       </tr>
     </table>
   </ng-container>
-  <br/><br/><br/>
+  <br/>
+  <div>
+    <h4>You are playing Level: {{level}}</h4>
+  </div>
+  <br/><br/>
   <span>@xire labs</span>
 </div>
