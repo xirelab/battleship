@@ -17,6 +17,7 @@ export class BoardComponent implements OnInit, OnChanges {
   firstCell: Cell;
   shouldUndo = false;
   isUndoActive = false;
+  buildingShip: Cell[] = [];
   // private _incoming: Slot;
 
   @Input() xDimension: Array<string>;
@@ -156,7 +157,9 @@ export class BoardComponent implements OnInit, OnChanges {
       }
       if (!this.lastSelectedCell) {
         this.firstCell = cell;
+        this.buildingShip = [];
       }
+      this.buildingShip.push(cell);
       this.secondLastSelectedCell = this.lastSelectedCell;
       this.lastSelectedCell = cell; // {x: x, y: y};
     }
@@ -166,6 +169,7 @@ export class BoardComponent implements OnInit, OnChanges {
       this.numberOfcellSelected = 0;
       this.lastSelectedCell = null;
       this.shouldUndo = false;
+      // this.buildingShip = [];
     }
     if (this.currentShip === 0) {
       this.allShipSelected.emit(true);
@@ -185,11 +189,11 @@ export class BoardComponent implements OnInit, OnChanges {
       if (this.secondLastSelectedCell && this.lastSelectedCell) {
         if (this.secondLastSelectedCell.x == this.lastSelectedCell.x && this.lastSelectedCell.x == x) {
           if (yIndex - 1 == yBase && yIndex >= 9) this.enableUndo();
-          return yIndex - 1 == yBase; //|| yIndex + 1 == +this.firstCell.y; 
+          return yIndex - 1 == yBase || yIndex + 1 == yBase; //|| yIndex + 1 == +this.firstCell.y; 
         }
         if (this.secondLastSelectedCell.y == this.lastSelectedCell.y && this.lastSelectedCell.y == y) {
           if (+x - 1 == +this.lastSelectedCell.x && +x >= 10) this.enableUndo();
-          return +x - 1 == +this.lastSelectedCell.x; // || +x + 1 == +this.firstCell.x;
+          return +x - 1 == +this.lastSelectedCell.x || +x + 1 == +this.lastSelectedCell.x; // || +x + 1 == +this.firstCell.x;
         }
       }
       else if (this.lastSelectedCell) {
@@ -210,14 +214,26 @@ export class BoardComponent implements OnInit, OnChanges {
     setTimeout(() =>
     {        
       this.shouldUndo = false;
-    }, 3000);
+    }, 5000);
   }
 
   onUndoClick() {
     this.shouldUndo = false;
     this.isUndoActive = false;
 
-    // TODO: implement undo
+    if (this.buildingShip) {
+      this.buildingShip.forEach(ship => {
+        const s = this.board.cells.find(cell => cell.x == ship.x && cell.y == ship.y);
+        if (s) { 
+          s.isShip = false;
+          s.position = '';
+        }
+      });
+      if (this.numberOfcellSelected == 0) 
+        this.currentShip += 1;
+      this.numberOfcellSelected = 0;
+      this.lastSelectedCell = null;
+    }
   }
   
   // markOnBaord() {

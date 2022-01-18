@@ -9,8 +9,9 @@
     <button mat-button [mat-dialog-close]="data" [disabled]="!isButtonEnabled()">
       <span>{{data.button1text}}</span>
     </button>
-    <button mat-button (click)="onCancelClicked()"><span>{{data.button2text}}</span></button>
-    <!-- <button *ngIf="data.type==='gear'" mat-button (click)="onCancelClick()">data.button2text</button> -->
+    <button *ngIf="data.button2text" mat-button (click)="onCancelClicked()">
+      <span>{{data.button2text}}</span>
+    </button>
   </div>
 </div>
 <ng-template #NO_INPUT>

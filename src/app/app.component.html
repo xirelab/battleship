@@ -2,8 +2,8 @@
   <h2> {{headings?.heading}} 
     <app-settings (onClick)="gearClicked($event)"></app-settings>
   </h2>
-  <h3>{{headings?.description}}</h3>
-  <h4>Level: {{level}}</h4>
+  <!-- <h3>{{headings?.description}}</h3>
+  <h4>Level: {{level}}</h4> -->
   <ng-container *ngIf="{
     me: me$ | async,
     opponent: opponent$ | async,
