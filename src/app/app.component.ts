@@ -406,7 +406,7 @@ export class AppComponent implements OnInit {
 
   configureDisplayMode() {
     this.displayMode = window.innerWidth <= 1030 ? 'tablet' : 'web';
-    // if (this.displayMode === 'tablet') this.isTabletMode = true;
+    if (this.displayMode === 'tablet') this.isTabletMode = this.isMyTurn = true;
   }
 
   slideConfig = {
@@ -418,19 +418,11 @@ export class AppComponent implements OnInit {
   
   slides = [342, 453] //, 846, 855, 234, 564, 744, 243];
 
-  slickInit(e: any) {
-    console.log('slick initialized');
-  }
+  slickInit(e: any) { }
 
-  breakpoint(e: any) {
-    console.log('breakpoint');
-  }
+  breakpoint(e: any) { }
 
-  afterChange(e: any) {
-    console.log('afterChange');
-  }
+  afterChange(e: any) { }
 
-  beforeChange(e: any) {
-    console.log('beforeChange');
-  }
+  beforeChange(e: any) { }
 }
