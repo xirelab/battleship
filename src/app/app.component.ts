@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Board } from './models/board.model';
 import { BoardService } from './services/board.service';
 import { ModalPopupComponent } from './components/modal-popup/modal-popup.component';
@@ -33,6 +33,7 @@ export class AppComponent implements OnInit {
   iWon = false;
   theme = 1;
   user_cookie: any;
+  displayMode = 'web';
 
   me$ = this.store.pipe(select(selector.me));
   opponent$ = this.store.pipe(select(selector.opponent));
@@ -92,6 +93,7 @@ export class AppComponent implements OnInit {
     this.user_cookie = this.cookieManagementService.getDefaultValues();
     this.isTabletMode = this.user_cookie.mode === 'tablet';
     this.theme = this.user_cookie.theme ? this.user_cookie.theme : 1;
+    if (window.innerWidth <= 750) this.isTabletMode = true;
   }
 
   get headings() {
@@ -373,5 +375,59 @@ export class AppComponent implements OnInit {
         break;
       default: break;
     }
+  }
+
+  @HostListener('window:resize')
+  onWindowsResize() {
+    this.configureDisplayMode();
+  }
+
+  @HostListener('window:load')
+  onWindowsLoad() {
+    this.configureDisplayMode();
+  }
+
+  configureDisplayMode() {
+    this.displayMode = window.innerWidth <= 750 ? 'tablet' : 'web';
+  }
+
+  slideConfig = {
+    slidesToShow: 1, slidesToScroll: 1, 
+    centerMode: true, centerPadding: '1px', 
+    arrows: true, dots: true,
+    mobileFirst: true, infinite: false, 
+    responsive: [{ breakpoint: window.innerWidth}]};
+  
+  slides = [342, 453] //, 846, 855, 234, 564, 744, 243];
+
+  // slideConfig = {
+  //   "slidesToShow": 1,
+  //   "slidesToScroll": 1,
+  //   "dots": true,
+  //   "infinite": false
+  // };
+
+  addSlide() {
+    this.slides.push(488)
+  }
+
+  removeSlide() {
+    this.slides.length = this.slides.length - 1;
+  }
+
+  slickInit(e: any) {
+    console.log('slick initialized');
+  }
+
+  breakpoint(e: any) {
+    console.log('breakpoint');
+  }
+
+  afterChange(e: any) {
+    console.log('afterChange');
+  }
+
+  beforeChange(e: any) {
+    console.log('beforeChange');
   }
 }

@@ -1,3 +1,7 @@
 .gear {
     cursor: pointer; 
-  }
+}
+
+button {
+  margin-top: -22px;
+}

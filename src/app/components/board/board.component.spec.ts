@@ -61,8 +61,8 @@ describe('BoardComponent', () => {
       component.isSystem = false;
       component.currentShip = 0;
       component.showShips = true;
-      component.board = mockBoard;
-      component.board[1].isShip = true;
+      component.player.board = mockBoard;
+      component.player.board[1].isShip = true;
 
       // Act
       const response = component.isShip("1", "B");
@@ -76,8 +76,8 @@ describe('BoardComponent', () => {
       component.isSystem = false;
       component.currentShip = 0;
       component.showShips = true;
-      component.board = mockBoard;
-      component.board[1].isShip = true;
+      component.player.board = mockBoard;
+      component.player.board[1].isShip = true;
 
       // Act
       const response = component.isShip("1", "Z");
@@ -93,8 +93,8 @@ describe('BoardComponent', () => {
       component.isSystem = false;
       component.currentShip = 0;
       component.showShips = true;
-      component.board = mockBoard;
-      component.board[1].value = 'hit';
+      component.player.board = mockBoard;
+      component.player.board[1].value = 'hit';
 
       // Act
       const response = component.isHit("1", "B");
@@ -108,8 +108,8 @@ describe('BoardComponent', () => {
       component.isSystem = false;
       component.currentShip = 0;
       component.showShips = true;
-      component.board = mockBoard;
-      component.board[1].value = '';
+      component.player.board = mockBoard;
+      component.player.board[1].value = '';
 
       // Act
       const response = component.isHit("1", "Z");
@@ -125,8 +125,8 @@ describe('BoardComponent', () => {
       component.isSystem = false;
       component.currentShip = 0;
       component.showShips = true;
-      component.board = mockBoard;
-      component.board[1].value = 'hit';
+      component.player.board = mockBoard;
+      component.player.board[1].value = 'hit';
 
       // Act
       const response = component.value("1", "B");
@@ -140,8 +140,8 @@ describe('BoardComponent', () => {
       component.isSystem = false;
       component.currentShip = 0;
       component.showShips = true;
-      component.board = mockBoard;
-      component.board[1].value = 'miss';
+      component.player.board = mockBoard;
+      component.player.board[1].value = 'miss';
 
       // Act
       const response = component.value("1", "B");
@@ -157,8 +157,8 @@ describe('BoardComponent', () => {
       component.isSystem = false;
       component.currentShip = 0;
       component.showShips = true;
-      component.board = mockBoard;
-      component.board[1].value = 'hit';
+      component.player.board = mockBoard;
+      component.player.board[1].value = 'hit';
 
       // Act
       const response = component.isEnabled("1", "B");
@@ -172,8 +172,8 @@ describe('BoardComponent', () => {
       component.isSystem = false;
       component.numberOfcellSelected = 0;
       component.showShips = true;
-      component.board = mockBoard;
-      component.board[1].value = 'hit';
+      component.player.board = mockBoard;
+      component.player.board[1].value = 'hit';
 
       // Act
       const response = component.isEnabled("1", "B");
@@ -189,8 +189,8 @@ describe('BoardComponent', () => {
       component.isSystem = false;
       component.currentShip = 0;
       component.showShips = true;
-      component.board = mockBoard;
-      component.board[1].isShip = true;
+      component.player.board = mockBoard;
+      component.player.board[1].isShip = true;
 
       // Act
       const response = component.isNextPossibleCell("1", "B");
@@ -204,8 +204,8 @@ describe('BoardComponent', () => {
       component.isSystem = false;
       component.numberOfcellSelected = 0;
       component.showShips = true;
-      component.board = mockBoard;
-      component.board[1].value = 'hit';
+      component.player.board = mockBoard;
+      component.player.board[1].value = 'hit';
       // component.lastSelectedCell = {x: "1", y: "A"};
 
       // Act
@@ -223,8 +223,8 @@ describe('BoardComponent', () => {
       component.currentShip = 3;
       component.numberOfcellSelected = 1;
       component.showShips = true;
-      component.board = mockBoard;
-      component.board[1].value = 'hit';
+      component.player.board = mockBoard;
+      component.player.board[1].value = 'hit';
       const slot = {x: '1', y: 'B'};
 
       // Act
@@ -242,8 +242,8 @@ describe('BoardComponent', () => {
       component.currentShip = 3;
       component.numberOfcellSelected = 3;
       component.showShips = true;
-      component.board = mockBoard;
-      component.board[1].value = 'hit';
+      component.player.board = mockBoard;
+      component.player.board[1].value = 'hit';
       const slot = {x: '1', y: 'B'};
 
       // Act
@@ -261,8 +261,8 @@ describe('BoardComponent', () => {
       component.currentShip = 1;
       component.numberOfcellSelected = 1;
       component.showShips = true;
-      component.board = mockBoard;
-      component.board[1].value = 'hit';
+      component.player.board = mockBoard;
+      component.player.board[1].value = 'hit';
       const slot = {x: '1', y: 'B'};
       spyOn(component.allShipSelected, 'emit');
 

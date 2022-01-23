@@ -1,4 +1,4 @@
-<div *ngIf="player?.name && (level == 1 || level == 2)">
+<div *ngIf="player?.name">
     <span> {{player?.name}} </span>
     <ng-container *ngFor="let atrConfig of [].constructor(player?.lifes)" >
         <span style="float: right;">&#10084;&#65039;</span>

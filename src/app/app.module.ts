@@ -22,6 +22,7 @@ import { SettingsComponent } from './components/settings/settings.component';
 import {MatMenuModule} from '@angular/material/menu'
 import { BoldPipe } from './utils/bold.pipe';
 import { CookieService } from 'ngx-cookie-service';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 @NgModule({
   imports: [
@@ -47,6 +48,7 @@ import { CookieService } from 'ngx-cookie-service';
         strictActionImmutability: false,
       }
     }),
+    SlickCarouselModule
   ],
   declarations: [
     AppComponent,

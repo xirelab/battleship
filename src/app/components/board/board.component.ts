@@ -1,6 +1,7 @@
 import { TitleCasePipe } from '@angular/common';
 import { Component, OnInit, Input, EventEmitter, Output, SimpleChanges, OnChanges } from '@angular/core';
 import { Cell } from 'src/app/models/cell.model';
+import { Player } from 'src/app/models/player.model';
 import { Board } from '../../models/board.model';
 import { Slot } from '../../models/slot.model';
 
@@ -22,7 +23,7 @@ export class BoardComponent implements OnInit, OnChanges {
 
   @Input() xDimension: Array<string>;
   @Input() yDimension: Array<string>;
-  @Input() board: Board;
+  @Input() player: Player;
   @Input() numberofShips: number = 2;
   @Input() showShips: boolean = true;
   @Input() isSystem: boolean = true;
@@ -78,22 +79,22 @@ export class BoardComponent implements OnInit, OnChanges {
   }
 
   shipPosition(x: string, y: string): string {
-    const cell = this.board.cells.find(c => c.x === x && c.y === y);
+    const cell = this.player.board.cells.find(c => c.x === x && c.y === y);
     return cell && this.showShips ? cell.position : '';
   }
 
   isShip(x: string, y: string): boolean {
-    const cell = this.board.cells.find(c => c.x === x && c.y === y);
+    const cell = this.player.board.cells.find(c => c.x === x && c.y === y);
     return this.showShips && cell ? cell.isShip : false;
   }
 
   isHit(x: string, y: string): boolean {
-    const cell = this.board.cells.find(c => c.x === x && c.y === y);
+    const cell = this.player.board.cells.find(c => c.x === x && c.y === y);
     return cell ? cell.isShip && cell.value === 'hit' : false;
   }
 
   value(x: string, y: string): string {
-    const cell = this.board.cells.find(c => c.x === x && c.y === y);
+    const cell = this.player.board.cells.find(c => c.x === x && c.y === y);
     if (cell) {
       switch (cell.value) {
         case 'hit':
@@ -128,7 +129,7 @@ export class BoardComponent implements OnInit, OnChanges {
     if (this.isSystem || !this.isEnabled(x, y)) {
       return;
     }
-    const cell = this.board.cells.find(c => c.x === x && c.y === y);
+    const cell = this.player.board.cells.find(c => c.x === x && c.y === y);
     if (cell && cell.isShip) {
       return;
     }
@@ -177,7 +178,7 @@ export class BoardComponent implements OnInit, OnChanges {
   }
 
   isNextPossibleCell(x: string, y: string): boolean {
-    const cell = this.board.cells.find(c => c.x === x && c.y === y);
+    const cell = this.player.board.cells.find(c => c.x === x && c.y === y);
     if (cell && cell.isShip) {
       return false;
     }
@@ -223,7 +224,7 @@ export class BoardComponent implements OnInit, OnChanges {
 
     if (this.buildingShip) {
       this.buildingShip.forEach(ship => {
-        const s = this.board.cells.find(cell => cell.x == ship.x && cell.y == ship.y);
+        const s = this.player.board.cells.find(cell => cell.x == ship.x && cell.y == ship.y);
         if (s) { 
           s.isShip = false;
           s.position = '';
