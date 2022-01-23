@@ -51,11 +51,11 @@ export class BoardComponent implements OnInit, OnChanges {
   }
 
   get isCellEnabled() {
-    return this.isSystem || this.currentShip !== 0;
+    return this.isSystem || this.currentShip !== 0 || !this.isBoardEnabled;
   }
 
   get shipDetails(): string {
-    if (this.isSystem || this.currentShip === 0) {
+    if (this.isSystem || this.currentShip === 0 || !this.isBoardEnabled) {
       return '';
     }
     return `Select ${this.count(this.numberofShips - this.currentShip + 1)} ship (${this.currentShip + 1} cells)..`;
@@ -126,7 +126,7 @@ export class BoardComponent implements OnInit, OnChanges {
       this.selectedShip.emit({x: x, y:y});
       return;
     }
-    if (this.isSystem || !this.isEnabled(x, y)) {
+    if (this.isSystem || !this.isEnabled(x, y) || !this.isBoardEnabled) {
       return;
     }
     const cell = this.player.board.cells.find(c => c.x === x && c.y === y);

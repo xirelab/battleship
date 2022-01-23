@@ -23,6 +23,7 @@ import {MatMenuModule} from '@angular/material/menu'
 import { BoldPipe } from './utils/bold.pipe';
 import { CookieService } from 'ngx-cookie-service';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 @NgModule({
   imports: [
@@ -58,7 +59,8 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
     AlphaNumericDirective,
     HeaderComponent,
     SettingsComponent,
-    BoldPipe
+    BoldPipe,
+    SpinnerComponent
   ],
   exports: [
     // AutoFocusDirective,

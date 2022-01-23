@@ -50,11 +50,21 @@ div.transbox {
   font-weight: bold;
 }
 
+.initial-board {
+  width: 500px;
+  margin: 20px auto;
+}
+
 .slick-wrapper{
-  width: 1000px;
+  width: 500px;
+  height: 500px;
   margin: 20px auto;
 }
 
 .slick-prev:before, .slick-next:before {
   color: black!important;
+}
+
+.tablet {
+  align-items: center;
 }

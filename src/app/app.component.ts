@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Board } from './models/board.model';
 import { BoardService } from './services/board.service';
 import { ModalPopupComponent } from './components/modal-popup/modal-popup.component';
@@ -12,6 +12,10 @@ import { ActivatedRoute } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { ContentfulService } from './services/contentful.service';
 import { CookieManagementService } from './services/cookie.service';
+import { SlickCarouselComponent } from 'ngx-slick-carousel';
+
+// @ViewChild('slickModal')
+//   slickModal: SlickCarouselComponent;
 
 @Component({
   selector: 'my-app',
@@ -43,6 +47,9 @@ export class AppComponent implements OnInit {
   currentPlayer$ = this.store.pipe(select(selector.currentPlayer));
   isSetupCompleted$ = this.store.pipe(select(selector.isSetupCompleted));
   gameStatus$ = this.store.pipe(select(selector.gameStatus));
+
+  @ViewChild('slickModal')
+  slickModal: SlickCarouselComponent;
 
   constructor(
     private boardService: BoardService,
@@ -93,7 +100,7 @@ export class AppComponent implements OnInit {
     this.user_cookie = this.cookieManagementService.getDefaultValues();
     this.isTabletMode = this.user_cookie.mode === 'tablet';
     this.theme = this.user_cookie.theme ? this.user_cookie.theme : 1;
-    if (window.innerWidth <= 750) this.isTabletMode = true;
+    if (this.displayMode === 'tablet') this.isTabletMode = true;
   }
 
   get headings() {
@@ -145,10 +152,20 @@ export class AppComponent implements OnInit {
             break;
           case 'Opponent':
             const slot = this.triggerSystemFire();
-            if (this.isTabletMode) {
-              this.store.dispatch(actions.dropMissile({data: slot}));
+            if (this.displayMode == 'web') {
+              if (this.isTabletMode) {
+                this.store.dispatch(actions.dropMissile({data: slot}));
+              } else {
+                this.openDialog('Opponent fired the cordinates:' + slot, false, 'fire', slot);
+              }
             } else {
-              this.openDialog('Opponent fired the cordinates:' + slot, false, 'fire', slot);
+              this.slickModal.slickGoTo(1);
+              setTimeout(() => {        
+                this.store.dispatch(actions.dropMissile({data: slot}));
+                setTimeout(() => {
+                  this.slickModal.slickGoTo(0);
+                }, 500);
+              }, 500);
             }
             break;
         }
@@ -301,9 +318,9 @@ export class AppComponent implements OnInit {
     this.canShowShips = true;
     this.store.dispatch(actions.ReduceOneLife());
     setTimeout(() =>
-      {        
-        this.canShowShips = false;
-      }, 500);
+    {        
+      this.canShowShips = false;
+    }, 500);
   }
 
   onModeClick() {
@@ -388,32 +405,18 @@ export class AppComponent implements OnInit {
   }
 
   configureDisplayMode() {
-    this.displayMode = window.innerWidth <= 750 ? 'tablet' : 'web';
+    this.displayMode = window.innerWidth <= 1030 ? 'tablet' : 'web';
+    // if (this.displayMode === 'tablet') this.isTabletMode = true;
   }
 
   slideConfig = {
-    slidesToShow: 1, slidesToScroll: 1, 
+    slidesToShow: 1, slidesToScroll: 2, 
     centerMode: true, centerPadding: '1px', 
     arrows: true, dots: true,
     mobileFirst: true, infinite: false, 
     responsive: [{ breakpoint: window.innerWidth}]};
   
   slides = [342, 453] //, 846, 855, 234, 564, 744, 243];
-
-  // slideConfig = {
-  //   "slidesToShow": 1,
-  //   "slidesToScroll": 1,
-  //   "dots": true,
-  //   "infinite": false
-  // };
-
-  addSlide() {
-    this.slides.push(488)
-  }
-
-  removeSlide() {
-    this.slides.length = this.slides.length - 1;
-  }
 
   slickInit(e: any) {
     console.log('slick initialized');

@@ -1,4 +1,3 @@
-<!-- <span class="right-align" style="float: right;" [innerText]="shipDetails"> </span> -->
 <app-header [player]="player?.board"></app-header>
 <table id="board">
 <tr>
@@ -24,17 +23,6 @@
           [class.possible-cell]="isNextPossibleCell(x, y)">
           <span [innerText]="value(x, y) | titlecase | bold"></span>
         </button>
-      <!-- <div *ngIf="!isShip(x, y) || isHit(x, y); else isButton">
-        <button class="cell" 
-          [class.ship]="isShip(x, y)"
-          [class.hit]="isHit(x, y)"
-          [class.possible-cell]="isNextPossibleCell(x, y)">
-          <span [innerText]="value(x, y) | titlecase"></span>
-        </button>
-      </div> 
-      <ng-template #isButton>
-        <div class="triangle-up"></div>
-      </ng-template>  -->
     </td> 
   </tr>
 </table>

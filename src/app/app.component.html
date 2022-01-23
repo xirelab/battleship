@@ -45,7 +45,7 @@
             <div class="transbox">
               <app-board class="board" [isSystem]="false" [numberofShips]= "data?.numberOfShips" [showShips]=true
                 [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [player]="data?.me"
-                (allShipSelected)="allShipSelected($event, data?.me?.board)">
+                (allShipSelected)="allShipSelected($event, data?.me?.board)" [isBoardEnabled]="!isShipArranged">
               </app-board>
             </div>
           </td>
@@ -53,11 +53,20 @@
       </table>
     </div>
     <ng-template #TABLET_MODE>
-      <div class="slick-wrapper">
+      <div *ngIf="!isShipArranged" class="initial-board">
+        <app-header [player]="data?.me"></app-header>
+        <div class="transbox">
+          <app-board class="board" [isSystem]="false" [numberofShips]= "data?.numberOfShips" [showShips]=true
+            [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [player]="data?.me"
+            (allShipSelected)="allShipSelected($event, data?.me?.board)" [isBoardEnabled]="!isShipArranged">
+          </app-board>
+        </div>
+      </div>
+      <div *ngIf="isShipArranged" class="slick-wrapper tablet">
         <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig" (init)="slickInit($event)"
           (breakpoint)="breakpoint($event)" (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
           <div ngxSlickItem *ngFor="let slide of slides; let i = index" class="slide">
-            <div *ngIf="isShipArranged && i == 0">
+            <div *ngIf="i == 0">
               <app-header [player]="data?.opponent"></app-header>
               <div class="transbox">
                 <app-board class="board" [isSystem]="true" [numberofShips]= "data?.numberOfShips" [showShips]=canShowShips
@@ -71,13 +80,11 @@
               <div class="transbox">
                 <app-board class="board" [isSystem]="false" [numberofShips]= "data?.numberOfShips" [showShips]=true
                   [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [player]="data?.me"
-                  (allShipSelected)="allShipSelected($event, data?.me?.board)">
+                  (allShipSelected)="allShipSelected($event, data?.me?.board)" [isBoardEnabled]="!isShipArranged">
                 </app-board>
               </div>
             </div>
-            <button *ngIf="i == 1 && isShipArranged" (click)="slickModal.slickGoTo(i-1)">Prev</button> 
-            <button *ngIf="i == 0 && isShipArranged" (click)="slickModal.slickGoTo(i+1)" style="float: right;">Next</button>      
-          </div>
+            </div>
         </ngx-slick-carousel>
       </div>
     </ng-template>
@@ -86,6 +93,7 @@
   <br/><br/>
   <span>@xire labs</span>
 </div>
+<app-spinner></app-spinner>
 
 <!-- <div>
   <div class="slick-wrapper">
@@ -93,13 +101,9 @@
       (breakpoint)="breakpoint($event)" (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
       <div ngxSlickItem *ngFor="let slide of slides; let i = index" class="slide">
         <img src="https://picsum.photos/536/354?{{slide}}" alt="" width="100%">
+        <button *ngIf="i == 1 && isShipArranged" (click)="slickModal.slickGoTo(i-1)">Prev</button> 
+        <button *ngIf="i == 0 && isShipArranged" (click)="slickModal.slickGoTo(i+1)" style="float: right;">Next</button> 
       </div>
     </ngx-slick-carousel>
-    
     </div>
-    
-    <button (click)="addSlide()">Add</button>
-    <button (click)="removeSlide()">Remove</button>
-    <button (click)="slickModal.slickGoTo(3)">slickGoto 2</button>
-    <button (click)="slickModal.unslick()">unslick</button>
 </div> -->
