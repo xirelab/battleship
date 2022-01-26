@@ -317,10 +317,11 @@ export class AppComponent implements OnInit {
   onHintClick() {
     this.canShowShips = true;
     this.store.dispatch(actions.ReduceOneLife());
+    this.slickModal.slickGoTo(0);
     setTimeout(() =>
     {        
       this.canShowShips = false;
-    }, 500);
+    }, 600);
   }
 
   onModeClick() {
