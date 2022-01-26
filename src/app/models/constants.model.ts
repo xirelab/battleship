@@ -75,5 +75,6 @@ export const Menus = {
   restart: 'restart',
   help: 'help',
   profile: 'profile',
-  theme: 'theme'
+  theme: 'theme',
+  autoSlide: 'autoSlide'
 };

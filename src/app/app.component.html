@@ -1,97 +1,67 @@
 <div class="body" [ngStyle]="bkUrl">
-  <h2> {{headings?.heading}} </h2>
-  <!-- <h3>{{headings?.description}}</h3> -->
   <ng-container *ngIf="{
     me: me$ | async,
     opponent: opponent$ | async,
     numberOfShips: numberOfShips$ | async,
     xDimension: xDimension$ | async,
-    yDimension: yDimension$ | async,
-    myBoard: myBoard$ | async,
-    opponentBoard: opponentBoard$ | async,
-    isSetupCompleted: isSetupCompleted$ | async
+    yDimension: yDimension$ | async
   } as data">
-    <div [class]="buttons">
-      <span class="level">Level: {{level}}</span>
-      <app-settings [level]="level" (onClick)="gearClicked($event)"></app-settings>
-      <button *ngIf="canContinue && !isTabletMode" class= hint style="float: right;" mat-button 
-        (click)="onClickContinue()">Lets continue...
-      </button> &nbsp;&nbsp;
-      <button *ngIf="canContinue" class= right-align style="float: right;" mat-button 
-        (click)="onModeClick()"><span> {{isTabletMode ? 'Change to classic mode !' : 'Change to tablet mode !'}} </span>
-      </button> &nbsp;&nbsp;
-      <button *ngIf="canContinue && data?.me?.lifes > 0" class= right-align style="float: right;" mat-button 
-        (click)="onHintClick()">Hint*
-      </button>
+    <div>
+      <app-header [headings]="headings" [level]="level" (onClick)="gearClicked($event)"></app-header>
+      <app-button-group [canContinue]="canContinue" [isTabletMode]="isTabletMode" [lifes]="data?.me?.lifes"
+        (onContinueClick)="onContinueClick()" (onModeClick)="onModeClick()" (onHintClick)="onHintClick()">
+      </app-button-group>
     </div>
     <br/>
     <div *ngIf="displayMode == 'web'; else TABLET_MODE">  
       <table style="margin-left:auto;margin-right:auto;">
         <tr>
           <td *ngIf="isShipArranged">
-            <app-header [player]="data?.opponent"></app-header>
-            <div class="transbox">
-              <app-board class="board" [isSystem]="true" [numberofShips]= "data?.numberOfShips" [showShips]=canShowShips
-                [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [player]="data?.opponent"
-                (selectedShip)="selectedShip($event)" [isBoardEnabled]="isTabletMode && isMyTurn && isShipArranged">
-              </app-board>
-            </div>
+            <app-board class="board" [isSystem]="true" [numberofShips]= "data?.numberOfShips" [showShips]="canShowShips"
+              [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [player]="data?.opponent"
+              (selectedShip)="selectedShip($event)" [isBoardEnabled]="isTabletMode && isMyTurn && isShipArranged">
+            </app-board>
           </td>
           <td *ngIf="isShipArranged">
             <div class="vl"></div>
           </td>
           <td>
-            <app-header [player]="data?.me"></app-header>
-            <div class="transbox">
-              <app-board class="board" [isSystem]="false" [numberofShips]= "data?.numberOfShips" [showShips]=true
-                [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [player]="data?.me"
-                (allShipSelected)="allShipSelected($event, data?.me?.board)" [isBoardEnabled]="!isShipArranged">
-              </app-board>
-            </div>
+            <app-board class="board" [isSystem]="false" [numberofShips]= "data?.numberOfShips" [showShips]=true
+              [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [player]="data?.me"
+              (allShipSelected)="allShipSelected($event, data?.me?.board)" [isBoardEnabled]="!isShipArranged">
+            </app-board>
           </td>
         </tr>
       </table>
     </div>
     <ng-template #TABLET_MODE>
       <div *ngIf="!isShipArranged" class="initial-board">
-        <app-header [player]="data?.me"></app-header>
-        <div class="transbox">
-          <app-board class="board" [isSystem]="false" [numberofShips]= "data?.numberOfShips" [showShips]=true
-            [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [player]="data?.me"
-            (allShipSelected)="allShipSelected($event, data?.me?.board)" [isBoardEnabled]="!isShipArranged">
-          </app-board>
-        </div>
+        <app-board class="board" [isSystem]="false" [numberofShips]= "data?.numberOfShips" [showShips]=true
+          [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [player]="data?.me"
+          (allShipSelected)="allShipSelected($event, data?.me?.board)" [isBoardEnabled]="!isShipArranged">
+        </app-board>
       </div>
       <div *ngIf="isShipArranged" class="slick-wrapper tablet">
-        <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig" (init)="slickInit($event)"
-          (breakpoint)="breakpoint($event)" (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
+        <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
           <div ngxSlickItem *ngFor="let slide of slides; let i = index" class="slide">
             <div *ngIf="i == 0">
-              <app-header [player]="data?.opponent"></app-header>
-              <div class="transbox">
-                <app-board class="board" [isSystem]="true" [numberofShips]= "data?.numberOfShips" [showShips]=canShowShips
-                  [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [player]="data?.opponent"
-                  (selectedShip)="selectedShip($event)" [isBoardEnabled]="isTabletMode && isMyTurn && isShipArranged">
-                </app-board>
-              </div>
+              <app-board class="board" [isSystem]="true" [numberofShips]= "data?.numberOfShips" [showShips]="canShowShips"
+                [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [player]="data?.opponent"
+                (selectedShip)="selectedShip($event)" [isBoardEnabled]="isTabletMode && isMyTurn && isShipArranged">
+              </app-board>
             </div>
             <div *ngIf="i == 1">
-              <app-header [player]="data?.me"></app-header>
-              <div class="transbox">
-                <app-board class="board" [isSystem]="false" [numberofShips]= "data?.numberOfShips" [showShips]=true
-                  [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [player]="data?.me"
-                  (allShipSelected)="allShipSelected($event, data?.me?.board)" [isBoardEnabled]="!isShipArranged">
-                </app-board>
-              </div>
+              <app-board class="board" [isSystem]="false" [numberofShips]= "data?.numberOfShips" [showShips]=true
+                [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [player]="data?.me"
+                (allShipSelected)="allShipSelected($event, data?.me?.board)" [isBoardEnabled]="!isShipArranged">
+              </app-board>
             </div>
-            </div>
+          </div>
         </ngx-slick-carousel>
       </div>
     </ng-template>
   </ng-container>
-  <br/>
-  <br/><br/>
-  <span>@xire labs</span>
+  <app-footer></app-footer>
   <app-spinner *ngIf="displaySpinner" [label]="spinnerMessage"></app-spinner>
 </div>
 

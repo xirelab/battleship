@@ -32,18 +32,13 @@ p {
 .body  {
   /* background-image: url("../../images/1578519415415.jpeg"); */
   /* background-image: url("headings.background.url"); */
-  background-color: #2d94e9;
+  /* background-color: #2d94e9; */
   margin: -30px;
 }
 
 .board {
   background-color: #ffffff;
   opacity: 1;
-}
-
-div.transbox {
-  background-color: #ffffff;
-  opacity: 1
 }
 
 .level {

@@ -1,8 +1,4 @@
-<div *ngIf="player?.name">
-    <span> {{player?.name}} </span>
-    <ng-container *ngFor="let atrConfig of [].constructor(player?.lifes)" >
-        <span style="float: right;">&#10084;&#65039;</span>
-    </ng-container>
-</div>
-
-<ng-template #other_content><span> {{player?.name}} </span></ng-template>
+<h2> {{headings?.heading}} </h2>
+<!-- <h3>{{headings?.description}}</h3> -->
+<span class="level">Level: {{level}}</span>
+<app-settings [level]="level" (onClick)="gearClicked($event)"></app-settings>

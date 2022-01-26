@@ -58,6 +58,8 @@ export class BoardComponent implements OnInit, OnChanges {
     if (this.isSystem || this.currentShip === 0 || !this.isBoardEnabled) {
       return '';
     }
+    if (this.currentShip === 1) 
+      return `Select your last ship (${this.currentShip + 1} cells)..`;
     return `Select ${this.count(this.numberofShips - this.currentShip + 1)} ship (${this.currentShip + 1} cells)..`;
   }
 

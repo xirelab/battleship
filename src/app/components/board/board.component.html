@@ -1,34 +1,38 @@
-<app-header [player]="player?.board"></app-header>
-<table id="board">
-<tr>
-  <th></th>
-  <th *ngFor = "let column of xDimension">
-    {{column}}
-  </th>
-</tr>
-  <tr *ngFor = "let y of yDimension">
-    <th>      
-      {{y}}
+<div>
+  <app-board-header [player]="player"></app-board-header>
+</div>
+<div class="transbox">
+  <table id="board">
+  <tr>
+    <th></th>
+    <th *ngFor = "let column of xDimension">
+      {{column}}
     </th>
-    <td [class.td-ship]="isShip(x, y)" [class.td-hit]="isHit(x, y)" [class.cell-hover]="isCellEnabled" (click)="click(x, y)" *ngFor = "let x of xDimension">
-      <button class="cell" 
-          [class.ship]="isShip(x, y)"
-          [class.top]="shipPosition(x, y) == 'top'"
-          [class.bottom]="shipPosition(x, y) == 'bottom'"
-          [class.right]="shipPosition(x, y) == 'right'"
-          [class.left]="shipPosition(x, y) == 'left'"
-          [class.vertical]="shipPosition(x, y) == 'vertical'"
-          [class.horizontal]="shipPosition(x, y) == 'horizontal'"
-          [class.hit]="isHit(x, y)"
-          [class.possible-cell]="isNextPossibleCell(x, y)">
-          <span [innerText]="value(x, y) | titlecase | bold"></span>
-        </button>
-    </td> 
   </tr>
-</table>
-<div class="board-bottom" *ngIf="shipDetails">
-  <b><span class="right-align blink_me" [innerText]="shipDetails"> </span></b>
-  <button class="undo-button" style="float: right;" 
-    [class.blink_me]="shouldUndo" [ngClass] = "isUndoActive ? 'undo-active' : 'undo-inactive'"
-    (click)="onUndoClick()">Undo ship selection</button>
+    <tr *ngFor = "let y of yDimension">
+      <th>
+        {{y}}
+      </th>
+      <td [class.td-ship]="isShip(x, y)" [class.td-hit]="isHit(x, y)" [class.cell-hover]="isCellEnabled" (click)="click(x, y)" *ngFor = "let x of xDimension">
+        <button class="cell" 
+            [class.ship]="isShip(x, y)"
+            [class.top]="shipPosition(x, y) == 'top'"
+            [class.bottom]="shipPosition(x, y) == 'bottom'"
+            [class.right]="shipPosition(x, y) == 'right'"
+            [class.left]="shipPosition(x, y) == 'left'"
+            [class.vertical]="shipPosition(x, y) == 'vertical'"
+            [class.horizontal]="shipPosition(x, y) == 'horizontal'"
+            [class.hit]="isHit(x, y)"
+            [class.possible-cell]="isNextPossibleCell(x, y)">
+            <span [innerText]="value(x, y) | titlecase | bold"></span>
+          </button>
+      </td> 
+    </tr>
+  </table>
+  <div class="board-bottom" *ngIf="shipDetails">
+    <b><span class="right-align blink_me" [innerText]="shipDetails"> </span></b>
+    <button class="undo-button" style="float: right;" 
+      [class.blink_me]="shouldUndo" [ngClass] = "isUndoActive ? 'undo-active' : 'undo-inactive'"
+      (click)="onUndoClick()">Undo ship selection</button>
+  </div>
 </div>

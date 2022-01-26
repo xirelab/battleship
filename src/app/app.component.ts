@@ -14,9 +14,6 @@ import { ContentfulService } from './services/contentful.service';
 import { CookieManagementService } from './services/cookie.service';
 import { SlickCarouselComponent } from 'ngx-slick-carousel';
 
-// @ViewChild('slickModal')
-//   slickModal: SlickCarouselComponent;
-
 @Component({
   selector: 'my-app',
   templateUrl: './app.component.html',
@@ -35,7 +32,7 @@ export class AppComponent implements OnInit {
   isMyTurn = false;
   level = 1;
   iWon = false;
-  theme = 1;
+  theme = 3;
   user_cookie: any;
   displayMode = 'web';
   displaySpinner = false;
@@ -47,7 +44,6 @@ export class AppComponent implements OnInit {
   xDimension$ = this.store.pipe(select(selector.xDimension));
   yDimension$ = this.store.pipe(select(selector.yDimension));
   currentPlayer$ = this.store.pipe(select(selector.currentPlayer));
-  isSetupCompleted$ = this.store.pipe(select(selector.isSetupCompleted));
   gameStatus$ = this.store.pipe(select(selector.gameStatus));
 
   @ViewChild('slickModal')
@@ -116,6 +112,13 @@ export class AppComponent implements OnInit {
     if (this.contents && this.theme == 1) {
       const styles = {
         'background-image': 'url(' + this.headings.backgound.url + ')'
+      };
+      console.log(styles);
+      return styles;
+    }
+    if (this.contents && this.theme == 3) {
+      const styles = {
+        'background-color': '#2d94e9'
       };
       console.log(styles);
       return styles;
@@ -192,8 +195,7 @@ export class AppComponent implements OnInit {
       setTimeout(() => {
         this.displaySpinner = false;
         this.openDialog(this.isTabletMode ? 'Start tick the opponnent ships..' : 'Lets start the game.', false, 'startHit');
-      }, 2000);
-      // this.openDialog('Wait for Opponent to arrang the ships..', false, 'opponentShip'); 
+      }, 2000); 
     }
   }
 
@@ -251,9 +253,6 @@ export class AppComponent implements OnInit {
           // yet to update. as of now only single player implmented
           this.openDialog('Lets start arranging our ships..', false, 'arrangeShip'); 
           break;
-        // case 'opponentShip' :
-        //   this.openDialog(this.isTabletMode ? 'Start tick the opponnent ships..' : 'Lets start the game.', false, 'startHit');
-        //   break;
         case 'startHit':
           this.processCurrestUser('Me');
           break;
@@ -262,7 +261,7 @@ export class AppComponent implements OnInit {
           this.isMyTurn = true;
           break
         case 'modeToClassic' :
-          this.onClickContinue();
+          this.onContinueClick();
           break;
         case 'fire' :
           if (result && result.isCancelClicked) {
@@ -303,12 +302,12 @@ export class AppComponent implements OnInit {
           this.setplayerName(result);
           break;
         case 'theme':
-          if((this.theme == 1 && result.isButton1Clicked) || (this.theme == 2 && result.isButton2Clicked))
+          if((this.theme == 1 && result.isButton1Clicked) || (this.theme == 3 && result.isButton2Clicked))
             this.theme = 2;
+          else if((this.theme == 1 && result.isButton2Clicked) || (this.theme == 2 && result.isButton2Clicked))
+            this.theme = 3;
           else if((this.theme == 2 && result.isButton1Clicked) || (this.theme == 3 && result.isButton1Clicked))
             this.theme = 1;
-          else if((this.theme == 1 && result.isButton2Clicked) || (this.theme == 3 && result.isButton2Clicked))
-            this.theme = 3;
           this.user_cookie.theme = this.theme;
           this.cookieManagementService.setDefaultMode(this.user_cookie);
           break;
@@ -317,7 +316,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  onClickContinue() {
+  onContinueClick() {
     this.canContinue = false;
     this.openDialog('Please enter your cordinates', true, 'fire');
   }
@@ -393,10 +392,10 @@ export class AppComponent implements OnInit {
       case 'theme':
         if (this.theme == 1) { // background
           this.openDialog('Select your option', false, 'theme', '', 'Light mode', 'Dark mode');
-        } else if (this.theme == 2) {  // dark mode
-          this.openDialog('Select your option', false, 'theme', '', 'Backgound', 'Light mode');
-        } else if (this.theme == 3) {  // light mode
+        } else if (this.theme == 2) {  // Light mode
           this.openDialog('Select your option', false, 'theme', '', 'Backgound', 'Dark mode');
+        } else if (this.theme == 3) {  // Dark mode
+          this.openDialog('Select your option', false, 'theme', '', 'Backgound', 'Light mode');
         }
         break;
       case 'help':

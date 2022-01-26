@@ -15,7 +15,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { boardReducer } from './store/board.reducer';
 import { ActivatedRoute } from '@angular/router';
-import { HeaderComponent } from './components/header/header.component';
+import { BoardHeaderComponent } from './components/board-header/board-header.component';
 import { MatNativeDateModule, MatCommonModule } from '@angular/material/core';
 import { SettingsComponent } from './components/settings/settings.component';
 // import { MatIconModule } from '@angular/material';
@@ -26,7 +26,10 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { SpinnersAngularModule } from 'spinners-angular';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatIconModule } from '@angular/material/icon'
+import { MatIconModule } from '@angular/material/icon';
+import { HeaderComponent } from './components/header/header.component';
+import { ButtonGroupComponent } from './components/button-group/button-group.component';
+import { FooterComponent } from './components/footer/footer.component'
 
 @NgModule({
   imports: [
@@ -62,10 +65,13 @@ import { MatIconModule } from '@angular/material/icon'
     ModalPopupComponent,
     AutoFocusDirective,
     AlphaNumericDirective,
-    HeaderComponent,
+    BoardHeaderComponent,
     SettingsComponent,
     BoldPipe,
-    SpinnerComponent
+    SpinnerComponent,
+    HeaderComponent,
+    ButtonGroupComponent,
+    FooterComponent
   ],
   exports: [
     // AutoFocusDirective,

@@ -1,7 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Player } from 'src/app/models/player.model';
-import { TitleCasePipe } from '@angular/common';
-import { BoldPipe } from 'src/app/utils/bold.pipe';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -10,7 +7,11 @@ import { BoldPipe } from 'src/app/utils/bold.pipe';
 })
 export class HeaderComponent {
 
-  @Input() player: Player;
+  @Input() headings: any;
+  @Input() level: number;
+  @Output() onClick = new EventEmitter<string>();
 
-  constructor(public titleCasePipe: TitleCasePipe) {}
+  gearClicked($event) {
+    this.onClick.emit($event);
+  }
 }

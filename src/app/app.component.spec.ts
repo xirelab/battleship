@@ -133,7 +133,7 @@ describe('AppComponent', () => {
       spyOn(modal, 'open');
 
       // Act
-      component.onClickContinue();
+      component.onContinueClick();
 
       // Assert
       expect(modal.open).toHaveBeenCalled();
