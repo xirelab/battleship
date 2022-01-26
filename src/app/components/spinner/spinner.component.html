@@ -1,14 +1,15 @@
-<mat-card>
+<!-- <mat-card>
     <mat-card-content>
-      <h2 class="h2">Result</h2>
-      <mat-progress-spinner
-          class="example-margin"
-          [color]="color"
-          [mode]="mode"
-          [value]="value">
-      </mat-progress-spinner>
-      <img class="loader" />
-      <h2 class="h2">End</h2>
+      <mat-progress-spinner mode="indeterminate" style="margin:0 auto;">
+     </mat-progress-spinner> 
+      <h2 class="h2">{{label}}</h2>
     </mat-card-content>
-</mat-card>
-  
+</mat-card> -->
+
+<div class="overlay">
+    <div class="center">
+        <mat-progress-spinner mode="indeterminate" style="margin:0 auto;"></mat-progress-spinner>
+        <!-- <sa-spinner-round-outlined size="100%" styles='{"color": "blue"}'></sa-spinner-round-outlined> -->
+        <h4 class="h2">{{label}}</h4>
+    </div>
+</div>

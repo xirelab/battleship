@@ -24,6 +24,9 @@ import { BoldPipe } from './utils/bold.pipe';
 import { CookieService } from 'ngx-cookie-service';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { SpinnerComponent } from './components/spinner/spinner.component';
+import { SpinnersAngularModule } from 'spinners-angular';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon'
 
 @NgModule({
   imports: [
@@ -31,7 +34,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    // MatIconModule,
+    MatIconModule,
     MatMenuModule,
     MatCommonModule,
     MatButtonModule,
@@ -49,7 +52,9 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
         strictActionImmutability: false,
       }
     }),
-    SlickCarouselModule
+    SlickCarouselModule,
+    SpinnersAngularModule,
+    MatProgressSpinnerModule
   ],
   declarations: [
     AppComponent,

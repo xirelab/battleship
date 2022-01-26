@@ -38,6 +38,8 @@ export class AppComponent implements OnInit {
   theme = 1;
   user_cookie: any;
   displayMode = 'web';
+  displaySpinner = false;
+  spinnerMessage = '';
 
   me$ = this.store.pipe(select(selector.me));
   opponent$ = this.store.pipe(select(selector.opponent));
@@ -89,7 +91,7 @@ export class AppComponent implements OnInit {
         this.isGameFinished = true;
         this.canContinue = false;
         this.openDialog(!this.iWon ? `${player} won` : `Congratulations you won`, false, 'GameFinish', '', 
-          (!this.iWon ? 'Challenge again' : (this.level == 3 ? 'Restart' : 'Next Level')), 'Not now');
+          (!this.iWon ? 'Challenge again' : (this.level == 3 ? 'Restart' : 'Next Level')), 'Exit');
       } 
     });
 
@@ -185,7 +187,13 @@ export class AppComponent implements OnInit {
       this.isShipArranged = true;
       this.canContinue = this.isTabletMode;
       this.store.dispatch(actions.prepareSystemBoard());
-      this.openDialog('Wait for Opponent to arrang the ships..', false, 'opponentShip'); 
+      this.displaySpinner = true;
+      this.spinnerMessage = "let opponent arrange their ships";
+      setTimeout(() => {
+        this.displaySpinner = false;
+        this.openDialog(this.isTabletMode ? 'Start tick the opponnent ships..' : 'Lets start the game.', false, 'startHit');
+      }, 2000);
+      // this.openDialog('Wait for Opponent to arrang the ships..', false, 'opponentShip'); 
     }
   }
 
@@ -243,9 +251,9 @@ export class AppComponent implements OnInit {
           // yet to update. as of now only single player implmented
           this.openDialog('Lets start arranging our ships..', false, 'arrangeShip'); 
           break;
-        case 'opponentShip' :
-          this.openDialog(this.isTabletMode ? 'Start tick the opponnent ships..' : 'Lets start the game.', false, 'startHit');
-          break;
+        // case 'opponentShip' :
+        //   this.openDialog(this.isTabletMode ? 'Start tick the opponnent ships..' : 'Lets start the game.', false, 'startHit');
+        //   break;
         case 'startHit':
           this.processCurrestUser('Me');
           break;
@@ -266,8 +274,8 @@ export class AppComponent implements OnInit {
         case 'GameFinish':
           if(result.isButton1Clicked) {
             if (this.iWon) this.level += 1;
-            if (this.level >= 4) this.level = 1;
-            this.nextLevel();
+            if (this.level >= 4) this.restartGame(); 
+            else this.nextLevel();
           } else {
             // need to close the window..
           }
@@ -354,14 +362,17 @@ export class AppComponent implements OnInit {
   }
 
   restartGame() {
+    this.level = 1
+    this.canShowShips = false;
     this.isShipArranged = false;
     this.store.dispatch(actions.RestartGame());
     this.openDialog('Please select the players', false, 'playerSelection', '', 'Single Player', 'Two Player');        
   }
 
   nextLevel() {
+    this.canShowShips = false;
     this.isShipArranged = false;
-    this.store.dispatch(actions.RestartGame());
+    this.store.dispatch(actions.NextLevel());
     this.openDialog('Lets start arranging our ships..', false, 'arrangeShip');   
   }
 

@@ -92,12 +92,15 @@ export const boardReducer = createReducer(
     }
   }),
   on(action.RestartGame, (state) => {
-    let myName = state.me.name;
-    let oppName = state.opponent.name;
-    state.me = new Player(numberofCells, numberofLifes);
-    state.me.name = myName;
-    state.opponent =  new Player(numberofCells, numberofLifes)
-    state.opponent.name = oppName;
+    state.me = new Player(numberofCells, numberofLifes, state.me.name);
+    state.opponent =  new Player(numberofCells, numberofLifes, state.opponent.name);
+    return {
+      ...state
+    }
+  }),
+  on(action.NextLevel, (state) => {
+    state.me = new Player(numberofCells, state.me.lifes, state.me.name);
+    state.opponent =  new Player(numberofCells, state.opponent.lifes, state.opponent.name);
     return {
       ...state
     }

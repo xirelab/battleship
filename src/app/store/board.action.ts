@@ -12,6 +12,7 @@ export enum BoardActionTypes {
   ReduceOneLife = '[Board] Reduce One Life',
   ResetLifes = '[Board] Reset number of Life',
   RestartGame = '[Board] Restart the game',
+  NextLevel = '[Board] Next level of the game',
   SetNumberofShips = '[Board] Set Number of Ships',
   SetCurrentPlayer = '[Board] Set Current Player'
 }
@@ -47,6 +48,7 @@ export const dropMissile = createAction(
 export const ReduceOneLife = createAction(BoardActionTypes.ReduceOneLife);
 export const ResetLifes = createAction(BoardActionTypes.ResetLifes);
 export const RestartGame = createAction(BoardActionTypes.RestartGame);
+export const NextLevel = createAction(BoardActionTypes.NextLevel);
 
 export const SetNumberofShips = createAction(
   BoardActionTypes.SetNumberofShips,

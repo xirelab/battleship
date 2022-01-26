@@ -57,7 +57,7 @@ div.transbox {
 
 .slick-wrapper{
   width: 500px;
-  height: 500px;
+  height: 550px;
   margin: 20px auto;
 }
 
@@ -67,4 +67,9 @@ div.transbox {
 
 .tablet {
   align-items: center;
+}
+
+.wrapper {
+  height: calc(100vh - 20px);
+  position: relative;
 }
