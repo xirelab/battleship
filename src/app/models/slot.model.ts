@@ -1,4 +1,4 @@
 export class Slot {
-  x: string;
-  y: string;
+  x: string | undefined;
+  y: string | undefined;
 }

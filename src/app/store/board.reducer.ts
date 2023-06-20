@@ -38,7 +38,7 @@ export const boardReducer = createReducer(
   }),
   on(action.SetPlayerType, (state, { isSingleUser }) => {
     state.isSinglePlayer = isSingleUser;
-    if (isSingleUser) {
+    if (isSingleUser && state.opponent) {
       state.opponent.name = 'SYSTEM';
     }
     return {
@@ -46,13 +46,13 @@ export const boardReducer = createReducer(
     }
   }),
   on(action.SetMyName, (state, { name }) => {
-    state.me.name = name;
+    if (state.me) state.me.name = name;
     return {
       ...state
     }
   }),
   on(action.SetOpponentName, (state, { name }) => {
-    state.opponent.name = name;
+    if (state.opponent) state.opponent.name = name;
     return {
       ...state
     }
@@ -65,53 +65,54 @@ export const boardReducer = createReducer(
   }),
   on(action.prepareSystemBoardCompleted, (state, { data }) => {
     state.isSetupCompleted = false;
-    state.opponent.board = data;
+    if (state.opponent) state.opponent.board = data;
     return {
       ...state
     }
   }),
   on(action.dropMissile, (state, { data }) => {
     state.currentPlayer = utils.updateBoard(
-      utils.updateCordinate(data),
-      state.currentPlayer == 'Opponent' ? state.me.board : state.opponent.board,
-      state.currentPlayer);
+        utils.updateCordinate(data),
+        state.currentPlayer == 'Opponent' && state.me ? state.me.board : (state.opponent ? state.opponent.board : null),
+        state.currentPlayer
+      );
     return {
       ...state
     }
   }),
   on(action.ReduceOneLife, (state) => {
-    state.me.lifes -= 1;
+    if (state.me) state.me.lifes -= 1;
     return {
       ...state
     }
   }),
   on(action.ResetLifes, (state) => {
-    state.me.lifes = 3;
+    if(state.me) state.me.lifes = 3;
     return {
       ...state
     }
   }),
   on(action.RestartGame, (state) => {
-    state.me = new Player(numberofCells, numberofLifes, state.me.name);
-    state.opponent =  new Player(numberofCells, numberofLifes, state.opponent.name);
+    state.me = new Player(numberofCells, numberofLifes, state.me?.name);
+    state.opponent =  new Player(numberofCells, numberofLifes, state.opponent?.name);
     return {
       ...state
     }
   }),
   on(action.NextLevel, (state) => {
-    state.me = new Player(numberofCells, state.me.lifes, state.me.name);
-    state.opponent =  new Player(numberofCells, state.opponent.lifes, state.opponent.name);
+    state.me = new Player(numberofCells, state.me?.lifes, state.me?.name);
+    state.opponent =  new Player(numberofCells, state.opponent?.lifes, state.opponent?.name);
     return {
       ...state
     }
   }),
   on(action.SetNumberofShips, (state, { count }) => {
     state.numberOfShips = +count;
-    let myName = state.me.name;
-    let oppName = state.opponent.name;
+    let myName = state.me?.name;
+    let oppName = state.opponent?.name;
     state.me = new Player(numberofCells, numberofLifes);
-    state.me.name = myName;
-    state.opponent.name = oppName;
+    if(state.me) state.me.name = myName || '';
+    if(state.opponent) state.opponent.name = oppName || '';
     state.opponent =  new Player(numberofCells, numberofLifes)
     return {
       ...state

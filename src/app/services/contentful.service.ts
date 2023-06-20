@@ -24,7 +24,7 @@ export class ContentfulService {
   // only for testing
   getContents_New() {
     return this.client.getEntries()
-    .then(res => res.items);
+    .then((res: { items: any; }) => res.items);
   }
 
   getContent_GraphQl() {

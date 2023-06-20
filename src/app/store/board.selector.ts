@@ -56,5 +56,5 @@ export const isSetupCompleted = createSelector(
 
 export const gameStatus = createSelector(
   selector,
-  state => state && utils.gameStatus(state.me.board, state.opponent.board)
+  state => state && utils.gameStatus(state.me?.board, state.opponent?.board)
 );

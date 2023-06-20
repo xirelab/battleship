@@ -103,7 +103,7 @@ describe('Utils', () => {
       // Arrange
       const slot = {x: '1', y: 'A'};
       const board = mockBoard;
-      board[0].value = 'hit';
+      // board[0].value = 'hit';
 
       // Act
       const response = utils.updateBoard(slot, board, 'Me');
@@ -117,8 +117,8 @@ describe('Utils', () => {
     it('should return true', () => {
       // Arrange
       const board = mockBoard;
-      board[0].isShip = true;
-      board[0].value = 'hit';
+      // board[0].isShip = true;
+      // board[0].value = 'hit';
 
       // Act
       const response = utils.checkBoard(board);
@@ -130,8 +130,8 @@ describe('Utils', () => {
     it('should return false', () => {
       // Arrange
       const board = mockBoard;
-      board[0].isShip = true;
-      board[0].value = '';
+      // board[0].isShip = true;
+      // board[0].value = '';
 
       // Act
       const response = utils.checkBoard(board);

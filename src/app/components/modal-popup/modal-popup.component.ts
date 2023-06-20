@@ -48,7 +48,7 @@ export class ModalPopupComponent {
            !this.data.isInputVisisble; // && this.data.type !== 'myName');
   }
 
-  keyPress(event) {    
+  keyPress(event: any) {    
     var charCode = (event.which) ? event.which : event.keyCode;
 
     if (this.data.type==='myName' || this.data.type === 'profileUpdate') {
@@ -80,10 +80,11 @@ export class ModalPopupComponent {
         this.dialogRef.close(this.data);
       }
 
-      if (this.data.value.length >= 3) {
+      if (this.data.value && this.data.value.length >= 3) {
         event.preventDefault();
         return false;
       }
     }
+    return
   }
 }

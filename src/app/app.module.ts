@@ -56,7 +56,7 @@ import { FooterComponent } from './components/footer/footer.component'
       }
     }),
     SlickCarouselModule,
-    SpinnersAngularModule,
+    // SpinnersAngularModule,
     MatProgressSpinnerModule
   ],
   declarations: [

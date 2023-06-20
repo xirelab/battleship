@@ -16,17 +16,14 @@ export class BoardEffects {
   ) {}
 
   prepareSystemBoard$ = createEffect(() =>
-    this. action$.pipe(
+    this.action$.pipe(
       ofType(BoardActionTypes.PrepareSystemBoard),
       withLatestFrom(this.store$),
       mergeMap(([, state]) => {
-        if (state.board) {
-          // TODO: need to make api call
-          return this.boardService.initializeOpponent(state.board.opponent.board, state.board.numberOfShips)
+        return this.boardService.initializeOpponent(state.board?.opponent?.board, state.board?.numberOfShips || 0)
           .pipe(
             map(data => actions.prepareSystemBoardCompleted({data: data}))
-          );  
-        }        
+          );
       })      
     )
   );

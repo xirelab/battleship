@@ -10,9 +10,9 @@ import * as utils from '../utils/common.util';
   providedIn: 'root'
 })
 export class BoardService {
-  private board: BehaviorSubject<IBoard>;
+  private board: BehaviorSubject<IBoard> | undefined;
   
-  initializeOpponent(systemBoard: Board, numberOfShips: number): Observable<IBoard> {
+  initializeOpponent(systemBoard: Board | null | undefined, numberOfShips: number): Observable<IBoard> {
     if (!systemBoard) {
       if (!this.board) {
         this.board = new BehaviorSubject<IBoard>(new Board(10))
@@ -137,7 +137,7 @@ export class BoardService {
     return this.board.asObservable();
   }
 
-  triggerSystemFire_Level1(board: Board): string {
+  triggerSystemFire_Level1(board: Board | undefined): any {
     if (board && board.cells) {
       let xValue: any;
       let yValue: any;
@@ -160,7 +160,7 @@ export class BoardService {
   private first: any;
   private isDescreasing = true;
 
-  triggerSystemFire_Level2(board: Board): string {
+  triggerSystemFire_Level2(board: Board | undefined): any {
     if (board && board.cells) {
       let xValue: number;
       let yValue: number;

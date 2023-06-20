@@ -4,6 +4,6 @@
 <button *ngIf="canContinue" class= right-align style="float: right;" mat-button 
     (click)="onModeClick.emit()"><span> {{isTabletMode ? 'Change to classic mode !' : 'Change to tablet mode !'}} </span>
 </button> &nbsp;&nbsp;
-<button *ngIf="canContinue && lifes > 0" class= right-align style="float: right;" mat-button 
+<button *ngIf="canContinue && lifes && lifes > 0" class= right-align style="float: right;" mat-button 
     (click)="onHintClick.emit()">Hint*
 </button>

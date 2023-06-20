@@ -7,9 +7,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class ButtonGroupComponent {
 
-  @Input() canContinue: boolean;
-  @Input() isTabletMode: boolean;
-  @Input() lifes: number;
+  @Input() canContinue: boolean | undefined;
+  @Input() isTabletMode: boolean | undefined;
+  @Input() lifes: number | undefined;
   @Output() onContinueClick = new EventEmitter<void>();
   @Output() onModeClick = new EventEmitter<void>();
   @Output() onHintClick = new EventEmitter<void>();

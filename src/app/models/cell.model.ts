@@ -1,7 +1,7 @@
 export class Cell {
-  x: string;
-  y: string;
-  isShip: boolean;
-  value: string; // hit or miss
-  position: string;
+  x: string | undefined;
+  y: string | undefined;
+  isShip: boolean | undefined;
+  value: string | undefined; // hit or miss
+  position: string | undefined;
 }

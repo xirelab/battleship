@@ -9,7 +9,7 @@ import { Menus } from 'src/app/models/constants.model';
 export class SettingsComponent {
 
   menus = Menus;
-  @Input() level: number;
+  @Input() level: number | undefined;
   @Output() onClick = new EventEmitter<string>();
 
   gearClicked(menu: string) {

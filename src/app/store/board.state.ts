@@ -2,18 +2,18 @@ import { Board } from "../models/board.model";
 import { Player } from "../models/player.model";
 
 export interface BoardState {
-  numberOfCells: number;
-  numberOfShips: number;
-  xDimension: string[];
-  yDimension: string[];
-  currentPlayer: string;
+  numberOfCells: number | undefined;
+  numberOfShips: number | undefined;
+  xDimension: string[] | undefined;
+  yDimension: string[] | undefined;
+  currentPlayer: string | null;
   isSetupCompleted: boolean;
   isSinglePlayer: boolean;
-  me: Player;
-  opponent: Player;
+  me: Player | null;
+  opponent: Player | null;
   level: number;
 }
 
 export class AppState {
-  board: BoardState;
+  board: BoardState | undefined;
 }

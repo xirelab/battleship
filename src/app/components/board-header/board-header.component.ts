@@ -10,7 +10,7 @@ import { BoldPipe } from 'src/app/utils/bold.pipe';
 })
 export class BoardHeaderComponent {
 
-  @Input() player: Player;
+  @Input() player: Player | undefined | null;
 
   constructor(public titleCasePipe: TitleCasePipe) {}
 }

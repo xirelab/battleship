@@ -11,20 +11,20 @@ import { Slot } from '../../models/slot.model';
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent implements OnInit, OnChanges {
-  currentShip: number;
+  currentShip: number | undefined | null;
   numberOfcellSelected = 0;
-  lastSelectedCell: Cell;
-  secondLastSelectedCell: Cell;
-  firstCell: Cell;
+  lastSelectedCell: Cell | undefined | null;
+  secondLastSelectedCell: Cell | undefined | null;
+  firstCell: Cell | undefined;
   shouldUndo = false;
   isUndoActive = false;
   buildingShip: Cell[] = [];
   // private _incoming: Slot;
 
-  @Input() xDimension: Array<string>;
-  @Input() yDimension: Array<string>;
-  @Input() player: Player;
-  @Input() numberofShips: number = 2;
+  @Input() xDimension: string[] | undefined | null;
+  @Input() yDimension: string[] | undefined | null;
+  @Input() player: Player | undefined | null;
+  @Input() numberofShips: number | undefined | null = 2;
   @Input() showShips: boolean = true;
   @Input() isSystem: boolean = true;
   @Input() isBoardEnabled: boolean = false;
@@ -60,10 +60,12 @@ export class BoardComponent implements OnInit, OnChanges {
     }
     if (this.currentShip === 1) 
       return `Select your last ship (${this.currentShip + 1} cells)..`;
-    return `Select ${this.count(this.numberofShips - this.currentShip + 1)} ship (${this.currentShip + 1} cells)..`;
+    if (this.currentShip && this.numberofShips)
+      return `Select ${this.count(this.numberofShips - this.currentShip + 1)} ship (${this.currentShip + 1} cells)..`;
+    return '';
   }
 
-  private count(number: number): string {
+  private count(number: number): any {
     switch (number) {
       case 1:
         return 'first';
@@ -80,23 +82,23 @@ export class BoardComponent implements OnInit, OnChanges {
     }
   }
 
-  shipPosition(x: string, y: string): string {
-    const cell = this.player.board.cells.find(c => c.x === x && c.y === y);
+  shipPosition(x: string, y: string): any {
+    const cell = this.player?.board.cells.find(c => c.x === x && c.y === y);
     return cell && this.showShips ? cell.position : '';
   }
 
-  isShip(x: string, y: string): boolean {
-    const cell = this.player.board.cells.find(c => c.x === x && c.y === y);
+  isShip(x: string, y: string): any {
+    const cell = this.player?.board.cells.find(c => c.x === x && c.y === y);
     return this.showShips && cell ? cell.isShip : false;
   }
 
-  isHit(x: string, y: string): boolean {
-    const cell = this.player.board.cells.find(c => c.x === x && c.y === y);
+  isHit(x: string, y: string): any {
+    const cell = this.player?.board.cells.find(c => c.x === x && c.y === y);
     return cell ? cell.isShip && cell.value === 'hit' : false;
   }
 
   value(x: string, y: string): string {
-    const cell = this.player.board.cells.find(c => c.x === x && c.y === y);
+    const cell = this.player?.board.cells.find(c => c.x === x && c.y === y);
     if (cell) {
       switch (cell.value) {
         case 'hit':
@@ -131,7 +133,7 @@ export class BoardComponent implements OnInit, OnChanges {
     if (this.isSystem || !this.isEnabled(x, y) || !this.isBoardEnabled) {
       return;
     }
-    const cell = this.player.board.cells.find(c => c.x === x && c.y === y);
+    const cell = this.player?.board.cells.find(c => c.x === x && c.y === y);
     if (cell && cell.isShip) {
       return;
     }
@@ -142,19 +144,19 @@ export class BoardComponent implements OnInit, OnChanges {
         // first cell selection
         this.lastSelectedCell.position = 
           this.lastSelectedCell.x === cell.x  ? 
-            (this.lastSelectedCell.y > cell.y ? 'bottom' : 'top') :
-            (this.lastSelectedCell.x > cell.x && +x < 10 ? 'right' : 'left');
+            ((this.lastSelectedCell?.y || 0) > (cell?.y || 0) ? 'bottom' : 'top') :
+            ((this.lastSelectedCell.x || 0) > (cell.x || 0) && +x < 10 ? 'right' : 'left');
       }
       if (this.lastSelectedCell) {
         // last
         if (this.numberOfcellSelected === this.currentShip) {
           cell.position = this.lastSelectedCell.x === cell.x  ? 
-          (this.lastSelectedCell.y > cell.y ? 'top' : 'bottom') :
-          (this.lastSelectedCell.x > cell.x && +x < 10 ? 'left' : 'right');
+          ((this.lastSelectedCell.y || 0) > (cell.y || 0) ? 'top' : 'bottom') :
+          ((this.lastSelectedCell.x || 0) > (cell.x || 0) && +x < 10 ? 'left' : 'right');
         }
         
         //middle
-        if (this.numberOfcellSelected < this.currentShip) {
+        if (this.numberOfcellSelected < (this.currentShip || 0)) {
           cell.position = this.lastSelectedCell.x === cell.x  ? 'vertical' : 'horizontal';
         }
       }
@@ -167,8 +169,8 @@ export class BoardComponent implements OnInit, OnChanges {
       this.lastSelectedCell = cell; // {x: x, y: y};
     }
     this.numberOfcellSelected += 1;
-    if (this.numberOfcellSelected === this.currentShip + 1) {
-      this.currentShip -= 1;
+    if (this.numberOfcellSelected === (this.currentShip || 0) + 1) {
+      if (this.currentShip) this.currentShip -= 1;
       this.numberOfcellSelected = 0;
       this.lastSelectedCell = null;
       this.shouldUndo = false;
@@ -180,28 +182,28 @@ export class BoardComponent implements OnInit, OnChanges {
   }
 
   isNextPossibleCell(x: string, y: string): boolean {
-    const cell = this.player.board.cells.find(c => c.x === x && c.y === y);
+    const cell = this.player?.board.cells.find(c => c.x === x && c.y === y);
     if (cell && cell.isShip) {
       return false;
     }
     
-    if (this.numberOfcellSelected !== 0 && this.numberOfcellSelected <= this.currentShip + 1 && this.lastSelectedCell) {
-      const yIndex = this.yDimension.findIndex(i => i === y);
-      const yBase = this.yDimension.findIndex(i => i === this.lastSelectedCell.y);
+    if (this.numberOfcellSelected !== 0 && this.numberOfcellSelected <= (this.currentShip || 0) + 1 && this.lastSelectedCell) {
+      const yIndex = this.yDimension?.findIndex(i => i === y);
+      const yBase = this.yDimension?.findIndex(i => i === this.lastSelectedCell?.y);
       
       if (this.secondLastSelectedCell && this.lastSelectedCell) {
         if (this.secondLastSelectedCell.x == this.lastSelectedCell.x && this.lastSelectedCell.x == x) {
-          if (yIndex - 1 == yBase && yIndex >= 9) this.enableUndo();
-          return yIndex - 1 == yBase || yIndex + 1 == yBase; //|| yIndex + 1 == +this.firstCell.y; 
+          if ((yIndex || 0) - 1 == yBase && (yIndex || 0) >= 9) this.enableUndo();
+          return (yIndex || 0) - 1 == yBase || (yIndex || 0) + 1 == yBase; //|| yIndex + 1 == +this.firstCell.y; 
         }
         if (this.secondLastSelectedCell.y == this.lastSelectedCell.y && this.lastSelectedCell.y == y) {
-          if (+x - 1 == +this.lastSelectedCell.x && +x >= 10) this.enableUndo();
-          return +x - 1 == +this.lastSelectedCell.x || +x + 1 == +this.lastSelectedCell.x; // || +x + 1 == +this.firstCell.x;
+          if (+x - 1 == +(this.lastSelectedCell.x || 0) && +x >= 10) this.enableUndo();
+          return +x - 1 == +(this.lastSelectedCell.x || 0) || +x + 1 == +(this.lastSelectedCell.x || 0); // || +x + 1 == +this.firstCell.x;
         }
       }
       else if (this.lastSelectedCell) {
         if ((Number(x) === Number(this.lastSelectedCell.x) &&
-             (yIndex - 1 === yBase || yIndex + 1 === yBase)) ||
+             ((yIndex || 0) - 1 === yBase || (yIndex || 0) + 1 === yBase)) ||
             ((yIndex === yBase && (
               Number(x) + 1 === Number(this.lastSelectedCell.x) ||
               Number(x) - 1 === Number(this.lastSelectedCell.x))))) {
@@ -226,14 +228,14 @@ export class BoardComponent implements OnInit, OnChanges {
 
     if (this.buildingShip) {
       this.buildingShip.forEach(ship => {
-        const s = this.player.board.cells.find(cell => cell.x == ship.x && cell.y == ship.y);
+        const s = this.player?.board.cells.find(cell => cell.x == ship.x && cell.y == ship.y);
         if (s) { 
           s.isShip = false;
           s.position = '';
         }
       });
       if (this.numberOfcellSelected == 0) 
-        this.currentShip += 1;
+        if (this.currentShip != undefined) this.currentShip += 1;
       this.numberOfcellSelected = 0;
       this.lastSelectedCell = null;
     }

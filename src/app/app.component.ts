@@ -2,20 +2,18 @@ import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Board } from './models/board.model';
 import { BoardService } from './services/board.service';
 import { ModalPopupComponent } from './components/modal-popup/modal-popup.component';
-import { MatDialog } from '@angular/material/dialog';
 import { select, Store } from '@ngrx/store';
 import { Actions } from '@ngrx/effects';
 import { BoardState } from './store/board.state';
 import * as actions from './store/board.action';
 import * as selector from './store/board.selector';
-import { ActivatedRoute } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { ContentfulService } from './services/contentful.service';
 import { CookieManagementService } from './services/cookie.service';
 import { SlickCarouselComponent } from 'ngx-slick-carousel';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: 'my-app',
+  selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -23,7 +21,7 @@ export class AppComponent implements OnInit {
   contents: any;
   isGameFinished = false;
   isShipArranged = false;
-  myBoard: Board;
+  myBoard: Board | undefined;
   currentPlayer: string = '';
   canContinue = false;
   canShowShips = false;
@@ -47,14 +45,14 @@ export class AppComponent implements OnInit {
   gameStatus$ = this.store.pipe(select(selector.gameStatus));
 
   @ViewChild('slickModal')
-  slickModal: SlickCarouselComponent;
+  slickModal: SlickCarouselComponent | undefined;
 
   constructor(
     private boardService: BoardService,
     private dialog: MatDialog,
     private store: Store<BoardState>,
     private actions$: Actions,
-    private cookieService: CookieService,
+    // private cookieService: CookieService,
     private contentful: ContentfulService,
     private cookieManagementService: CookieManagementService
     // private route: ActivatedRoute
@@ -79,7 +77,7 @@ export class AppComponent implements OnInit {
 
     if (this.user_cookie) this.store.dispatch(actions.SetNumberofShips({count: +this.user_cookie.ships}));
 
-    this.currentPlayer$.subscribe((user: string) => this.processCurrestUser(user));
+    this.currentPlayer$.subscribe(user=> this.processCurrestUser(user || ''));
 
     this.gameStatus$.subscribe((player: string) => {
       if(player) {
@@ -108,7 +106,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  get bkUrl() {
+  get bkUrl(): any {
     if (this.contents && this.theme == 1) {
       const styles = {
         'background-image': 'url(' + this.headings.backgound.url + ')'
@@ -164,11 +162,11 @@ export class AppComponent implements OnInit {
                 this.openDialog('Opponent fired the cordinates:' + slot, false, 'fire', slot);
               }
             } else {
-              this.slickModal.slickGoTo(1);
+              this.slickModal?.slickGoTo(1);
               setTimeout(() => {        
                 this.store.dispatch(actions.dropMissile({data: slot}));
                 setTimeout(() => {
-                  this.slickModal.slickGoTo(0);
+                  this.slickModal?.slickGoTo(0);
                 }, 500);
               }, 500);
             }
@@ -184,7 +182,7 @@ export class AppComponent implements OnInit {
      this.boardService.triggerSystemFire_Level2(this.myBoard);
   }
 
-  allShipSelected($event: boolean, myBoard: Board) {
+  allShipSelected($event: boolean, myBoard: Board | undefined) {
     if ($event) {
       this.myBoard = myBoard;
       this.isShipArranged = true;
@@ -324,7 +322,7 @@ export class AppComponent implements OnInit {
   onHintClick() {
     this.canShowShips = true;
     this.store.dispatch(actions.ReduceOneLife());
-    this.slickModal.slickGoTo(0);
+    this.slickModal?.slickGoTo(0);
     setTimeout(() =>
     {        
       this.canShowShips = false;
@@ -345,7 +343,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  selectedShip($event) {
+  selectedShip($event: any) {
     if ($event) {
       console.log(`${$event.x}${$event.y}`);
       this.isMyTurn = false;
@@ -375,7 +373,7 @@ export class AppComponent implements OnInit {
     this.openDialog('Lets start arranging our ships..', false, 'arrangeShip');   
   }
 
-  gearClicked($event) {
+  gearClicked($event: any) {
     switch($event) {
       case 'ships':
         this.openDialog('Please enter desired number of Ships (this will restart your game)', true, 'numberOfShips', '', 'Ok', 'Cancel');

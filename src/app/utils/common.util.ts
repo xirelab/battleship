@@ -24,7 +24,7 @@ export function getYdimension(numberofCells: number): string[] {
   return dimensions;
 }
 
-export function updateCordinate(data: string): Slot {
+export function updateCordinate(data: string): any {
   if (data) {
     if (data.substr(0, 1) === "1" && data.length === 3) {
       return {x: data.substr(0, 2), y: data.substr(2, 1)};
@@ -33,7 +33,7 @@ export function updateCordinate(data: string): Slot {
   }
 }
 
-export function updateBoard(cell: Slot, board: Board, type: string): string {
+export function updateBoard(cell: Slot, board: Board | null, type: string | null): any {
   if (cell && board && board.cells) {
     let cells = board.cells.find(c => c.x == cell.x && c.y === cell.y);    
 
@@ -48,13 +48,13 @@ export function updateBoard(cell: Slot, board: Board, type: string): string {
   }
 }
 
-export function gameStatus(myBoard: Board, systemBoard: Board): string {
+export function gameStatus(myBoard: Board | null | undefined, systemBoard: Board | null | undefined): string {
   if (checkBoard(systemBoard)) return 'Me';
   if (checkBoard(myBoard)) return 'Opponent';
   return '';
 }
 
-export function checkBoard(board: Board): boolean {
+export function checkBoard(board: Board | null | undefined): boolean {
   if (board && board.cells && board.cells.find(i => i.isShip)) {
     const cells = board.cells.find(i => i.isShip && i.value === '');
     if (!cells) {
