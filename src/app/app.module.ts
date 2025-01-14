@@ -30,6 +30,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { HeaderComponent } from './components/header/header.component';
 import { ButtonGroupComponent } from './components/button-group/button-group.component';
 import { FooterComponent } from './components/footer/footer.component'
+import { NotificationBannersComponent } from './components/notification-banners/notification-banners.component';
+import { GameSelectionComponent } from './components/game-selection/game-selection.component';
 
 @NgModule({
   imports: [
@@ -71,7 +73,9 @@ import { FooterComponent } from './components/footer/footer.component'
     SpinnerComponent,
     HeaderComponent,
     ButtonGroupComponent,
-    FooterComponent
+    FooterComponent,
+    GameSelectionComponent,
+    NotificationBannersComponent
   ],
   exports: [
     // AutoFocusDirective,

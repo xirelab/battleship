@@ -15,9 +15,10 @@ import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  isStarted = false
   contents: any;
   isGameFinished = false;
   isShipArranged = false;
@@ -75,21 +76,21 @@ export class AppComponent implements OnInit {
 
     this.store.dispatch(actions.initializeBoard());
 
-    if (this.user_cookie) this.store.dispatch(actions.SetNumberofShips({count: +this.user_cookie.ships}));
+    // if (this.user_cookie) this.store.dispatch(actions.SetNumberofShips({ count: +this.user_cookie.ships }));
 
-    this.currentPlayer$.subscribe(user=> this.processCurrestUser(user || ''));
+    this.currentPlayer$.subscribe(user => this.processCurrestUser(user || ''));
 
     this.gameStatus$.subscribe((player: string) => {
-      if(player) {
+      if (player) {
         this.iWon = player === 'Me';
         this.isGameFinished = true;
         this.canContinue = false;
-        this.openDialog(!this.iWon ? `${player} won` : `Congratulations you won`, false, 'GameFinish', '', 
+        this.openDialog(!this.iWon ? `${player} won` : `Congratulations you won`, false, 'GameFinish', '',
           (!this.iWon ? 'Challenge again' : (this.level == 3 ? 'Restart' : 'Next Level')), 'Exit');
-      } 
+      }
     });
 
-    this.openDialog('Please select the players', false, 'playerSelection', '', 'Single Player', 'Two Player');
+    // this.openDialog('Please select the players', false, 'playerSelection', '', 'Single Player', 'Two Player');
   }
 
   getDefaultValues() {
@@ -111,14 +112,14 @@ export class AppComponent implements OnInit {
       const styles = {
         'background-image': 'url(' + this.headings.backgound.url + ')'
       };
-      console.log(styles);
+      // console.log(styles);
       return styles;
     }
     if (this.contents && this.theme == 3) {
       const styles = {
         'background-color': '#2d94e9'
       };
-      console.log(styles);
+      // console.log(styles);
       return styles;
     }
   }
@@ -128,43 +129,42 @@ export class AppComponent implements OnInit {
     if (this.currentPlayer !== user) {
       this.currentPlayer = user;
       let timebreak = this.isTabletMode ? 0 : 500;
-      setTimeout(() =>
-      {
+      setTimeout(() => {
         switch (user) {
-          case 'Me': 
+          case 'Me':
             if (this.isTabletMode || this.isInvalid) {
               this.isMyTurn = true;
               this.isInvalid = false;
             } else {
-              this.openDialog('Please enter your cordinates', true, 'fire'); 
+              this.openDialog('Please enter your cordinates', true, 'fire');
             }
             break;
           case 'Invalid':
-            if (!this.isTabletMode) { 
-              this.openDialog('Invalid entry! Please re-enter your cordinates', true, 'fire'); 
-            }
-            this.isInvalid = true;
-            this.store.dispatch(actions.SetCurrentPlayer({player: 'Me'}));
-            break;
-          case 'Exists': 
             if (!this.isTabletMode) {
-              this.openDialog('Already hit! Please re-enter your cordinates', true, 'fire'); 
+              this.openDialog('Invalid entry! Please re-enter your cordinates', true, 'fire');
             }
             this.isInvalid = true;
-            this.store.dispatch(actions.SetCurrentPlayer({player: 'Me'}));
+            this.store.dispatch(actions.SetCurrentPlayer({ player: 'Me' }));
+            break;
+          case 'Exists':
+            if (!this.isTabletMode) {
+              this.openDialog('Already hit! Please re-enter your cordinates', true, 'fire');
+            }
+            this.isInvalid = true;
+            this.store.dispatch(actions.SetCurrentPlayer({ player: 'Me' }));
             break;
           case 'Opponent':
             const slot = this.triggerSystemFire();
             if (this.displayMode == 'web') {
               if (this.isTabletMode) {
-                this.store.dispatch(actions.dropMissile({data: slot}));
+                this.store.dispatch(actions.dropMissile({ data: slot }));
               } else {
                 this.openDialog('Opponent fired the cordinates:' + slot, false, 'fire', slot);
               }
             } else {
               this.slickModal?.slickGoTo(1);
-              setTimeout(() => {        
-                this.store.dispatch(actions.dropMissile({data: slot}));
+              setTimeout(() => {
+                this.store.dispatch(actions.dropMissile({ data: slot }));
                 setTimeout(() => {
                   this.slickModal?.slickGoTo(0);
                 }, 500);
@@ -178,8 +178,8 @@ export class AppComponent implements OnInit {
 
   triggerSystemFire() {
     return this.level === 1 ?
-     this.boardService.triggerSystemFire_Level1(this.myBoard) :
-     this.boardService.triggerSystemFire_Level2(this.myBoard);
+      this.boardService.triggerSystemFire_Level1(this.myBoard) :
+      this.boardService.triggerSystemFire_Level2(this.myBoard);
   }
 
   allShipSelected($event: boolean, myBoard: Board | undefined) {
@@ -193,22 +193,22 @@ export class AppComponent implements OnInit {
       setTimeout(() => {
         this.displaySpinner = false;
         this.openDialog(this.isTabletMode ? 'Start tick the opponnent ships..' : 'Lets start the game.', false, 'startHit');
-      }, 2000); 
+      }, 2000);
     }
   }
 
   private openDialog(
-    message: string, 
-    isInputVisisble: boolean, 
-    type: string = '', 
-    value: string = '', 
-    button1text: string = 'OK', 
+    message: string,
+    isInputVisisble: boolean,
+    type: string = '',
+    value: string = '',
+    button1text: string = 'OK',
     button2text: string = ''
   ): void {
     const dialogRef = this.dialog.open(ModalPopupComponent, {
-      width: '300px',
       autoFocus: true,
       disableClose: true,
+      panelClass: 'custom-modalbox',
       data: {
         isInputVisisble: isInputVisisble,
         caption: message,
@@ -224,14 +224,14 @@ export class AppComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed. data : ' + result.value);
-      switch(type) {
-        case 'playerSelection' :
+      switch (type) {
+        case 'playerSelection':
           this.isSinglePlayer = result.isButton1Clicked;
-          this.store.dispatch(actions.SetPlayerType({isSingleUser: result.isButton1Clicked}));
+          this.store.dispatch(actions.SetPlayerType({ isSingleUser: result.isButton1Clicked }));
           if (this.user_cookie && this.user_cookie.name) {
-            this.store.dispatch(actions.SetMyName({name: this.user_cookie.name}));
+            this.store.dispatch(actions.SetMyName({ name: this.user_cookie.name }));
             if (this.isSinglePlayer) {
-              this.openDialog('Lets start arranging our ships..', false, 'arrangeShip'); 
+              this.openDialog('Lets start arranging our ships..', false, 'arrangeShip');
             } else {
               this.openDialog('Lets share this link with opponent (new link has to provide here..)', false, 'sharing');
             }
@@ -239,39 +239,39 @@ export class AppComponent implements OnInit {
             this.openDialog('Please enter your name', true, 'myName', '', 'Ok', 'Cancel');
           }
           break;
-        case'myName' :
+        case 'myName':
           this.setplayerName(result);
           if (this.isSinglePlayer) {
-            this.openDialog('Lets start arranging our ships..', false, 'arrangeShip'); 
+            this.openDialog('Lets start arranging our ships..', false, 'arrangeShip');
           } else {
             this.openDialog('Lets share this link with opponent (new link has to provide here..)', false, 'sharing');
           }
           break;
         case 'sharing':
           // yet to update. as of now only single player implmented
-          this.openDialog('Lets start arranging our ships..', false, 'arrangeShip'); 
+          this.openDialog('Lets start arranging our ships..', false, 'arrangeShip');
           break;
         case 'startHit':
           this.processCurrestUser('Me');
           break;
-        case'modeToTablet' : 
+        case 'modeToTablet':
           // do nothing
           this.isMyTurn = true;
           break
-        case 'modeToClassic' :
+        case 'modeToClassic':
           this.onContinueClick();
           break;
-        case 'fire' :
+        case 'fire':
           if (result && result.isCancelClicked) {
             this.canContinue = true;
           } else {
-            this.store.dispatch(actions.dropMissile({data: result.value.toString()}));
+            this.store.dispatch(actions.dropMissile({ data: result.value.toString() }));
           }
           break;
         case 'GameFinish':
-          if(result.isButton1Clicked) {
+          if (result.isButton1Clicked) {
             if (this.iWon) this.level += 1;
-            if (this.level >= 4) this.restartGame(); 
+            if (this.level >= 4) this.restartGame();
             else this.nextLevel();
           } else {
             // need to close the window..
@@ -282,12 +282,12 @@ export class AppComponent implements OnInit {
             this.restartGame();
           }
           break;
-        case 'numberOfShips' :
+        case 'numberOfShips':
           if (result && !result.isCancelClicked) {
             this.user_cookie.ships = result.value;
             this.cookieManagementService.setDefaultMode(this.user_cookie);
             this.store.dispatch(actions.ResetLifes());
-            this.store.dispatch(actions.SetNumberofShips({count: result.value}));
+            this.store.dispatch(actions.SetNumberofShips({ count: result.value }));
             this.openDialog('Lets start arranging our ships..', false, 'arrangeShip');
           }
           break;
@@ -300,16 +300,16 @@ export class AppComponent implements OnInit {
           this.setplayerName(result);
           break;
         case 'theme':
-          if((this.theme == 1 && result.isButton1Clicked) || (this.theme == 3 && result.isButton2Clicked))
+          if ((this.theme == 1 && result.isButton1Clicked) || (this.theme == 3 && result.isButton2Clicked))
             this.theme = 2;
-          else if((this.theme == 1 && result.isButton2Clicked) || (this.theme == 2 && result.isButton2Clicked))
+          else if ((this.theme == 1 && result.isButton2Clicked) || (this.theme == 2 && result.isButton2Clicked))
             this.theme = 3;
-          else if((this.theme == 2 && result.isButton1Clicked) || (this.theme == 3 && result.isButton1Clicked))
+          else if ((this.theme == 2 && result.isButton1Clicked) || (this.theme == 3 && result.isButton1Clicked))
             this.theme = 1;
           this.user_cookie.theme = this.theme;
           this.cookieManagementService.setDefaultMode(this.user_cookie);
           break;
-        default : break;
+        default: break;
       }
     });
   }
@@ -323,15 +323,14 @@ export class AppComponent implements OnInit {
     this.canShowShips = true;
     this.store.dispatch(actions.ReduceOneLife());
     this.slickModal?.slickGoTo(0);
-    setTimeout(() =>
-    {        
+    setTimeout(() => {
       this.canShowShips = false;
     }, 600);
   }
 
   onModeClick() {
     this.isTabletMode = !this.isTabletMode;
-    if(this.isTabletMode) {
+    if (this.isTabletMode) {
       this.user_cookie.mode = 'tablet';
       this.cookieManagementService.setDefaultMode(this.user_cookie);
       this.openDialog('Cool.. Now you can select opponent ship by clicking on it..', false, 'modeToTablet');
@@ -347,7 +346,7 @@ export class AppComponent implements OnInit {
     if ($event) {
       console.log(`${$event.x}${$event.y}`);
       this.isMyTurn = false;
-      this.store.dispatch(actions.dropMissile({data: `${$event.x}${$event.y}`}));
+      this.store.dispatch(actions.dropMissile({ data: `${$event.x}${$event.y}` }));
     }
   }
 
@@ -355,7 +354,7 @@ export class AppComponent implements OnInit {
     const myname = result.value ? result.value.toString() : 'Player1';
     this.user_cookie.name = myname;
     this.cookieManagementService.setDefaultMode(this.user_cookie);
-    this.store.dispatch(actions.SetMyName({name: myname}));
+    this.store.dispatch(actions.SetMyName({ name: myname }));
   }
 
   restartGame() {
@@ -363,18 +362,18 @@ export class AppComponent implements OnInit {
     this.canShowShips = false;
     this.isShipArranged = false;
     this.store.dispatch(actions.RestartGame());
-    this.openDialog('Please select the players', false, 'playerSelection', '', 'Single Player', 'Two Player');        
+    this.openDialog('Please select the players', false, 'playerSelection', '', 'Single Player', 'Two Player');
   }
 
   nextLevel() {
     this.canShowShips = false;
     this.isShipArranged = false;
     this.store.dispatch(actions.NextLevel());
-    this.openDialog('Lets start arranging our ships..', false, 'arrangeShip');   
+    this.openDialog('Lets start arranging our ships..', false, 'arrangeShip');
   }
 
   gearClicked($event: any) {
-    switch($event) {
+    switch ($event) {
       case 'ships':
         this.openDialog('Please enter desired number of Ships (this will restart your game)', true, 'numberOfShips', '', 'Ok', 'Cancel');
         break;
@@ -419,12 +418,13 @@ export class AppComponent implements OnInit {
   }
 
   slideConfig = {
-    slidesToShow: 1, slidesToScroll: 2, 
-    centerMode: true, centerPadding: '1px', 
+    slidesToShow: 1, slidesToScroll: 2,
+    centerMode: true, centerPadding: '1px',
     arrows: true, dots: true,
-    mobileFirst: true, infinite: false, 
-    responsive: [{ breakpoint: window.innerWidth}]};
-  
+    mobileFirst: true, infinite: false,
+    responsive: [{ breakpoint: window.innerWidth }]
+  };
+
   slides = [342, 453] //, 846, 855, 234, 564, 744, 243];
 
   slickInit(e: any) { }

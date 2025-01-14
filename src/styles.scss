@@ -1,1 +1,58 @@
 /* You can add global styles to this file, and also import other style files */
+.center-screen-notification {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    border: red 1px solid;
+    height: 80px;
+    border-radius: 15px;
+    background-color: white;
+    align-items: center;
+    display: flex;
+    // filter: blur(0px);
+}
+
+.center-screen-buttons {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    height: 80px;
+    background-color: white;
+    align-items: center;
+    display: flex;
+}
+
+.start-button {
+    background-color: rgb(174, 239, 150);
+    border-radius: 5px;
+    padding: 10px;
+    width: 50%;
+    margin: 70px;
+    cursor: pointer;
+}
+
+.label-input {
+    padding: 0px 30px;
+    font-size: large;
+    font-family: cursive;
+}
+
+.button-input {
+    padding: 0px 30px;
+    font-size: large;
+    font-family: cursive;
+    // float: right;
+    margin-left: 30px;
+}
+
+.button-group-input {
+    // padding: 0px 30px;
+    font-size: large;
+    font-family: cursive;
+}

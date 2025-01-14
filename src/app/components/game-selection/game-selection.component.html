@@ -1,0 +1,43 @@
+<div>
+    <div class="center-screen-buttons">
+        <button class="start-button" (click)="quickStart()">QUICK START</button>
+        <button class="start-button" (click)="gamePlay()" style="float: right;">GAME PLAY</button>
+    </div>
+</div>
+
+<div *ngIf="isReadName">
+    <div class="center-screen-buttons">
+        <div class="label-input">Your name</div>
+        <input class="label-input" type="text" [(ngModel)]="playerName" />
+        <button class="button-input" (click)="onNameEnter()">Next</button>
+    </div>
+</div>
+
+<div *ngIf="isReadNumnerOfShips">
+    <div class="center-screen-buttons">
+        <div>
+            <span class="label-input">Number of Ships</span>
+            <button class="button-group-input" *ngIf="numberofShips > 2"
+                (click)="numberofShips = numberofShips - 1">-</button>
+            <input class="button-group-input" type="text" [(ngModel)]="numberofShips" />
+            <button class="button-group-input" *ngIf="numberofShips < 5"
+                (click)="numberofShips = numberofShips + 1">+</button>
+            <button class="button-input" (click)="onNumberOfShipsEnter()">Next</button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="isReadNumnerOfPlayers">
+    <div class="center-screen-buttons">
+        <div>
+            <button class="button-input" (click)="onNumberOfPlayerssEnter(true)">Single Player</button>
+            <button class="button-input" (click)="onNumberOfPlayerssEnter(false)">Two Player</button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="isStartArrange">
+    <div class="center-screen-buttons">
+        <span class="label-input">Lets arrange the ships..</span>
+    </div>
+</div>

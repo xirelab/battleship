@@ -19,8 +19,11 @@ export class BoardComponent implements OnInit, OnChanges {
   shouldUndo = false;
   isUndoActive = false;
   buildingShip: Cell[] = [];
+  isShipArranging = false;
+  interval: any;
   // private _incoming: Slot;
 
+  @Input() isStarted: boolean = false;
   @Input() xDimension: string[] | undefined | null;
   @Input() yDimension: string[] | undefined | null;
   @Input() player: Player | undefined | null;
@@ -28,8 +31,8 @@ export class BoardComponent implements OnInit, OnChanges {
   @Input() showShips: boolean = true;
   @Input() isSystem: boolean = true;
   @Input() isBoardEnabled: boolean = false;
-  @Output() selectedShip =  new EventEmitter<any>();
-  @Output() allShipSelected =  new EventEmitter<boolean>();
+  @Output() selectedShip = new EventEmitter<any>();
+  @Output() allShipSelected = new EventEmitter<boolean>();
 
   // @Input()
   // get incoming(): Slot {
@@ -40,14 +43,25 @@ export class BoardComponent implements OnInit, OnChanges {
   //   this.markOnBaord();
   // }  
 
-  constructor(public titleCasePipe: TitleCasePipe) {}
+  constructor(public titleCasePipe: TitleCasePipe) { }
 
   ngOnInit() {
     this.currentShip = this.numberofShips;
+    this.displayMessage();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     this.currentShip = this.numberofShips;
+    this.isStarted = changes['isStarted']?.currentValue;
+    this.displayMessage();
+  }
+
+  displayMessage() {
+    this.isShipArranging = true;
+    this.interval = setInterval(() => {
+      this.isShipArranging = false;
+      clearInterval(this.interval);
+    }, 3000)
   }
 
   get isCellEnabled() {
@@ -58,7 +72,7 @@ export class BoardComponent implements OnInit, OnChanges {
     if (this.isSystem || this.currentShip === 0 || !this.isBoardEnabled) {
       return '';
     }
-    if (this.currentShip === 1) 
+    if (this.currentShip === 1)
       return `Select your last ship (${this.currentShip + 1} cells)..`;
     if (this.currentShip && this.numberofShips)
       return `Select ${this.count(this.numberofShips - this.currentShip + 1)} ship (${this.currentShip + 1} cells)..`;
@@ -127,7 +141,7 @@ export class BoardComponent implements OnInit, OnChanges {
 
   click(x: string, y: string) {
     if (this.isSystem && this.isBoardEnabled) {
-      this.selectedShip.emit({x: x, y:y});
+      this.selectedShip.emit({ x: x, y: y });
       return;
     }
     if (this.isSystem || !this.isEnabled(x, y) || !this.isBoardEnabled) {
@@ -142,22 +156,22 @@ export class BoardComponent implements OnInit, OnChanges {
       cell.isShip = true;
       if (!this.secondLastSelectedCell && this.lastSelectedCell) {
         // first cell selection
-        this.lastSelectedCell.position = 
-          this.lastSelectedCell.x === cell.x  ? 
+        this.lastSelectedCell.position =
+          this.lastSelectedCell.x === cell.x ?
             ((this.lastSelectedCell?.y || 0) > (cell?.y || 0) ? 'bottom' : 'top') :
             ((this.lastSelectedCell.x || 0) > (cell.x || 0) && +x < 10 ? 'right' : 'left');
       }
       if (this.lastSelectedCell) {
         // last
         if (this.numberOfcellSelected === this.currentShip) {
-          cell.position = this.lastSelectedCell.x === cell.x  ? 
-          ((this.lastSelectedCell.y || 0) > (cell.y || 0) ? 'top' : 'bottom') :
-          ((this.lastSelectedCell.x || 0) > (cell.x || 0) && +x < 10 ? 'left' : 'right');
+          cell.position = this.lastSelectedCell.x === cell.x ?
+            ((this.lastSelectedCell.y || 0) > (cell.y || 0) ? 'top' : 'bottom') :
+            ((this.lastSelectedCell.x || 0) > (cell.x || 0) && +x < 10 ? 'left' : 'right');
         }
-        
+
         //middle
         if (this.numberOfcellSelected < (this.currentShip || 0)) {
-          cell.position = this.lastSelectedCell.x === cell.x  ? 'vertical' : 'horizontal';
+          cell.position = this.lastSelectedCell.x === cell.x ? 'vertical' : 'horizontal';
         }
       }
       if (!this.lastSelectedCell) {
@@ -170,7 +184,10 @@ export class BoardComponent implements OnInit, OnChanges {
     }
     this.numberOfcellSelected += 1;
     if (this.numberOfcellSelected === (this.currentShip || 0) + 1) {
-      if (this.currentShip) this.currentShip -= 1;
+      if (this.currentShip) {
+        this.currentShip -= 1;
+        this.displayMessage();
+      }
       this.numberOfcellSelected = 0;
       this.lastSelectedCell = null;
       this.shouldUndo = false;
@@ -186,11 +203,11 @@ export class BoardComponent implements OnInit, OnChanges {
     if (cell && cell.isShip) {
       return false;
     }
-    
+
     if (this.numberOfcellSelected !== 0 && this.numberOfcellSelected <= (this.currentShip || 0) + 1 && this.lastSelectedCell) {
       const yIndex = this.yDimension?.findIndex(i => i === y);
       const yBase = this.yDimension?.findIndex(i => i === this.lastSelectedCell?.y);
-      
+
       if (this.secondLastSelectedCell && this.lastSelectedCell) {
         if (this.secondLastSelectedCell.x == this.lastSelectedCell.x && this.lastSelectedCell.x == x) {
           if ((yIndex || 0) - 1 == yBase && (yIndex || 0) >= 9) this.enableUndo();
@@ -203,11 +220,11 @@ export class BoardComponent implements OnInit, OnChanges {
       }
       else if (this.lastSelectedCell) {
         if ((Number(x) === Number(this.lastSelectedCell.x) &&
-             ((yIndex || 0) - 1 === yBase || (yIndex || 0) + 1 === yBase)) ||
-            ((yIndex === yBase && (
-              Number(x) + 1 === Number(this.lastSelectedCell.x) ||
-              Number(x) - 1 === Number(this.lastSelectedCell.x))))) {
-              return true;
+          ((yIndex || 0) - 1 === yBase || (yIndex || 0) + 1 === yBase)) ||
+          ((yIndex === yBase && (
+            Number(x) + 1 === Number(this.lastSelectedCell.x) ||
+            Number(x) - 1 === Number(this.lastSelectedCell.x))))) {
+          return true;
         }
       }
     }
@@ -216,8 +233,7 @@ export class BoardComponent implements OnInit, OnChanges {
 
   enableUndo() {
     this.shouldUndo = true;
-    setTimeout(() =>
-    {        
+    setTimeout(() => {
       this.shouldUndo = false;
     }, 5000);
   }
@@ -229,18 +245,18 @@ export class BoardComponent implements OnInit, OnChanges {
     if (this.buildingShip) {
       this.buildingShip.forEach(ship => {
         const s = this.player?.board.cells.find(cell => cell.x == ship.x && cell.y == ship.y);
-        if (s) { 
+        if (s) {
           s.isShip = false;
           s.position = '';
         }
       });
-      if (this.numberOfcellSelected == 0) 
+      if (this.numberOfcellSelected == 0)
         if (this.currentShip != undefined) this.currentShip += 1;
       this.numberOfcellSelected = 0;
       this.lastSelectedCell = null;
     }
   }
-  
+
   // markOnBaord() {
   //   if (this._incoming) {
   //     console.log("markOnBaord");

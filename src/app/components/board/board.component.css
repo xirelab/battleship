@@ -4,11 +4,11 @@
 }
 
 .triangle-up {
-	width: 0;
-	height: 0;
-	border-left: 10px solid transparent;
-	border-right: 10px solid transparent;
-	border-bottom: 20px solid rgb(104, 240, 86);
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 20px solid rgb(104, 240, 86);
 }
 
 .right-align {
@@ -35,9 +35,9 @@
 }
 
 .bottom {
-  margin-top: -9px;
+  margin-top: -15px;
   height: 35px;
-  padding-bottom: 28px;
+  padding-bottom: 0px;
 }
 
 .right {
@@ -75,6 +75,7 @@
 .possible-cell {
   /* border-color:  orange; */
   border: groove;
+  cursor: pointer;
 }
 
 .hit {
@@ -82,61 +83,66 @@
 }
 
 #board {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    /* width: 100%; */
-  }
-  
-  #board td, #board th {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
-  
-  #board tr:nth-child(even){background-color: #f2f2f2;}
-  
-  /* #board td:hover {background-color: #ddd;} */
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  /* width: 100%; */
+}
 
-  .cell-hover:hover {
-    background-color: #ddd;
-  }
+#board td,
+#board th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
 
-  .blink_me {
-    animation: blinker 1s linear infinite;
-  }
-  
-  @keyframes blinker {  
-    50% { opacity: 0; }
-  }
+#board tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
 
-  .board-bottom {
-    margin-top: 5px;
-    height: 42px;
-  }
+/* #board td:hover {background-color: #ddd;} */
 
-  .undo-button {
-    display: inline-block;
-    border-radius: 50px;    
-    border: none;
-    color: #e5f2f5;
-    text-align: center;
-    font-size: 15px;
-    padding: 10px;
-    /* width: 150px; */
-    transition: all 0.5s;    
-    margin: 1px;
-  }
+.cell-hover:hover {
+  background-color: #ddd;
+}
 
-  .undo-active {
-    background-color: #4597e4;
-    cursor: pointer;
-  }
+.blink_me {
+  animation: blinker 1s linear infinite;
+}
 
-  .undo-inactive {
-    background-color: #c3dbf1;
-    cursor: none;
+@keyframes blinker {
+  50% {
+    opacity: 0;
   }
+}
 
-  div.transbox {
-    background-color: #ffffff;
-    opacity: 1
-  }
+.board-bottom {
+  margin-top: 5px;
+  height: 42px;
+}
+
+.undo-button {
+  display: inline-block;
+  border-radius: 50px;
+  border: none;
+  color: #e5f2f5;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  /* width: 150px; */
+  transition: all 0.5s;
+  margin: 1px;
+}
+
+.undo-active {
+  background-color: #4597e4;
+  cursor: pointer;
+}
+
+.undo-inactive {
+  background-color: #c3dbf1;
+  cursor: none;
+}
+
+div.transbox {
+  background-color: #ffffff;
+  opacity: 1
+}

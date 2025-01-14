@@ -3,27 +3,31 @@
 </div>
 <div class="transbox">
   <table id="board">
-  <tr>
-    <th></th>
-    <th *ngFor = "let column of xDimension">
-      {{column}}
-    </th>
-  </tr>
+    <tr>
+      <th></th>
+      <th *ngFor = "let column of xDimension">
+        {{column}}
+      </th>
+    </tr>
     <tr *ngFor = "let y of yDimension">
       <th>
         {{y}}
       </th>
-      <td [class.td-ship]="isShip(x, y)" [class.td-hit]="isHit(x, y)" [class.cell-hover]="isCellEnabled" (click)="click(x, y)" *ngFor = "let x of xDimension">
+      <td *ngFor = "let x of xDimension"
+        [class.td-ship]="isShip(x, y)" 
+        [class.td-hit]="isHit(x, y)" 
+        [class.cell-hover]="isCellEnabled" 
+        (click)="click(x, y)">
         <button class="cell" 
-            [class.ship]="isShip(x, y)"
-            [class.top]="shipPosition(x, y) == 'top'"
-            [class.bottom]="shipPosition(x, y) == 'bottom'"
-            [class.right]="shipPosition(x, y) == 'right'"
-            [class.left]="shipPosition(x, y) == 'left'"
-            [class.vertical]="shipPosition(x, y) == 'vertical'"
-            [class.horizontal]="shipPosition(x, y) == 'horizontal'"
-            [class.hit]="isHit(x, y)"
-            [class.possible-cell]="isNextPossibleCell(x, y)">
+          [class.ship]="isShip(x, y)"
+          [class.top]="shipPosition(x, y) == 'top'"
+          [class.bottom]="shipPosition(x, y) == 'bottom'"
+          [class.right]="shipPosition(x, y) == 'right'"
+          [class.left]="shipPosition(x, y) == 'left'"
+          [class.vertical]="shipPosition(x, y) == 'vertical'"
+          [class.horizontal]="shipPosition(x, y) == 'horizontal'"
+          [class.hit]="isHit(x, y)"
+          [class.possible-cell]="isNextPossibleCell(x, y)">
             <span [innerText]="value(x, y) | titlecase | bold"></span>
           </button>
       </td> 
@@ -35,4 +39,9 @@
       [class.blink_me]="shouldUndo" [ngClass] = "isUndoActive ? 'undo-active' : 'undo-inactive'"
       (click)="onUndoClick()">Undo ship selection</button>
   </div>
+</div>
+
+<!-- Notification banner -->
+<div *ngIf="isStarted && isShipArranging">
+  <app-notification-banners [message]="shipDetails"></app-notification-banners>
 </div>
