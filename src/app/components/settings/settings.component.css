@@ -6,16 +6,18 @@
   position: absolute;
 }
 
-.gear {
-  cursor: pointer;
-}
-
 button {
-  margin-top: -13px;
-  padding-bottom: 70px;
+  cursor: pointer;
+  padding: 10px 10px 10px 10px;
+  text-align: left;
+  margin: 2px;
 }
 
 
+/*.gear {
+  cursor: pointer;
+  }
+   
 .mobile-container {
   max-width: 480px;
   margin: auto;
@@ -59,4 +61,4 @@ button {
 .active {
   background-color: #04AA6D;
   color: white;
-}
+} */

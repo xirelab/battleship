@@ -36,21 +36,21 @@
 </div> -->
 
 <div class="menu">
+  <button (click)="gearClicked(menus.profile)" mat-menu-item>
+    <mat-icon>&#119663;</mat-icon>
+    <span>Update Profile</span>
+  </button>
   <button (click)="gearClicked(menus.ships)" mat-menu-item>
     <mat-icon>&#119663;</mat-icon>
     <span>Number of Ships</span>
   </button>
   <button (click)="gearClicked(menus.mode)" mat-menu-item>
     <mat-icon>&#119663;</mat-icon>
-    <span>Default Mode</span>
+    <span>Display Mode</span>
   </button>
   <button (click)="gearClicked(menus.autoSlide)" mat-menu-item>
     <mat-icon>&#119663;</mat-icon>
     <span>Turn off auto slide</span>
-  </button>
-  <button (click)="gearClicked(menus.profile)" mat-menu-item>
-    <mat-icon>&#119663;</mat-icon>
-    <span>Profile</span>
   </button>
   <button (click)="gearClicked(menus.restart)" mat-menu-item>
     <mat-icon>&#119663;</mat-icon>
