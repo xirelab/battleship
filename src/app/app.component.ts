@@ -37,6 +37,11 @@ export class AppComponent implements OnInit {
   displaySpinner = false;
   spinnerMessage = '';
 
+  showMenu = false;
+  notificationMessage = '';
+  btn1Text = '';
+  btn2Text = '';
+
   me$ = this.store.pipe(select(selector.me));
   opponent$ = this.store.pipe(select(selector.opponent));
   numberOfShips$ = this.store.pipe(select(selector.numberOfShips));
@@ -192,7 +197,12 @@ export class AppComponent implements OnInit {
       this.spinnerMessage = "let opponent arrange their ships";
       setTimeout(() => {
         this.displaySpinner = false;
-        this.openDialog(this.isTabletMode ? 'Start tick the opponnent ships..' : 'Lets start the game.', false, 'startHit');
+        this.notificationMessage = this.isTabletMode ? 'Start tick the opponnent ships..' : 'Lets start the game.'
+        setTimeout(() => {
+          this.notificationMessage = '';
+          this.processCurrestUser('Me');
+        }, 2000)
+        // this.openDialog(this.isTabletMode ? 'Start tick the opponnent ships..' : 'Lets start the game.', false, 'startHit');
       }, 2000);
     }
   }
@@ -320,6 +330,18 @@ export class AppComponent implements OnInit {
   }
 
   onHintClick() {
+    this.notificationMessage = 'This value you a life..';
+    setTimeout(() => {
+      this.notificationMessage = '';
+      this.showShips();
+    }, 1000);
+  }
+
+  onMenuClick() {
+    this.showMenu = true;
+  }
+
+  showShips() {
     this.canShowShips = true;
     this.store.dispatch(actions.ReduceOneLife());
     this.slickModal?.slickGoTo(0);
@@ -373,6 +395,7 @@ export class AppComponent implements OnInit {
   }
 
   gearClicked($event: any) {
+    this.showMenu = false;
     switch ($event) {
       case 'ships':
         this.openDialog('Please enter desired number of Ships (this will restart your game)', true, 'numberOfShips', '', 'Ok', 'Cancel');

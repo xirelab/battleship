@@ -3,3 +3,12 @@
         <span class="label-input" [innerText]="message"></span>
     </div>
 </div>
+
+<div *ngIf="btn1Text">
+    <div class="center-screen-buttons">
+        <div>
+            <button class="button-input" (click)="btn1Clicked()">{{btn1Text}}</button>
+            <button class="button-input" (click)="btn2Clicked()">{{btn2Text}}</button>
+        </div>
+    </div>
+</div>

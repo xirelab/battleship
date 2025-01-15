@@ -1,11 +1,6 @@
-<!-- <button class= right-align style="float: right;" mat-button 
-    (click)="onHintClick()">&#9876;&#65039;
-  </button> -->
-  <!-- <div class=gear style="float: right;" (click)="gearClicked()" >&#9881;&#65039;</div> -->
-<div style="float: right;">
+<!-- <div style="float: right;">
   <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Settings">
     <h1><mat-icon>&#9881;&#65039;</mat-icon></h1>
-    <!-- <span>&#9881;&#65039;</span> -->
   </button>
   <mat-menu #menu="matMenu">
     <button (click)="gearClicked(menus.ships)" mat-menu-item>
@@ -16,10 +11,10 @@
       <mat-icon>&#119663;</mat-icon>
       <span>Default Mode</span>
     </button>
-    <!-- <button (click)="gearClicked(menus.autoSlide)" mat-menu-item>
+    <button (click)="gearClicked(menus.autoSlide)" mat-menu-item>
       <mat-icon>&#119663;</mat-icon>
       <span>Turn off auto slide</span>
-    </button> -->
+    </button>
     <button (click)="gearClicked(menus.profile)" mat-menu-item>
       <mat-icon>&#119663;</mat-icon>
       <span>Profile</span>
@@ -38,4 +33,35 @@
     </button>
   </mat-menu>    
   &nbsp;&nbsp;
+</div> -->
+
+<div class="menu">
+  <button (click)="gearClicked(menus.ships)" mat-menu-item>
+    <mat-icon>&#119663;</mat-icon>
+    <span>Number of Ships</span>
+  </button>
+  <button (click)="gearClicked(menus.mode)" mat-menu-item>
+    <mat-icon>&#119663;</mat-icon>
+    <span>Default Mode</span>
+  </button>
+  <button (click)="gearClicked(menus.autoSlide)" mat-menu-item>
+    <mat-icon>&#119663;</mat-icon>
+    <span>Turn off auto slide</span>
+  </button>
+  <button (click)="gearClicked(menus.profile)" mat-menu-item>
+    <mat-icon>&#119663;</mat-icon>
+    <span>Profile</span>
+  </button>
+  <button (click)="gearClicked(menus.restart)" mat-menu-item>
+    <mat-icon>&#119663;</mat-icon>
+    <span>Restart game</span>
+  </button>
+  <button (click)="gearClicked(menus.theme)" mat-menu-item>
+    <mat-icon>&#119663;</mat-icon>
+    <span>Theme</span>
+  </button>
+  <button (click)="gearClicked(menus.help)" mat-menu-item>
+    <mat-icon>&#119663;</mat-icon>
+    <span>Help</span>
+  </button>
 </div>

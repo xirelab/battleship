@@ -13,4 +13,5 @@ export class ButtonGroupComponent {
   @Output() onContinueClick = new EventEmitter<void>();
   @Output() onModeClick = new EventEmitter<void>();
   @Output() onHintClick = new EventEmitter<void>();
+  @Output() onMenuClick = new EventEmitter<void>();
 }

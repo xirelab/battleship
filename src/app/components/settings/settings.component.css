@@ -1,5 +1,13 @@
+.menu {
+  float: right;
+  display: grid;
+  top: 115px;
+  right: 10px;
+  position: absolute;
+}
+
 .gear {
-    cursor: pointer; 
+  cursor: pointer;
 }
 
 button {
