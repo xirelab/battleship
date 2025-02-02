@@ -23,6 +23,9 @@ export class BoardComponent implements OnInit, OnChanges {
   interval: any;
   // private _incoming: Slot;
 
+  displaySpinner = false;
+  spinnerMessage = '';
+
   @Input() isStarted: boolean = false;
   @Input() xDimension: string[] | undefined | null;
   @Input() yDimension: string[] | undefined | null;
@@ -147,14 +150,17 @@ export class BoardComponent implements OnInit, OnChanges {
   click(x: string, y: string) {
     if (this.isSystem && this.isBoardEnabled) {
       this.selectedShip.emit({ x: x, y: y });
-      return;
+      return
     }
     if (this.isSystem || !this.isEnabled(x, y) || !this.isBoardEnabled) {
-      return;
+      return this.showSpinner();
     }
     const cell = this.player?.board.cells.find(c => c.x === x && c.y === y);
     if (cell && cell.isShip) {
-      return;
+      return this.showSpinner();
+    }
+    if (!this.isCellValid(x, y)) {
+      return this.showSpinner();
     }
     if (cell) {
       this.isUndoActive = true;
@@ -201,6 +207,22 @@ export class BoardComponent implements OnInit, OnChanges {
     if (this.currentShip === 0) {
       this.allShipSelected.emit(true);
     }
+  }
+
+  private showSpinner() {
+    this.displaySpinner = true;
+    this.spinnerMessage = "Not allowed..";
+    setTimeout(() => {
+      this.displaySpinner = false;
+    }, 500);
+  }
+
+  private isCellValid(x: string, y: string): boolean {
+    if (!this.isSystem && !this.isShipArranged) {
+      // need to check if adjustent cells available to comeplte the ship
+      return true
+    }
+    return true
   }
 
   isNextPossibleCell(x: string, y: string): boolean {

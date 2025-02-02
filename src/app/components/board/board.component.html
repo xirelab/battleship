@@ -53,3 +53,6 @@
 <div *ngIf="isStarted && isShipArranging">
   <app-notification-banners [message]="shipDetails"></app-notification-banners>
 </div>
+
+<!-- Spinner messsage -->
+<app-spinner *ngIf="displaySpinner" [label]="spinnerMessage"></app-spinner>

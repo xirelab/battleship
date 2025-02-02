@@ -225,11 +225,11 @@ export class AppComponent implements OnInit {
       this.canContinue = this.isTabletMode;
       this.store.dispatch(actions.prepareSystemBoard());
       this.displaySpinner = true;
-      this.spinnerMessage = "let opponent arrange their ships";
+      this.spinnerMessage = "Waiting for opponent to complete arrange their ships";
       setTimeout(() => {
         this.displaySpinner = false;
         this.showNotification(
-          this.isTabletMode ? 'Start tick the ships on the opponnent board..' : 'Lets start the game.',
+          this.isTabletMode ? 'Start fire the ships on the opponnent board..' : 'Lets start the game.',
           () => this.processCurrestUser('Me')
         )
       }, 2000);
