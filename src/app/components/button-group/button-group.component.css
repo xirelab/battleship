@@ -2,8 +2,9 @@
   text-align: right;
   /* background-color: #bdf7bf; */
   /* margin-right: 10px; */
-  top: -30px;
+  /* top: -30px; */
   position: relative;
+  padding: 24px;
 
   button {
     text-align: right;

@@ -229,7 +229,7 @@ export class AppComponent implements OnInit {
       setTimeout(() => {
         this.displaySpinner = false;
         this.showNotification(
-          this.isTabletMode ? 'Start tick the ship on the opponnent board..' : 'Lets start the game.',
+          this.isTabletMode ? 'Start tick the ships on the opponnent board..' : 'Lets start the game.',
           () => this.processCurrestUser('Me')
         )
       }, 2000);

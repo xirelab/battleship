@@ -62,6 +62,9 @@ export class ContentfulService {
           backgound{
             url
           }
+          burgerMenu{
+            url
+          }
         }
       }
     }

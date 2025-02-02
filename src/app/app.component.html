@@ -10,11 +10,12 @@
     } as data">
 
       <!-- Heading and menu -->
-      <div>
-        <app-header [headings]="headings"></app-header>
-        <app-button-group [canContinue]="canContinue" [isTabletMode]="isTabletMode" [lifes]="data?.me?.lifes"
-          [level]="level" (onContinueClick)="onContinueClick()" (onModeClick)="onModeClick(!isTabletMode)"
-          (onHintClick)="onHintClick()" (onMenuClick)="onMenuClick()">
+      <div style="display: flex; width:100%">
+        <app-header style="width: 20%;" [headings]="headings"></app-header>
+        <app-button-group style="float: right; width: 80%;" [canContinue]="canContinue" [isTabletMode]="isTabletMode"
+          [lifes]="data?.me?.lifes" [level]="level" [displayMode]="displayMode" [headings]="headings"
+          (onContinueClick)="onContinueClick()" (onModeClick)="onModeClick(!isTabletMode)" (onHintClick)="onHintClick()"
+          (onMenuClick)="onMenuClick()">
         </app-button-group>
       </div>
 

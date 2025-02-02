@@ -4,10 +4,11 @@
     </button>
     <button *ngIf="!isTabletMode" mat-button (click)="onContinueClick.emit()">Lets continue...
     </button>
-    <button mat-button (click)="onModeClick.emit()"><span>
+    <button mat-button (click)="onModeClick.emit()" *ngIf="displayMode == 'web'">
+        <span>
             {{isTabletMode ? 'Change to classic mode !' : 'Change to tablet mode !'}} </span>
     </button>
     <button mat-button (click)="onMenuClick.emit()">
-        <img src="assets/images/hamburger-menu-icon.jpg" style="width: 30px; height: 30px;">
+        <img [src]="url" style="width: 30px; height: 30px;">
     </button>
 </div>

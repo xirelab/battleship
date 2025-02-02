@@ -10,6 +10,7 @@ import * as actions from '../../store/board.action';
   styleUrls: ['./game-selection.component.scss']
 })
 export class GameSelectionComponent {
+  isOnLoad = true
   isReadName = false
   isReadNumnerOfShips = false
   isReadNumnerOfPlayers = false
@@ -26,6 +27,7 @@ export class GameSelectionComponent {
   ) { }
 
   quickStart() {
+    this.isOnLoad = false;
     this.store.dispatch(actions.SetPlayerType({ isSingleUser: true }));
     this.store.dispatch(actions.SetMyName({ name: 'GUEST' }));
     this.store.dispatch(actions.SetOpponentName({ name: 'SYSTEM' }));
@@ -35,6 +37,7 @@ export class GameSelectionComponent {
   }
 
   gamePlay() {
+    this.isOnLoad = false;
     this.checkForname();
   }
 
