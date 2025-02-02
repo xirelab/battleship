@@ -1,5 +1,5 @@
 <div *ngIf="player?.name">
-    <span style="float: left;" [innerText]="player?.name ?? '' | titlecase | bold"></span>
+    <span style="float: left;" [innerText]="playerTitle"></span>
     <ng-container *ngFor="let atrConfig of [].constructor(player?.lifes)" >
         <span style="float: right;">&#10084;&#65039;</span>
     </ng-container>

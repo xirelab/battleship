@@ -11,6 +11,11 @@ import { BoldPipe } from 'src/app/utils/bold.pipe';
 export class BoardHeaderComponent {
 
   @Input() player: Player | undefined | null;
+  @Input() isSystem: boolean = true;
 
   constructor(public titleCasePipe: TitleCasePipe) {}
+
+  get playerTitle() {
+    return this.titleCasePipe.transform(this.player?.name || '') + ' (' + (this.isSystem ? 'Opponent' : 'You') + ')';
+  }
 }

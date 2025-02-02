@@ -29,7 +29,7 @@ export class GameSelectionComponent {
   quickStart() {
     this.isOnLoad = false;
     this.store.dispatch(actions.SetPlayerType({ isSingleUser: true }));
-    this.store.dispatch(actions.SetMyName({ name: 'GUEST' }));
+    this.store.dispatch(actions.SetMyName({ name: 'GUEST (you)' }));
     this.store.dispatch(actions.SetOpponentName({ name: 'SYSTEM' }));
     this.store.dispatch(actions.SetNumberofShips({ count: Constants.defaultNumberOfShips }));
 

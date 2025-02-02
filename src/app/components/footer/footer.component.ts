@@ -7,4 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FooterComponent {
 
+  get footer() {
+    return '@xire labs Copy Rights @2025';
+  }
 }
