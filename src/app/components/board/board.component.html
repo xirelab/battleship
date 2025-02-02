@@ -1,21 +1,24 @@
-<div>
-  <app-board-header [player]="player"></app-board-header>
-</div>
 <div class="transbox">
-  <table id="board">
-    <tr>
+  <app-board-header [player]="player"
+    style="display: grid;" [ngStyle]="{'width': (isSelf()) ? '60%' : '46%'}" >
+  </app-board-header>
+</div>
+<div class="transbox" [ngClass]="isSelf() ? 'body-blur' : ''">
+  <table id="board" style="background-color: #ffffff;">
+    <tr [class.tr-self]="isSelf()">
       <th></th>
       <th *ngFor = "let column of xDimension">
         {{column}}
       </th>
     </tr>
-    <tr *ngFor = "let y of yDimension">
+    <tr *ngFor = "let y of yDimension" [class.tr-self]="isSelf()">
       <th>
         {{y}}
       </th>
       <td *ngFor = "let x of xDimension"
         [class.td-ship]="isShip(x, y)" 
-        [class.td-hit]="isHit(x, y)" 
+        [class.td-hit]="isHit(x, y)"
+        [class.td-self]="isSelf()"
         [class.cell-hover]="isCellEnabled" 
         (click)="click(x, y)">
         <button class="cell" 
@@ -24,10 +27,15 @@
           [class.bottom]="shipPosition(x, y) == 'bottom'"
           [class.right]="shipPosition(x, y) == 'right'"
           [class.left]="shipPosition(x, y) == 'left'"
+          [class.top-self]="shipPosition(x, y) == 'top' && isSelf()"
+          [class.bottom-self]="shipPosition(x, y) == 'bottom' && isSelf()"
+          [class.right-self]="shipPosition(x, y) == 'right' && isSelf()"
+          [class.left-self]="shipPosition(x, y) == 'left' && isSelf()"
           [class.vertical]="shipPosition(x, y) == 'vertical'"
           [class.horizontal]="shipPosition(x, y) == 'horizontal'"
           [class.hit]="isHit(x, y)"
-          [class.possible-cell]="isNextPossibleCell(x, y)">
+          [class.possible-cell]="isNextPossibleCell(x, y)"
+          [class.button-self]="isSelf()">
             <span [innerText]="value(x, y) | titlecase | bold"></span>
           </button>
       </td> 

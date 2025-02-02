@@ -229,7 +229,7 @@ export class AppComponent implements OnInit {
       setTimeout(() => {
         this.displaySpinner = false;
         this.showNotification(
-          this.isTabletMode ? 'Start tick the opponnent ships..' : 'Lets start the game.',
+          this.isTabletMode ? 'Start tick the ship on the opponnent board..' : 'Lets start the game.',
           () => this.processCurrestUser('Me')
         )
       }, 2000);
@@ -365,7 +365,7 @@ export class AppComponent implements OnInit {
         this.showWarning('Please select the theme (no restart required)', 'themeChange', 'Ok', 'Cancel', false, options);
         break;
       case 'help':
-        this.openDialog('Help content goes here.. To be updated', false, 'help');
+        this.showWarning('Help content goes here.. To be updated', 'help', 'Ok', 'Cancel');
         break;
       default: break;
     }

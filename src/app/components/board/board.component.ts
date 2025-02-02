@@ -31,6 +31,7 @@ export class BoardComponent implements OnInit, OnChanges {
   @Input() showShips: boolean = true;
   @Input() isSystem: boolean = true;
   @Input() isBoardEnabled: boolean = false;
+  @Input() isShipArranged: boolean = false;
   @Output() selectedShip = new EventEmitter<any>();
   @Output() allShipSelected = new EventEmitter<boolean>();
 
@@ -65,7 +66,7 @@ export class BoardComponent implements OnInit, OnChanges {
   }
 
   get isCellEnabled() {
-    return this.isSystem || this.currentShip !== 0 || !this.isBoardEnabled;
+    return (this.isSystem || this.currentShip !== 0 || !this.isBoardEnabled) && !this.isSelf();
   }
 
   get shipDetails(): string {
@@ -109,6 +110,10 @@ export class BoardComponent implements OnInit, OnChanges {
   isHit(x: string, y: string): any {
     const cell = this.player?.board.cells.find(c => c.x === x && c.y === y);
     return cell ? cell.isShip && cell.value === 'hit' : false;
+  }
+
+  isSelf(): boolean {
+    return !this.isSystem && this.isShipArranged
   }
 
   value(x: string, y: string): string {

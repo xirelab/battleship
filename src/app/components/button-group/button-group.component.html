@@ -1,4 +1,5 @@
 <div class="right-align" *ngIf="canContinue">
+    <span class="level">Level: {{level}}</span>
     <button *ngIf="lifes && lifes > 0" mat-button (click)="onHintClick.emit()">Hint*
     </button>
     <button *ngIf="!isTabletMode" mat-button (click)="onContinueClick.emit()">Lets continue...

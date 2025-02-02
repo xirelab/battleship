@@ -11,3 +11,8 @@
     margin: 0 5px 0 5px;
   }
 }
+
+.level {
+  font-weight: bold;
+  margin-right: 10px;
+}

@@ -52,6 +52,32 @@
   padding-left: 28px;
 }
 
+/* // self */
+
+.top-self {
+  /* margin-bottom: -10px; */
+  /* height: 35px; */
+  padding-top: 28px;
+}
+
+.bottom-self {
+  /* margin-top: -15px; */
+  /* height: 35px; */
+  padding-bottom: 0px;
+}
+
+.right-self {
+  /* margin-left: -9px; */
+  /* width: 35px; */
+  padding-right: 28px;
+}
+
+.left-self {
+  /* margin-right: -9px; */
+  /* width: 35px; */
+  padding-left: 28px;
+}
+
 .vertical {
   height: 47px;
   margin-bottom: -16px;
@@ -70,6 +96,18 @@
 
 .td-hit {
   background-color: rgb(241, 149, 149);
+}
+
+.td-self {
+  padding: 0px !important;
+}
+
+.tr-self {
+  font-size: 12px;
+}
+
+.button-self {
+ padding: 12px;
 }
 
 .possible-cell {
@@ -143,6 +181,10 @@
 }
 
 div.transbox {
-  background-color: #ffffff;
+  /* background-color: #ffffff; */
   opacity: 1
+}
+
+.body-blur {
+  filter: blur(0.5px);
 }

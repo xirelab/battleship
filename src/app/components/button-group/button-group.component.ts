@@ -10,6 +10,8 @@ export class ButtonGroupComponent {
   @Input() canContinue: boolean | undefined;
   @Input() isTabletMode: boolean | undefined;
   @Input() lifes: number | undefined;
+  @Input() level: number | undefined;
+  
   @Output() onContinueClick = new EventEmitter<void>();
   @Output() onModeClick = new EventEmitter<void>();
   @Output() onHintClick = new EventEmitter<void>();

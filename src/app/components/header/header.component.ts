@@ -8,10 +8,5 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class HeaderComponent {
 
   @Input() headings: any;
-  @Input() level: number | undefined;
-  @Output() onClick = new EventEmitter<string>();
-
-  gearClicked($event: any) {
-    this.onClick.emit($event);
-  }
+  
 }
