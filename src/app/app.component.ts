@@ -39,8 +39,11 @@ export class AppComponent implements OnInit {
 
   showMenu = false;
   notificationMessage = '';
+  notificationCode = '';
   btn1Text = '';
   btn2Text = '';
+  showInput = false;
+  notificationOptions: any[] = [];
 
   me$ = this.store.pipe(select(selector.me));
   opponent$ = this.store.pipe(select(selector.opponent));
@@ -81,8 +84,6 @@ export class AppComponent implements OnInit {
 
     this.store.dispatch(actions.initializeBoard());
 
-    // if (this.user_cookie) this.store.dispatch(actions.SetNumberofShips({ count: +this.user_cookie.ships }));
-
     this.currentPlayer$.subscribe(user => this.processCurrestUser(user || ''));
 
     this.gameStatus$.subscribe((player: string) => {
@@ -90,12 +91,13 @@ export class AppComponent implements OnInit {
         this.iWon = player === 'Me';
         this.isGameFinished = true;
         this.canContinue = false;
-        this.openDialog(!this.iWon ? `${player} won` : `Congratulations you won`, false, 'GameFinish', '',
-          (!this.iWon ? 'Challenge again' : (this.level == 3 ? 'Restart' : 'Next Level')), 'Exit');
+
+        this.showWarning(
+          !this.iWon ? `${player} won` : `Congratulations you won`, 'GameFinish',
+          !this.iWon ? 'Challenge again' : (this.level == 3 ? 'Restart' : 'Next Level'), 'Exit'
+        );
       }
     });
-
-    // this.openDialog('Please select the players', false, 'playerSelection', '', 'Single Player', 'Two Player');
   }
 
   getDefaultValues() {
@@ -103,6 +105,18 @@ export class AppComponent implements OnInit {
     this.isTabletMode = this.user_cookie.mode === 'tablet';
     this.theme = this.user_cookie.theme ? this.user_cookie.theme : 1;
     if (this.displayMode === 'tablet') this.isTabletMode = true;
+  }
+
+  isStartedChangeed($event: boolean) {
+    if ($event) {
+      this.isStarted = false;
+      this.showNotification('Lets start arranging our ships..', () => this.startGame());
+    }
+  }
+
+  startGame() {
+    this.isStarted = true;
+    this.cookieManagementService.setDefaultMode(this.user_cookie);
   }
 
   get headings() {
@@ -127,6 +141,23 @@ export class AppComponent implements OnInit {
       // console.log(styles);
       return styles;
     }
+  }
+
+  private showNotification(message: string, callbackMethod: () => void = () => { }, timer = 2000) {
+    this.notificationMessage = message
+    setTimeout(() => {
+      this.notificationMessage = '';
+      if (callbackMethod) callbackMethod();
+    }, timer)
+  }
+
+  private showWarning(message: string, code = '', btn1Text = '', btn2Text = '', showInput = false, options: any[] = []) {
+    this.notificationMessage = message
+    this.notificationCode = code;
+    this.btn1Text = btn1Text;
+    this.btn2Text = btn2Text;
+    this.showInput = showInput;
+    this.notificationOptions = options;
   }
 
   isInvalid = false;
@@ -197,12 +228,10 @@ export class AppComponent implements OnInit {
       this.spinnerMessage = "let opponent arrange their ships";
       setTimeout(() => {
         this.displaySpinner = false;
-        this.notificationMessage = this.isTabletMode ? 'Start tick the opponnent ships..' : 'Lets start the game.'
-        setTimeout(() => {
-          this.notificationMessage = '';
-          this.processCurrestUser('Me');
-        }, 2000)
-        // this.openDialog(this.isTabletMode ? 'Start tick the opponnent ships..' : 'Lets start the game.', false, 'startHit');
+        this.showNotification(
+          this.isTabletMode ? 'Start tick the opponnent ships..' : 'Lets start the game.',
+          () => this.processCurrestUser('Me')
+        )
       }, 2000);
     }
   }
@@ -235,89 +264,12 @@ export class AppComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed. data : ' + result.value);
       switch (type) {
-        case 'playerSelection':
-          this.isSinglePlayer = result.isButton1Clicked;
-          this.store.dispatch(actions.SetPlayerType({ isSingleUser: result.isButton1Clicked }));
-          if (this.user_cookie && this.user_cookie.name) {
-            this.store.dispatch(actions.SetMyName({ name: this.user_cookie.name }));
-            if (this.isSinglePlayer) {
-              this.openDialog('Lets start arranging our ships..', false, 'arrangeShip');
-            } else {
-              this.openDialog('Lets share this link with opponent (new link has to provide here..)', false, 'sharing');
-            }
-          } else {
-            this.openDialog('Please enter your name', true, 'myName', '', 'Ok', 'Cancel');
-          }
-          break;
-        case 'myName':
-          this.setplayerName(result);
-          if (this.isSinglePlayer) {
-            this.openDialog('Lets start arranging our ships..', false, 'arrangeShip');
-          } else {
-            this.openDialog('Lets share this link with opponent (new link has to provide here..)', false, 'sharing');
-          }
-          break;
-        case 'sharing':
-          // yet to update. as of now only single player implmented
-          this.openDialog('Lets start arranging our ships..', false, 'arrangeShip');
-          break;
-        case 'startHit':
-          this.processCurrestUser('Me');
-          break;
-        case 'modeToTablet':
-          // do nothing
-          this.isMyTurn = true;
-          break
-        case 'modeToClassic':
-          this.onContinueClick();
-          break;
         case 'fire':
           if (result && result.isCancelClicked) {
             this.canContinue = true;
           } else {
             this.store.dispatch(actions.dropMissile({ data: result.value.toString() }));
           }
-          break;
-        case 'GameFinish':
-          if (result.isButton1Clicked) {
-            if (this.iWon) this.level += 1;
-            if (this.level >= 4) this.restartGame();
-            else this.nextLevel();
-          } else {
-            // need to close the window..
-          }
-          break;
-        case 'restart':
-          if (result.isButton1Clicked) {
-            this.restartGame();
-          }
-          break;
-        case 'numberOfShips':
-          if (result && !result.isCancelClicked) {
-            this.user_cookie.ships = result.value;
-            this.cookieManagementService.setDefaultMode(this.user_cookie);
-            this.store.dispatch(actions.ResetLifes());
-            this.store.dispatch(actions.SetNumberofShips({ count: result.value }));
-            this.openDialog('Lets start arranging our ships..', false, 'arrangeShip');
-          }
-          break;
-        case 'modeChanged':
-          this.isTabletMode = Boolean(result.isButton1Clicked);
-          this.user_cookie.mode = result.isButton1Clicked ? 'tablet' : 'classic';
-          this.cookieManagementService.setDefaultMode(this.user_cookie);
-          break;
-        case 'profileUpdate':
-          this.setplayerName(result);
-          break;
-        case 'theme':
-          if ((this.theme == 1 && result.isButton1Clicked) || (this.theme == 3 && result.isButton2Clicked))
-            this.theme = 2;
-          else if ((this.theme == 1 && result.isButton2Clicked) || (this.theme == 2 && result.isButton2Clicked))
-            this.theme = 3;
-          else if ((this.theme == 2 && result.isButton1Clicked) || (this.theme == 3 && result.isButton1Clicked))
-            this.theme = 1;
-          this.user_cookie.theme = this.theme;
-          this.cookieManagementService.setDefaultMode(this.user_cookie);
           break;
         default: break;
       }
@@ -330,15 +282,11 @@ export class AppComponent implements OnInit {
   }
 
   onHintClick() {
-    this.notificationMessage = 'This value you a life..';
-    setTimeout(() => {
-      this.notificationMessage = '';
-      this.showShips();
-    }, 1000);
+    this.showNotification('This cost you a life..', () => this.showShips());
   }
 
   onMenuClick() {
-    this.showMenu = true;
+    this.showMenu = !this.showMenu;
   }
 
   showShips() {
@@ -350,17 +298,20 @@ export class AppComponent implements OnInit {
     }, 600);
   }
 
-  onModeClick() {
-    this.isTabletMode = !this.isTabletMode;
+  onModeClick(isTabletMode: boolean) {
+    this.isTabletMode = isTabletMode;
     if (this.isTabletMode) {
       this.user_cookie.mode = 'tablet';
       this.cookieManagementService.setDefaultMode(this.user_cookie);
-      this.openDialog('Cool.. Now you can select opponent ship by clicking on it..', false, 'modeToTablet');
+      this.isMyTurn = true;
+      this.showNotification('Cool.. Now you can select opponent ship by clicking on it..');
     } else {
       this.isMyTurn = false;
       this.user_cookie.mode = 'classic';
       this.cookieManagementService.setDefaultMode(this.user_cookie);
-      this.openDialog('Changed to classic mode. You can hit by entering the cordinates..', false, 'modeToClassic');
+      this.showNotification(
+        'Changed to classic mode. You can hit by entering the cordinates..', () => this.onContinueClick()
+      );
     }
   }
 
@@ -373,7 +324,7 @@ export class AppComponent implements OnInit {
   }
 
   setplayerName(result: any) {
-    const myname = result.value ? result.value.toString() : 'Player1';
+    const myname = result ?? 'Player1';
     this.user_cookie.name = myname;
     this.cookieManagementService.setDefaultMode(this.user_cookie);
     this.store.dispatch(actions.SetMyName({ name: myname }));
@@ -384,44 +335,89 @@ export class AppComponent implements OnInit {
     this.canShowShips = false;
     this.isShipArranged = false;
     this.store.dispatch(actions.RestartGame());
-    this.openDialog('Please select the players', false, 'playerSelection', '', 'Single Player', 'Two Player');
+    this.isStarted = false;
   }
 
   nextLevel() {
     this.canShowShips = false;
     this.isShipArranged = false;
     this.store.dispatch(actions.NextLevel());
-    this.openDialog('Lets start arranging our ships..', false, 'arrangeShip');
+    this.isStartedChangeed(true);
   }
 
   gearClicked($event: any) {
     this.showMenu = false;
     switch ($event) {
       case 'ships':
-        this.openDialog('Please enter desired number of Ships (this will restart your game)', true, 'numberOfShips', '', 'Ok', 'Cancel');
+        this.showWarning('Please enter desired number of Ships (this will restart your game)', 'numberOfShips', 'Ok', 'Cancel', true)
         break;
       case 'mode':
-        this.openDialog('Please select the desired game mode (no restart required):', false, 'modeChanged', '', 'Tablet', 'Classic');
+        this.showWarning('Please select the desired game mode (no restart required)', 'modeChanged', 'Tablet', 'Classic');
         break;
       case 'restart':
-        this.openDialog('It will clear all data. Please confirm', false, 'restart', '', 'OK', 'Cancel');
+        this.showWarning('It will clear all data. Please confirm', 'restart', 'Restart', 'Cancel');
         break;
       case 'profile':
-        this.openDialog('Please enter your name', true, 'profileUpdate', '', 'Ok', 'Cancel');
+        this.showWarning('Please enter your name (this will not restart your game)', 'profileUpdate', 'Ok', 'Cancel', true)
         break;
       case 'theme':
-        if (this.theme == 1) { // background
-          this.openDialog('Select your option', false, 'theme', '', 'Light mode', 'Dark mode');
-        } else if (this.theme == 2) {  // Light mode
-          this.openDialog('Select your option', false, 'theme', '', 'Backgound', 'Dark mode');
-        } else if (this.theme == 3) {  // Dark mode
-          this.openDialog('Select your option', false, 'theme', '', 'Backgound', 'Light mode');
-        }
+        let options = [{ value: 1, display: 'Background' }, { value: 2, display: 'Light mode' }, { value: 3, display: 'Dark mode' }];
+        this.showWarning('Please select the theme (no restart required)', 'themeChange', 'Ok', 'Cancel', false, options);
         break;
       case 'help':
         this.openDialog('Help content goes here.. To be updated', false, 'help');
         break;
       default: break;
+    }
+  }
+
+  // Notification banner click events
+  onNotificationBtnClicked($event: any) {
+    if ($event?.code) {
+      this.notificationMessage = '';
+      this.notificationCode = '';
+      this.btn1Text = '';
+      this.btn2Text = '';
+      this.showInput = false;
+      this.notificationOptions = [];
+
+      switch ($event.code) {
+        case 'GameFinish':
+          if ($event.isButton1Clicked) {
+            if (this.iWon) this.level += 1;
+            if (this.level >= 4) this.restartGame();
+            else this.nextLevel();
+          }
+          break;
+        case 'restart':
+          if ($event.isButton1Clicked) {
+            this.restartGame();
+          }
+          break;
+        case 'numberOfShips':
+          if ($event.isButton1Clicked) {
+            this.user_cookie.ships = $event.value;
+            this.cookieManagementService.setDefaultMode(this.user_cookie);
+            this.store.dispatch(actions.ResetLifes());
+            this.store.dispatch(actions.SetNumberofShips({ count: $event.value }));
+            this.isStartedChangeed(true);
+          }
+          break;
+        case 'profileUpdate':
+          if ($event.isButton1Clicked) {
+            this.setplayerName($event.value);
+          }
+          break;
+        case 'modeChanged':
+          this.onModeClick($event.isButton1Clicked);
+          break;
+        case 'themeChange':
+          if ($event.isButton1Clicked) {
+            this.theme = $event.selectedOption;
+          }
+          break;
+        default: break;
+      }
     }
   }
 

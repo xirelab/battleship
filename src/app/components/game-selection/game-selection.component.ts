@@ -3,7 +3,6 @@ import { Store } from '@ngrx/store';
 import { BoardState } from 'src/app/store/board.state';
 import { Constants } from 'src/app/utils/constants';
 import * as actions from '../../store/board.action';
-import { CookieManagementService } from 'src/app/services/cookie.service';
 
 @Component({
   selector: 'app-game-selection',
@@ -11,7 +10,6 @@ import { CookieManagementService } from 'src/app/services/cookie.service';
   styleUrls: ['./game-selection.component.scss']
 })
 export class GameSelectionComponent {
-  isStartArrange = false
   isReadName = false
   isReadNumnerOfShips = false
   isReadNumnerOfPlayers = false
@@ -24,8 +22,7 @@ export class GameSelectionComponent {
   @Output() isStartedChange = new EventEmitter<boolean>();
 
   constructor(
-    private store: Store<BoardState>,
-    private cookieManagementService: CookieManagementService
+    private store: Store<BoardState>
   ) { }
 
   quickStart() {
@@ -51,13 +48,6 @@ export class GameSelectionComponent {
   }
 
   checkForNumberOfPlayers() {
-    // if (this.user_cookie && this.user_cookie.playerType) {
-    //   this.store.dispatch(actions.SetPlayerType({ isSingleUser: this.user_cookie.playerType === 'single' }));
-    //   this.startGame();
-    // }
-    // else {
-    //   this.isReadNumnerOfPlayers = true;
-    // }
     this.isReadNumnerOfPlayers = true;
   }
 
@@ -80,17 +70,14 @@ export class GameSelectionComponent {
   onNumberOfPlayerssEnter(isSingle: boolean) {
     this.store.dispatch(actions.SetPlayerType({ isSingleUser: isSingle }));
     this.user_cookie.playerType = isSingle ? 'single' : 'multi';
+    // if (!isSingle) {
+    //   this.openDialog('Lets share this link with opponent (new link has to provide here..)', false, 'sharing');
+    // }
     this.isReadNumnerOfPlayers = false;
     this.startGame();
   }
 
   private startGame() {
-    this.isStartArrange = true;
-    this.interval = setInterval(() => {
-      this.isStartArrange = false;
-      clearInterval(this.interval);
-      this.cookieManagementService.setDefaultMode(this.user_cookie);
-      this.isStartedChange.emit(true);
-    }, 1000)
+    this.isStartedChange.emit(true);
   }
 }

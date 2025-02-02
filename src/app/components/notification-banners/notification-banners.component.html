@@ -1,14 +1,28 @@
 <div *ngIf="message">
     <div class="center-screen-notification">
         <span class="label-input" [innerText]="message"></span>
-    </div>
-</div>
 
-<div *ngIf="btn1Text">
-    <div class="center-screen-buttons">
-        <div>
-            <button class="button-input" (click)="btn1Clicked()">{{btn1Text}}</button>
-            <button class="button-input" (click)="btn2Clicked()">{{btn2Text}}</button>
+        <div *ngIf="showInput">
+            <div class="">
+                <input class="label-input" type="text" [(ngModel)]="value" />
+            </div>
+        </div>
+
+        <div *ngIf="options && options.length > 0">
+            <div class="">
+                <select class="label-input" [(ngModel)]="selectedOption">
+                    <option *ngFor="let option of options" [value]="option.value">{{option.display}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div *ngIf="btn1Text">
+            <div class="">
+                <div>
+                    <button class="button-input" (click)="btn1Clicked()">{{btn1Text}}</button>
+                    <button class="button-input" (click)="btn2Clicked()">{{btn2Text}}</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

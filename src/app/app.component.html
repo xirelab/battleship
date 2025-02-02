@@ -11,7 +11,7 @@
       <div>
         <app-header [headings]="headings" [level]="level" (onClick)="gearClicked($event)"></app-header>
         <app-button-group [canContinue]="canContinue" [isTabletMode]="isTabletMode" [lifes]="data?.me?.lifes"
-          (onContinueClick)="onContinueClick()" (onModeClick)="onModeClick()" (onHintClick)="onHintClick()"
+          (onContinueClick)="onContinueClick()" (onModeClick)="onModeClick(!isTabletMode)" (onHintClick)="onHintClick()"
           (onMenuClick)="onMenuClick()">
         </app-button-group>
       </div>
@@ -73,12 +73,14 @@
   <app-spinner *ngIf="displaySpinner" [label]="spinnerMessage"></app-spinner>
 
   <app-game-selection *ngIf="!isStarted" class="center-screen-notification" [user_cookie]="user_cookie"
-    (isStartedChange)="isStarted=$event">
+    (isStartedChange)="isStartedChangeed($event)">
   </app-game-selection>
 
   <!-- Notification banner -->
   <div *ngIf="notificationMessage">
-    <app-notification-banners [message]="notificationMessage" [btn1Text]="btn1Text" [btn2Text]="btn2Text">
+    <app-notification-banners [message]="notificationMessage" [code]="notificationCode" [showInput]="showInput"
+      [btn1Text]="btn1Text" [btn2Text]="btn2Text" [options]="notificationOptions"
+      (onNotificationBtnClick)="onNotificationBtnClicked($event)">
     </app-notification-banners>
   </div>
 
