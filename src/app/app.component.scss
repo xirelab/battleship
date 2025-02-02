@@ -56,6 +56,13 @@ p {
     display: flex;
 }
 
+.board-layout_mobile {
+    display: grid;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .initial-board {
     width: 500px;
     margin: 20px auto;

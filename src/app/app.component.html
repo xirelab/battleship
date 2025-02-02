@@ -8,45 +8,45 @@
       xDimension: xDimension$ | async,
       yDimension: yDimension$ | async
     } as data">
+
+      <!-- Heading and menu -->
       <div>
         <app-header [headings]="headings"></app-header>
-        <app-button-group [canContinue]="canContinue" [isTabletMode]="isTabletMode" [lifes]="data?.me?.lifes" [level]="level"
-          (onContinueClick)="onContinueClick()" (onModeClick)="onModeClick(!isTabletMode)" (onHintClick)="onHintClick()"
-          (onMenuClick)="onMenuClick()">
+        <app-button-group [canContinue]="canContinue" [isTabletMode]="isTabletMode" [lifes]="data?.me?.lifes"
+          [level]="level" (onContinueClick)="onContinueClick()" (onModeClick)="onModeClick(!isTabletMode)"
+          (onHintClick)="onHintClick()" (onMenuClick)="onMenuClick()">
         </app-button-group>
       </div>
 
-      <div *ngIf="displayMode == 'web'; else TABLET_MODE">
-        <div *ngIf="!isShipArranged" class="board-edit">
+      <!-- Board for Ship arrangemnetnt -->
+      <div *ngIf="!isShipArranged" class="board-edit">
+        <app-board class="board" [isStarted]="isStarted" [isSystem]="false" [numberofShips]="data?.numberOfShips"
+          [showShips]=true [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [player]="data?.me"
+          (allShipSelected)="allShipSelected($event, data?.me?.board)" [isBoardEnabled]="!isShipArranged"
+          [isShipArranged]="isShipArranged">
+        </app-board>
+      </div>
+
+      <!-- Board for Game play -->
+      <div *ngIf="isShipArranged" [ngClass]="displayMode == 'web' ? 'board-layout' : 'board-layout_mobile'">
+        <div style="width: 70%; text-align: -webkit-center;">
+          <app-board class="board" [isStarted]="isStarted" [isSystem]="true" [numberofShips]="data?.numberOfShips"
+            [showShips]="canShowShips" [xDimension]="data?.xDimension" [yDimension]="data?.yDimension"
+            [player]="data?.opponent" (selectedShip)="selectedShip($event)" [isShipArranged]="isShipArranged"
+            [isBoardEnabled]="isTabletMode && isMyTurn && isShipArranged">
+          </app-board>
+        </div>
+        <div *ngIf="displayMode == 'web'">
+          <div class="vl"></div>
+        </div>
+        <div style="width: 30%; text-align: -webkit-center; margin-top: 50px;">
           <app-board class="board" [isStarted]="isStarted" [isSystem]="false" [numberofShips]="data?.numberOfShips"
             [showShips]=true [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [player]="data?.me"
             (allShipSelected)="allShipSelected($event, data?.me?.board)" [isBoardEnabled]="!isShipArranged"
             [isShipArranged]="isShipArranged">
           </app-board>
         </div>
-        <div *ngIf="isShipArranged" class="board-layout">
-          <div style="width: 70%; text-align: -webkit-center;">
-            <app-board class="board" [isStarted]="isStarted" [isSystem]="true" [numberofShips]="data?.numberOfShips"
-              [showShips]="canShowShips" [xDimension]="data?.xDimension" [yDimension]="data?.yDimension"
-              [player]="data?.opponent" (selectedShip)="selectedShip($event)" [isShipArranged]="isShipArranged"
-              [isBoardEnabled]="isTabletMode && isMyTurn && isShipArranged">
-            </app-board>
-          </div>
-          <div>
-            <div class="vl"></div>
-          </div>
-          <div style="width: 30%; text-align: -webkit-center; margin-top: 50px;">
-            <app-board class="board" [isStarted]="isStarted" [isSystem]="false" [numberofShips]="data?.numberOfShips"
-              [showShips]=true [xDimension]="data?.xDimension" [yDimension]="data?.yDimension" [player]="data?.me"
-              (allShipSelected)="allShipSelected($event, data?.me?.board)" [isBoardEnabled]="!isShipArranged"
-              [isShipArranged]="isShipArranged">
-            </app-board>
-          </div>
-        </div>
       </div>
-      <ng-template #TABLET_MODE>
-
-      </ng-template>
 
       <!-- <div *ngIf="displayMode == 'web'; else TABLET_MODE">
         <table style="margin-left:auto;margin-right:auto;">
